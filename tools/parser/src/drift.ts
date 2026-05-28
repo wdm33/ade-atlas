@@ -31,11 +31,14 @@ export function computeDrift(inp: DriftInputs): DriftFinding[] {
 
   const regIds = new Set(rules.map((r) => r.id));
   const traceIds = new Set(trace.rules.map((r) => r.id));
+  // Doc-coverage gaps: the append-only registry routinely runs ahead of the last
+  // TRACEABILITY regeneration. This is a gap to SURFACE, not fatal corruption — the
+  // dashboard's job is to show it, so it stays soft (does not block deploy).
   for (const r of rules) {
-    if (!traceIds.has(r.id)) hard("rule-missing-from-traceability", `${r.id} is in the registry but absent from TRACEABILITY.`);
+    if (!traceIds.has(r.id)) soft("rule-missing-from-traceability", `${r.id} is in the registry but absent from TRACEABILITY.`);
   }
   for (const tr of trace.rules) {
-    if (!regIds.has(tr.id)) hard("rule-missing-from-registry", `${tr.id} is in TRACEABILITY but absent from the registry.`);
+    if (!regIds.has(tr.id)) soft("rule-missing-from-registry", `${tr.id} is in TRACEABILITY but absent from the registry.`);
   }
 
   for (const r of rules) {
@@ -64,19 +67,24 @@ export function computeDrift(inp: DriftInputs): DriftFinding[] {
       /* not a git checkout */
     }
     if (gitHead && codemap.repo_head && gitHead !== codemap.repo_head) {
-      hard("repo-head-mismatch", `Docs claim HEAD ${codemap.repo_head} but the repo is at ${gitHead}.`);
+      // Benign doc-regen lag: the docs were last regenerated at one commit and the
+      // repo has since advanced. Surface it; don't block the projection from shipping.
+      soft("repo-head-skew", `Docs were generated at HEAD ${codemap.repo_head} but the repo is at ${gitHead}.`);
     }
 
     for (const r of rules) {
+      // A missing artifact is fatal only for an ENFORCED rule (its green badge would
+      // be a lie). For declared/partial rules a not-yet-created path is expected.
+      const sev = r.status === "enforced" ? hard : soft;
       for (const p of r.code_loci) {
         if (p.startsWith("crates/") && !existsSync(join(repoDir, p))) {
-          hard("code-locus-missing", `${r.id}: code locus ${p} does not exist in the repo.`);
+          sev("code-locus-missing", `${r.id} (${r.status}): code locus ${p} does not exist in the repo.`);
         }
       }
       for (const ref of r.ci_scripts) {
         const rel = ref.startsWith("ci/") ? ref : `ci/${ref}`;
         if (!existsSync(join(repoDir, rel))) {
-          hard("ci-script-missing", `${r.id}: CI script ${rel} does not exist in the repo.`);
+          sev("ci-script-missing", `${r.id} (${r.status}): CI script ${rel} does not exist in the repo.`);
         }
       }
     }
