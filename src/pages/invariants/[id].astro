@@ -1,0 +1,144 @@
+---
+import Base from "../../layouts/Base.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import Markdown from "../../components/Markdown.astro";
+import { invariants, mergedRule, ruleById, repoByPath, testByName, withBase } from "../../lib/site-data.ts";
+
+export function getStaticPaths() {
+  return invariants.rules.map((r) => ({ params: { id: r.id } }));
+}
+
+const { id } = Astro.params;
+const r = mergedRule(id!)!;
+const t = r.trace;
+
+const cell = (text: string, gap: boolean) =>
+  gap || !text.trim() ? null : text;
+
+const driftTests = new Set(t?.tests_drift ?? []);
+const driftCi = new Set(t?.ci_drift ?? []);
+---
+
+<Base active="invariants" title={id} description={r.statement.slice(0, 150)}>
+  <div class="crumbs"><a href={withBase("/invariants")}>Invariants</a> / <span class="mono">{id}</span></div>
+  <div class="pill-row">
+    <h1 class="mono" style="margin:0">{id}</h1>
+    <span class="badge fam">{r.family}</span>
+    <span class="badge tier">{r.tier}</span>
+    <StatusBadge status={r.status} />
+    {t && (t.tests_drift.length > 0 || t.ci_drift.length > 0) && <span class="badge drift">drift</span>}
+  </div>
+
+  <p style="font-size:1.05rem;margin-top:0.75rem"><Markdown text={r.statement} /></p>
+
+  <div class="card">
+    <dl class="kv">
+      <dt>Source</dt><dd><Markdown text={r.source} /></dd>
+      {r.cluster && <><dt>Cluster</dt><dd><a class="mono" href={withBase(`/clusters#${r.cluster}`)}>{r.cluster}</a></dd></>}
+      {r.introduced_in && <><dt>Introduced in</dt><dd class="mono">{r.introduced_in}</dd></>}
+      {r.authority_surface && <><dt>Authority surface</dt><dd>{r.authority_surface}</dd></>}
+    </dl>
+  </div>
+
+  <h2>Enforcement trace</h2>
+  <div class="grid cols-3">
+    <div class="card">
+      <h3>Code</h3>
+      {r.code_loci.length > 0 ? (
+        <ul style="margin:0;padding-left:1.1rem;font-size:0.85rem">
+          {r.code_loci.map((p) => {
+            const f = repoByPath(p);
+            return <li class="mono">{f?.github_url ? <a href={f.github_url}>{p}</a> : p}</li>;
+          })}
+        </ul>
+      ) : (
+        <p class="gap-cell">no enforcing code — gap</p>
+      )}
+    </div>
+    <div class="card">
+      <h3>Tests <span class="faint" style="font-size:0.8rem;font-weight:400">{r.tests.length}</span></h3>
+      {r.tests.length > 0 ? (
+        <ul style="margin:0;padding-left:1.1rem;font-size:0.82rem">
+          {r.tests.map((name) => (
+            <li class="mono">
+              {name}
+              {driftTests.has(name) && <span class="badge drift" style="margin-left:0.35rem">not on disk</span>}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="gap-cell">no tests named — gap</p>
+      )}
+    </div>
+    <div class="card">
+      <h3>CI <span class="faint" style="font-size:0.8rem;font-weight:400">{r.ci_scripts.length}</span></h3>
+      {r.ci_scripts.length > 0 ? (
+        <ul style="margin:0;padding-left:1.1rem;font-size:0.82rem">
+          {r.ci_scripts.map((s) => {
+            const name = s.replace(/^ci\//, "");
+            return (
+              <li class="mono">
+                <a href={withBase(`/enforcement#${name}`)}>{name}</a>
+                {driftCi.has(name) && <span class="badge drift" style="margin-left:0.35rem">not on disk</span>}
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p class="gap-cell">no CI script — gap</p>
+      )}
+    </div>
+  </div>
+
+  {r.cross_ref.length > 0 && (
+    <section>
+      <h2>Cross-references</h2>
+      <div class="tag-list">
+        {r.cross_ref.map((x) => (
+          ruleById(x)
+            ? <a class="badge" href={withBase(`/invariants/${x}`)}>{x}</a>
+            : <span class="badge gap" title="unresolved reference">{x}</span>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {r.strengthened_in.length > 0 && (
+    <section>
+      <h2>Strengthened in</h2>
+      <div class="tag-list">
+        {r.strengthened_in.map((c) => <a class="badge tier" href={withBase(`/clusters#${c}`)}>{c}</a>)}
+      </div>
+    </section>
+  )}
+
+  {r.attack_rationale && (
+    <section>
+      <h2>Attack rationale</h2>
+      <div class="card"><Markdown text={r.attack_rationale} /></div>
+    </section>
+  )}
+
+  {r.evidence_notes && (
+    <section>
+      <h2>Evidence notes</h2>
+      <div class="card"><Markdown text={r.evidence_notes} /></div>
+    </section>
+  )}
+
+  {r.evidence.length > 0 && (
+    <section>
+      <h2>Evidence</h2>
+      <ul style="padding-left:1.1rem">
+        {r.evidence.map((e) => <li style="font-size:0.88rem;margin-bottom:0.3rem"><Markdown text={e} /></li>)}
+      </ul>
+    </section>
+  )}
+
+  {r.open_obligation && (
+    <section>
+      <h2>Open obligation</h2>
+      <div class="banner warn"><Markdown text={r.open_obligation} /></div>
+    </section>
+  )}
+</Base>

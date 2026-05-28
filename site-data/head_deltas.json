@@ -1,0 +1,221 @@
+{
+  "schema_version": "0.1.0",
+  "generated_at": "2026-05-28",
+  "baseline": "dbee4d5",
+  "head": "22eef90",
+  "baseline_date": "2026-05-27 23:18:22 +0700",
+  "head_date": "2026-05-28 18:35:14 +0700",
+  "commit_count": 16,
+  "files_changed": 33,
+  "lines_added": 4172,
+  "lines_removed": 192,
+  "commits": [
+    {
+      "hash": "22eef90",
+      "type": "docs",
+      "summary": "PHASE4-N-V CLOSURE — post-close correction (CE-V-8 re-confirmed unmasked)"
+    },
+    {
+      "hash": "8f38bd0",
+      "type": "docs",
+      "summary": "RO-CLOSE-01 — unmasked close-gate release discipline"
+    },
+    {
+      "hash": "440d28a",
+      "type": "docs",
+      "summary": "declare CN-FORGE-04 + PHASE4-N-W Praos VRF follow-on"
+    },
+    {
+      "hash": "e93d936",
+      "type": "fix",
+      "summary": "PHASE4-N-V — update forge golden + decoders for the era envelope"
+    },
+    {
+      "hash": "eb72323",
+      "type": "docs",
+      "summary": "PHASE4-N-V close — envelope fix; ForgeSucceeded deferred to N-W"
+    },
+    {
+      "hash": "aadace5",
+      "type": "feat",
+      "summary": "PHASE4-N-V S3 — honest-fallback test pins the Praos-VRF blocker"
+    },
+    {
+      "hash": "1096733",
+      "type": "feat",
+      "summary": "PHASE4-N-V S2 — forge_block emits enveloped bytes + round-trip gate"
+    },
+    {
+      "hash": "e29d655",
+      "type": "feat",
+      "summary": "PHASE4-N-V S1 — canonical encode_block_envelope"
+    },
+    {
+      "hash": "be2f8da",
+      "type": "docs",
+      "summary": "PHASE4-N-V cluster doc + invariants/plan + 1 declared rule"
+    },
+    {
+      "hash": "be748ff",
+      "type": "docs",
+      "summary": "PHASE4-N-T close — 3 rules enforced + 5 strengthenings + gate fix"
+    },
+    {
+      "hash": "e31e636",
+      "type": "feat",
+      "summary": "PHASE4-N-T S5 — loopback serve test + bootstrap CI gate"
+    },
+    {
+      "hash": "b46a0c6",
+      "type": "feat",
+      "summary": "PHASE4-N-T S4 — BroadcastBlock to served chain via push_atomic"
+    },
+    {
+      "hash": "6353dfd",
+      "type": "feat",
+      "summary": "PHASE4-N-T S3 — wire ChainEvolution + real forge context, delete synthetic"
+    },
+    {
+      "hash": "dbf6ea7",
+      "type": "feat",
+      "summary": "PHASE4-N-T S2 — GREEN ChainEvolution typestate"
+    },
+    {
+      "hash": "9f525df",
+      "type": "feat",
+      "summary": "PHASE4-N-T S1 — produce-mode cold-start from operator seed"
+    },
+    {
+      "hash": "a1213d8",
+      "type": "docs",
+      "summary": "PHASE4-N-T cluster doc + invariants/plan + 3 declared rules"
+    }
+  ],
+  "new_modules": [
+    {
+      "module": "ade_runtime::producer::chain_evolution",
+      "detail": "GREEN (by content, inside RED `ade_runtime`) — Linear `ChainEvolution` typestate threading the producer's chain state forward across forges; `advance` consumes `self` so forging against a stale base is structurally unrepresentable, cross-checks the BLUE `block_validity` post-state against the BLUE `self_accept` token, and never mints `AcceptedBlock`. — `producer/chain_evolution.rs` (`ChainEvolution`, `ChainEvolutionError::AuthorityMismatch`, `advance`/`seed`) — PHASE4-N-T S2 (`dbf6ea7`)"
+    }
+  ],
+  "modified_modules": [
+    {
+      "module": "ade_node::produce_mode",
+      "detail": "+718 / -165 lines, +2 test files — **N-T:** cold-starts via `bootstrap_initial_state` from the operator seed (`--json-seed` + `--consensus-inputs`); deletes `SyntheticForgeInputs` / `build_synthetic_forge_context` (no zero-stake / `LedgerState::new` / constant-prev-hash forge base); seeds and threads the GREEN `ChainEvolution` typestate; `CoordinatorEffect::BroadcastBlock` reconstructs the `AcceptedBlock` via BLUE `self_accept` then admits to the served snapshot through `ServedChainHandle::push_atomic` (fail-closed `BroadcastPushError::SelfAcceptReplayRejected`). New tests `tests/produce_loopback.rs` (loopback serve) and `tests/forge_succeeds.rs` (N-V honest-fallback pinning the Praos-VRF blocker). Introduces enforcement of CN-PROD-03 / CN-PROD-04 / DC-PROD-03."
+    },
+    {
+      "module": "ade_node::cli",
+      "detail": "+76 / -0 lines — **N-T:** CLI surface for produce-mode cold-start from the operator seed (seed + consensus-inputs wiring into the single bootstrap authority)."
+    },
+    {
+      "module": "ade_codec::cbor::envelope",
+      "detail": "+40 / -1 lines — **N-V:** adds the canonical block-envelope **encoder** `encode_block_envelope`, symmetric to the long-standing `decode_block_envelope` — emits the era-tagged `[era, block]` form (Conway = discriminant 7). Sole block-envelope encoder in the workspace; round-trips through `decode_block_envelope`. Enforces CN-FORGE-03."
+    },
+    {
+      "module": "ade_ledger::producer::forge",
+      "detail": "+33 / -2 lines, +1 test file — **N-V:** `forge_block` now wraps its output via `ade_codec::encode_block_envelope` so `decode_block(forge_block(tick).bytes)` is `Ok` — fixes the N-T defect where `forge_block` emitted a bare `array(5)` block rejected at offset 0 by `decode_block_envelope`. New corpus-pin test `tests/envelope_corpus_pin.rs`. Strengthens CN-FORGE-01; CN-FORGE-03 enforced here."
+    },
+    {
+      "module": "ade_runtime::producer",
+      "detail": "+1 / -0 lines — **N-T:** registers the new `chain_evolution` submodule."
+    },
+    {
+      "module": "ade_testkit::producer",
+      "detail": "+31 / -10 lines across 3 files — **N-V:** forge golden (`EXPECTED_FORGED_*`) and decoder/replay fixtures updated for the era envelope so the cross-impl adapter, fixtures, and replay agree with the now-enveloped forge output. Files: `cross_impl_adapter.rs`, `fixtures.rs`, `replay.rs`."
+    }
+  ],
+  "new_rules": [
+    {
+      "id": "CN-PROD-03",
+      "status": "enforced",
+      "cluster": "N-T",
+      "summary": "produce_mode's forge base state is derived from the single `bootstrap_initial_state` authority (operator-seeded ledger + projected `PoolDistrView` + eta0 + tip slot); `SyntheticForgeInputs` / synthetic forge base deleted (cold-start branch only; warm-start deferred to N-U)."
+    },
+    {
+      "id": "CN-PROD-04",
+      "status": "enforced",
+      "cluster": "N-T",
+      "summary": "Every `BroadcastBlock` reconstructs the `AcceptedBlock` via BLUE `self_accept` then admits to the served snapshot via the single `ServedChainHandle::push_atomic`; replay rejection skips `push_atomic` and emits `BroadcastPushError::SelfAcceptReplayRejected`; only self-accepted blocks are served."
+    },
+    {
+      "id": "DC-PROD-03",
+      "status": "enforced",
+      "cluster": "N-T",
+      "summary": "Producer chain-forward continuity + replay: GREEN `ChainEvolution` threads each forge's post-state into the next base (stale-base forging structurally unrepresentable); `advance` cross-checks BLUE `block_validity` vs BLUE `self_accept` and fail-closes on `AuthorityMismatch`; in-memory two-run byte-identity (durable replay deferred to N-U)."
+    },
+    {
+      "id": "CN-FORGE-03",
+      "status": "enforced",
+      "cluster": "N-V",
+      "summary": "Producer/validator codec symmetry: `forge_block` emits the era-tagged `[era, block]` envelope via the single `ade_codec::encode_block_envelope`, so forge output round-trips through the same `decode_block` authority that validates received blocks (fixes the N-T bare-`array(5)` defect rejected at offset 0)."
+    },
+    {
+      "id": "CN-FORGE-04",
+      "status": "declared",
+      "cluster": "N-V",
+      "summary": "Producer-side Praos VRF construction must match the Conway/Praos validator authority (Praos alpha `blake2b256(slot‖eta0)` + range-extension, **not** the TPraos role-tagged `slot‖eta0‖0x4C`); no construction/verification fallback accepting both. Declared follow-on, scheduled for **PHASE4-N-W**."
+    },
+    {
+      "id": "RO-CLOSE-01",
+      "status": "enforced",
+      "cluster": "N-V",
+      "summary": "Unmasked close-gate discipline: any slice changing canonical bytes/encoded forms/golden fixtures must run an unmasked full close gate (`cargo test --workspace`) and use cargo's real exit status as the sole pass/fail authority; piped output is display-only; all consumers of changed canonical output must be audited before closure."
+    }
+  ],
+  "strengthenings": [
+    "DC-CONS-18 — strengthened_in += [\"PHASE4-N-T\", \"PHASE4-N-V\"] (single forge/encode authority extended by both the bootstrap forge base and the envelope encoder).",
+    "CN-NODE-01 — strengthened_in += [\"PHASE4-N-T\"] (produce mode is a second legitimate startup path that also bootstraps via the sole authority).",
+    "CN-PROD-02 — strengthened_in += [\"PHASE4-N-T\"] (no parallel synthetic forge codepath; synthetic shortcut deleted).",
+    "CN-FORGE-01 — strengthened_in += [\"PHASE4-N-T\"] (forge composition).",
+    "CN-SNAPSHOT-01 — strengthened_in += [\"PHASE4-N-T\"] (served-snapshot admission via push_atomic)."
+  ],
+  "new_ci_checks": [
+    {
+      "check": "ci_check_produce_mode_uses_bootstrap_initial_state.sh",
+      "status": "New (e31e636)",
+      "detail": "produce mode derives its initial forge state from the single `bootstrap_initial_state` authority and seeds the GREEN `ChainEvolution` typestate — never a synthetic shortcut; `produce_mode.rs` contains no `SyntheticForgeInputs`. Closes the \"called zero times via a synthetic bypass\" hole. Strengthens CN-NODE-01 + CN-PROD-02."
+    },
+    {
+      "check": "ci_check_node_binary_uses_single_bootstrap.sh",
+      "status": "Modified (be748ff)",
+      "detail": "Re-scoped from \"exactly one call site in the whole crate\" to \"every production `.rs` file calls `bootstrap_initial_state` at most once (no double-bootstrap per path) AND the crate calls it at least once (authority actually used)\" — accommodating produce mode as a second legitimate startup path. Enforces CN-NODE-01."
+    },
+    {
+      "check": "ci_check_forge_decode_round_trip.sh",
+      "status": "New (1096733)",
+      "detail": "`forge_block` wraps its output via `ade_codec::encode_block_envelope`, and the forge ⇄ decode round-trip regression test exists, so `decode_block(forge_block(tick).bytes)` is `Ok` (no bare-block forge output, no parallel block serializer). Enforces CN-FORGE-03."
+    }
+  ],
+  "rules_at_baseline": 285,
+  "rules_at_head": 291,
+  "residual": "In-process `ForgeSucceeded` end-to-end self-accept remains deferred to **PHASE4-N-W**, pinned by the registry's `forge_to_self_accept_blocked_on_praos_vrf_construction` obligation (TPraos vs. Praos VRF transcript mismatch). `tests/forge_succeeds.rs` is the honest-fallback test that pins this blocker rather than masking it.",
+  "sections": [
+    {
+      "title": "1. Commit Log",
+      "body": "Verbatim from `git log --oneline --no-merges dbee4d5..HEAD`, newest-first. Type is the conventional-commits prefix on the subject; no editorial.\n\n| Hash | Type | Summary |\n|------|------|---------|\n| `22eef90` | docs | PHASE4-N-V CLOSURE — post-close correction (CE-V-8 re-confirmed unmasked) |\n| `8f38bd0` | docs | RO-CLOSE-01 — unmasked close-gate release discipline |\n| `440d28a` | docs | declare CN-FORGE-04 + PHASE4-N-W Praos VRF follow-on |\n| `e93d936` | fix | PHASE4-N-V — update forge golden + decoders for the era envelope |\n| `eb72323` | docs | PHASE4-N-V close — envelope fix; ForgeSucceeded deferred to N-W |\n| `aadace5` | feat | PHASE4-N-V S3 — honest-fallback test pins the Praos-VRF blocker |\n| `1096733` | feat | PHASE4-N-V S2 — forge_block emits enveloped bytes + round-trip gate |\n| `e29d655` | feat | PHASE4-N-V S1 — canonical encode_block_envelope |\n| `be2f8da` | docs | PHASE4-N-V cluster doc + invariants/plan + 1 declared rule |\n| `be748ff` | docs | PHASE4-N-T close — 3 rules enforced + 5 strengthenings + gate fix |\n| `e31e636` | feat | PHASE4-N-T S5 — loopback serve test + bootstrap CI gate |\n| `b46a0c6` | feat | PHASE4-N-T S4 — BroadcastBlock to served chain via push_atomic |\n| `6353dfd` | feat | PHASE4-N-T S3 — wire ChainEvolution + real forge context, delete synthetic |\n| `dbf6ea7` | feat | PHASE4-N-T S2 — GREEN ChainEvolution typestate |\n| `9f525df` | feat | PHASE4-N-T S1 — produce-mode cold-start from operator seed |\n| `a1213d8` | docs | PHASE4-N-T cluster doc + invariants/plan + 3 declared rules |\n\nType histogram: feat ×8, docs ×7, fix ×1. Unclassified: 0 (every subject carries a conventional-commits prefix).\n\n---"
+    },
+    {
+      "title": "2. New Modules",
+      "body": "Modules added since baseline (present at HEAD, absent at `dbee4d5`).\n\n| Module | Color | Purpose | Key sub-paths | Added in (cluster/slice) |\n|--------|-------|---------|---------------|--------------------------|\n| `ade_runtime::producer::chain_evolution` | GREEN (by content, inside RED `ade_runtime`) | Linear `ChainEvolution` typestate threading the producer's chain state forward across forges; `advance` consumes `self` so forging against a stale base is structurally unrepresentable, cross-checks the BLUE `block_validity` post-state against the BLUE `self_accept` token, and never mints `AcceptedBlock`. | `producer/chain_evolution.rs` (`ChainEvolution`, `ChainEvolutionError::AuthorityMismatch`, `advance`/`seed`) | PHASE4-N-T S2 (`dbf6ea7`) |\n\nNo new crate or workspace member was added; `ade_codec::cbor::envelope::encode_block_envelope` is a new function in an existing module (see §3), not a new module.\n\n**Cross-reference (CODEMAP @ `22eef90`):** `producer::chain_evolution` appears in CODEMAP (Key modules + the producer authority table, tagged *(N-T)*). No stale-CODEMAP warning.\n\n---"
+    },
+    {
+      "title": "3. Modules Modified",
+      "body": "Modules that existed at baseline with non-trivial changes. Grouped by cluster. Trivial doc-only or single-line plumbing edits are folded into the relevant module entry.\n\n| Module | Scope | Key changes |\n|--------|-------|-------------|\n| `ade_node::produce_mode` | +718 / -165 lines, +2 test files | **N-T:** cold-starts via `bootstrap_initial_state` from the operator seed (`--json-seed` + `--consensus-inputs`); deletes `SyntheticForgeInputs` / `build_synthetic_forge_context` (no zero-stake / `LedgerState::new` / constant-prev-hash forge base); seeds and threads the GREEN `ChainEvolution` typestate; `CoordinatorEffect::BroadcastBlock` reconstructs the `AcceptedBlock` via BLUE `self_accept` then admits to the served snapshot through `ServedChainHandle::push_atomic` (fail-closed `BroadcastPushError::SelfAcceptReplayRejected`). New tests `tests/produce_loopback.rs` (loopback serve) and `tests/forge_succeeds.rs` (N-V honest-fallback pinning the Praos-VRF blocker). Introduces enforcement of CN-PROD-03 / CN-PROD-04 / DC-PROD-03. |\n| `ade_node::cli` | +76 / -0 lines | **N-T:** CLI surface for produce-mode cold-start from the operator seed (seed + consensus-inputs wiring into the single bootstrap authority). |\n| `ade_codec::cbor::envelope` | +40 / -1 lines | **N-V:** adds the canonical block-envelope **encoder** `encode_block_envelope`, symmetric to the long-standing `decode_block_envelope` — emits the era-tagged `[era, block]` form (Conway = discriminant 7). Sole block-envelope encoder in the workspace; round-trips through `decode_block_envelope`. Enforces CN-FORGE-03. |\n| `ade_ledger::producer::forge` | +33 / -2 lines, +1 test file | **N-V:** `forge_block` now wraps its output via `ade_codec::encode_block_envelope` so `decode_block(forge_block(tick).bytes)` is `Ok` — fixes the N-T defect where `forge_block` emitted a bare `array(5)` block rejected at offset 0 by `decode_block_envelope`. New corpus-pin test `tests/envelope_corpus_pin.rs`. Strengthens CN-FORGE-01; CN-FORGE-03 enforced here. |\n| `ade_runtime::producer` (mod) | +1 / -0 lines | **N-T:** registers the new `chain_evolution` submodule. |\n| `ade_testkit::producer` | +31 / -10 lines across 3 files | **N-V:** forge golden (`EXPECTED_FORGED_*`) and decoder/replay fixtures updated for the era envelope so the cross-impl adapter, fixtures, and replay agree with the now-enveloped forge output. Files: `cross_impl_adapter.rs`, `fixtures.rs`, `replay.rs`. |\n\n### Strengthenings recorded this window (registry `strengthened_in`)\n\nThese are not new modules but cross-cutting invariant strengthenings the two clusters carried forward:\n\n- **DC-CONS-18** — `strengthened_in += [\"PHASE4-N-T\", \"PHASE4-N-V\"]` (single forge/encode authority extended by both the bootstrap forge base and the envelope encoder).\n- **CN-NODE-01** — `strengthened_in += [\"PHASE4-N-T\"]` (produce mode is a second legitimate startup path that also bootstraps via the sole authority).\n- **CN-PROD-02** — `strengthened_in += [\"PHASE4-N-T\"]` (no parallel synthetic forge codepath; synthetic shortcut deleted).\n- **CN-FORGE-01** — `strengthened_in += [\"PHASE4-N-T\"]` (forge composition).\n- **CN-SNAPSHOT-01** — `strengthened_in += [\"PHASE4-N-T\"]` (served-snapshot admission via `push_atomic`).\n\n---"
+    },
+    {
+      "title": "4. Feature Flags",
+      "body": "No feature-flag deltas this window. No `Cargo.toml` was modified between `dbee4d5` and HEAD, so no `[features]` table, `optionalDependencies`, build tag, or `extras_require` changed. No `compile_error!`-coupled flag was introduced or removed.\n\n---"
+    },
+    {
+      "title": "5. CI Checks",
+      "body": "Every CI check added or materially modified since baseline. CI scripts live as `ci/ci_check_*.sh` (no `.github/workflows` in this repo yet, per `.idd-config.json` `ci_dirs`). Grouped by cluster.\n\n### PHASE4-N-T checks\n\n| Check | Status | What it checks |\n|-------|--------|----------------|\n| `ci_check_produce_mode_uses_bootstrap_initial_state.sh` | New (`e31e636`) | produce mode derives its initial forge state from the single `bootstrap_initial_state` authority and seeds the GREEN `ChainEvolution` typestate — never a synthetic shortcut; `produce_mode.rs` contains no `SyntheticForgeInputs`. Closes the \"called zero times via a synthetic bypass\" hole. Strengthens CN-NODE-01 + CN-PROD-02. |\n| `ci_check_node_binary_uses_single_bootstrap.sh` | Modified (`be748ff`) | Re-scoped from \"exactly one call site in the whole crate\" to \"every production `.rs` file calls `bootstrap_initial_state` at most once (no double-bootstrap per path) AND the crate calls it at least once (authority actually used)\" — accommodating produce mode as a second legitimate startup path. Enforces CN-NODE-01. |\n\n### PHASE4-N-V checks\n\n| Check | Status | What it checks |\n|-------|--------|----------------|\n| `ci_check_forge_decode_round_trip.sh` | New (`1096733`) | `forge_block` wraps its output via `ade_codec::encode_block_envelope`, and the forge ⇄ decode round-trip regression test exists, so `decode_block(forge_block(tick).bytes)` is `Ok` (no bare-block forge output, no parallel block serializer). Enforces CN-FORGE-03. |\n\n**Cross-reference (CODEMAP @ `22eef90`):** `ci_check_forge_decode_round_trip.sh` is listed in the CODEMAP CI table mapped to CN-FORGE-03 / N-V. `ci_check_produce_mode_uses_bootstrap_initial_state.sh` and the modified `ci_check_node_binary_uses_single_bootstrap.sh` map to CN-PROD-03 / CN-NODE-01 / CN-PROD-02 in the registry; confirm they are reflected in TRACEABILITY on its next regeneration.\n\n---"
+    },
+    {
+      "title": "6. Canonical Type Registry Delta",
+      "body": "n/a — `.idd-config.json` `canonical_type_registry` is `null`. Canonical-type rules live inline in the invariant registry under family **T**; no family-T entries were added or removed this window (the six new rules are CN/DC/RO, see §7).\n\n---"
+    },
+    {
+      "title": "7. Normative / Invariant Rule Delta",
+      "body": "Source: `docs/ade-invariant-registry.toml` (the project's canonical append-only invariant registry; `invariant_registry` in `.idd-config.json`). Counts by `^id = ` lines.\n\n- Rules at baseline (`dbee4d5`): **285**\n- Rules at HEAD (`22eef90`): **291**\n- Net additions: **+6**\n- Removals: **0** (append-only discipline upheld).\n\n### New rules\n\n| ID | Status | Cluster | One-line summary |\n|----|--------|---------|------------------|\n| `CN-PROD-03` | enforced | N-T | produce_mode's forge base state is derived from the single `bootstrap_initial_state` authority (operator-seeded ledger + projected `PoolDistrView` + eta0 + tip slot); `SyntheticForgeInputs` / synthetic forge base deleted (cold-start branch only; warm-start deferred to N-U). |\n| `CN-PROD-04` | enforced | N-T | Every `BroadcastBlock` reconstructs the `AcceptedBlock` via BLUE `self_accept` then admits to the served snapshot via the single `ServedChainHandle::push_atomic`; replay rejection skips `push_atomic` and emits `BroadcastPushError::SelfAcceptReplayRejected`; only self-accepted blocks are served. |\n| `DC-PROD-03` | enforced | N-T | Producer chain-forward continuity + replay: GREEN `ChainEvolution` threads each forge's post-state into the next base (stale-base forging structurally unrepresentable); `advance` cross-checks BLUE `block_validity` vs BLUE `self_accept` and fail-closes on `AuthorityMismatch`; in-memory two-run byte-identity (durable replay deferred to N-U). |\n| `CN-FORGE-03` | enforced | N-V | Producer/validator codec symmetry: `forge_block` emits the era-tagged `[era, block]` envelope via the single `ade_codec::encode_block_envelope`, so forge output round-trips through the same `decode_block` authority that validates received blocks (fixes the N-T bare-`array(5)` defect rejected at offset 0). |\n| `CN-FORGE-04` | declared | N-V | Producer-side Praos VRF construction must match the Conway/Praos validator authority (Praos alpha `blake2b256(slot‖eta0)` + range-extension, **not** the TPraos role-tagged `slot‖eta0‖0x4C`); no construction/verification fallback accepting both. Declared follow-on, scheduled for **PHASE4-N-W**. |\n| `RO-CLOSE-01` | enforced | N-V | Unmasked close-gate discipline: any slice changing canonical bytes/encoded forms/golden fixtures must run an unmasked full close gate (`cargo test --workspace`) and use cargo's real exit status as the sole pass/fail authority; piped output is display-only; all consumers of changed canonical output must be audited before closure. |\n\n### Modified rules\n\nThe five strengthenings listed in §3 (DC-CONS-18, CN-NODE-01, CN-PROD-02, CN-FORGE-01, CN-SNAPSHOT-01) had cluster IDs appended to `strengthened_in`; no statement was weakened.\n\n### Honest residual\n\nIn-process `ForgeSucceeded` end-to-end self-accept remains deferred to **PHASE4-N-W**, pinned by the registry's `forge_to_self_accept_blocked_on_praos_vrf_construction` obligation (TPraos vs. Praos VRF transcript mismatch). `tests/forge_succeeds.rs` is the honest-fallback test that pins this blocker rather than masking it."
+    }
+  ]
+}

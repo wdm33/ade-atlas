@@ -1,0 +1,83 @@
+---
+import Base from "../layouts/Base.astro";
+import Markdown from "../components/Markdown.astro";
+import { seams, withBase } from "../lib/site-data.ts";
+
+const sectionByTitle = (re: RegExp) => seams.sections.find((s) => re.test(s.title));
+const moduleRules = sectionByTitle(/Module Addition/i);
+const forbidden = sectionByTitle(/Forbidden Patterns/i);
+const dataLayers = sectionByTitle(/Data-Only/i);
+---
+
+<Base active="seams" title="Seam Explorer" description="Where new work can legally attach.">
+  <h1>Seam Explorer</h1>
+  <p class="lede">
+    Legal attachment points for new work. External inputs reduce to canonical BLUE types before
+    entering authoritative pipelines; closed surfaces stay closed. Use this to answer "where may
+    I add a new mini-protocol / operator file type / era — without creating a second authority?"
+  </p>
+
+  <h2>Ingress pipelines <span class="faint" style="font-size:0.8rem;font-weight:400">— {seams.pipelines.length}</span></h2>
+  {seams.pipelines.map((p) => (
+    <div class="card" style="margin-bottom:0.9rem">
+      <h3 style="margin-top:0">{p.surface}</h3>
+      <pre>{p.body}</pre>
+    </div>
+  ))}
+
+  <h2>Closed registries <span class="faint" style="font-size:0.8rem;font-weight:400">— frozen, version-gated changes only</span></h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Registry</th><th>Location</th><th>Change rule</th></tr></thead>
+      <tbody>
+        {seams.closed_registries.map((r) => (
+          <tr>
+            <td class="mono">{r.registry}</td>
+            <td><Markdown text={r.location} /></td>
+            <td><Markdown text={r.detail} /></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Extensible registries <span class="faint" style="font-size:0.8rem;font-weight:400">— open within constraints</span></h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Registry</th><th>Location</th><th>Extension rule</th></tr></thead>
+      <tbody>
+        {seams.extensible_registries.map((r) => (
+          <tr>
+            <td class="mono">{r.registry}</td>
+            <td><Markdown text={r.location} /></td>
+            <td><Markdown text={r.detail} /></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid cols-2">
+    <div>
+      <h2>Frozen contracts</h2>
+      <ul style="padding-left:1.1rem">
+        {seams.frozen_contracts.map((c) => <li style="margin-bottom:0.4rem;font-size:0.9rem"><Markdown text={c} /></li>)}
+      </ul>
+    </div>
+    <div>
+      <h2>Version-gated</h2>
+      <ul style="padding-left:1.1rem">
+        {seams.version_gated.map((c) => <li style="margin-bottom:0.4rem;font-size:0.9rem"><Markdown text={c} /></li>)}
+      </ul>
+    </div>
+  </div>
+
+  <h2>Candidate &amp; not-yet-wired seams <span class="faint" style="font-size:0.8rem;font-weight:400">— declared follow-ons, NOT closed</span></h2>
+  {seams.candidate_seams.map((c) => (
+    <div class="banner info"><Markdown text={c.body} /></div>
+  ))}
+
+  {dataLayers && (<section><h2>{dataLayers.title}</h2><Markdown text={dataLayers.body} /></section>)}
+  {moduleRules && (<section><h2>{moduleRules.title}</h2><Markdown text={moduleRules.body} /></section>)}
+  {forbidden && (<section><h2>{forbidden.title}</h2><Markdown text={forbidden.body} /></section>)}
+</Base>

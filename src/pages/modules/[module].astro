@@ -1,0 +1,153 @@
+---
+import Base from "../../layouts/Base.astro";
+import ColorBadge from "../../components/ColorBadge.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import Markdown from "../../components/Markdown.astro";
+import {
+  routableModules,
+  moduleEntries,
+  subtreesOf,
+  rulesForCrate,
+  moduleSlug,
+  codemap,
+  ciChecks,
+  crateColor,
+  withBase,
+} from "../../lib/site-data.ts";
+
+export function getStaticPaths() {
+  return routableModules().map(({ name, slug }) => ({ params: { module: slug }, props: { name } }));
+}
+
+const { name: module } = Astro.props;
+const entries = moduleEntries(module);
+const color = crateColor(module);
+const subtrees = subtreesOf(module);
+
+// Outbound / inbound crate edges.
+const outbound = codemap.dep_edges.filter((e) => e.from === module).map((e) => e.to);
+const inbound = codemap.dep_edges.filter((e) => e.to === module).map((e) => e.from);
+const externals = codemap.external_deps[module] ?? [];
+
+// Related invariants + the CI checks that guard them (only meaningful for crates).
+const isCrate = entries.some((e) => e.kind === "crate");
+const related = isCrate ? rulesForCrate(module) : [];
+const guardScripts = new Set(related.flatMap((r) => r.ci_scripts.map((s) => s.replace(/^ci\//, ""))));
+const guards = ciChecks.checks.filter((c) => guardScripts.has(c.name));
+
+const ATTR_ORDER = ["Purpose", "Creates", "Interprets", "MUST NOT", "Inbound deps", "Outbound deps", "Entry points", "Key modules", "CI gate"];
+function orderedAttrs(attrs: Record<string, string>) {
+  const keys = Object.keys(attrs);
+  return [
+    ...ATTR_ORDER.filter((k) => k in attrs),
+    ...keys.filter((k) => !ATTR_ORDER.includes(k)),
+  ].map((k) => [k, attrs[k]] as const);
+}
+---
+
+<Base active="modules" title={module} description={`Authority profile for ${module}`}>
+  <div class="crumbs"><a href={withBase("/modules")}>Modules</a> / <span class="mono">{module}</span></div>
+  <div class="pill-row">
+    <h1 class="mono" style="margin:0">{module}</h1>
+    <ColorBadge color={color} />
+  </div>
+
+  {entries.map((e) => (
+    <section style="margin-top:1.25rem">
+      <div class="pill-row" style="margin-bottom:0.5rem">
+        <ColorBadge color={e.color} />
+        <span class="badge fam">{e.kind}</span>
+        {e.parent && <span class="muted" style="font-size:0.82rem">in <a class="mono" href={withBase(`/modules/${moduleSlug(e.parent)}`)}>{e.parent}</a></span>}
+        {e.note && <span class="faint" style="font-size:0.82rem">{e.note}</span>}
+      </div>
+      <div class="card">
+        <dl class="kv">
+          {orderedAttrs(e.attributes).map(([k, v]) => (
+            <>
+              <dt>{k}</dt>
+              <dd class={k === "MUST NOT" ? "" : ""}><Markdown text={v} /></dd>
+            </>
+          ))}
+        </dl>
+      </div>
+    </section>
+  ))}
+
+  <div class="grid cols-2" style="margin-top:1.25rem">
+    <div class="card">
+      <h3>Depends on</h3>
+      {outbound.length === 0 && externals.length === 0 ? <p class="muted">—</p> : (
+        <div class="tag-list">
+          {outbound.map((d) => <a class="badge" href={withBase(`/modules/${moduleSlug(d)}`)}>{d}</a>)}
+          {externals.map((d) => <span class="badge fam">{d}</span>)}
+        </div>
+      )}
+    </div>
+    <div class="card">
+      <h3>Depended on by</h3>
+      {inbound.length === 0 ? <p class="muted">—</p> : (
+        <div class="tag-list">
+          {inbound.map((d) => <a class="badge" href={withBase(`/modules/${moduleSlug(d)}`)}>{d}</a>)}
+        </div>
+      )}
+    </div>
+  </div>
+
+  {subtrees.length > 0 && (
+    <section>
+      <h2>Sub-trees <span class="faint" style="font-size:0.8rem;font-weight:400">— {subtrees.length} GREEN-by-content</span></h2>
+      <div class="grid cols-2">
+        {subtrees.map((st) => (
+          <div class="card">
+            <div class="pill-row" style="justify-content:space-between">
+              <strong class="mono" style="font-size:0.85rem">{st.name}</strong>
+              {st.note && <span class="faint" style="font-size:0.72rem">{st.note}</span>}
+            </div>
+            {st.attributes["Purpose"] && <div class="muted" style="font-size:0.83rem;margin-top:0.3rem"><Markdown text={st.attributes["Purpose"]} /></div>}
+            {st.attributes["MUST NOT"] && <div style="font-size:0.8rem;margin-top:0.3rem"><span class="faint">MUST NOT:</span> <Markdown text={st.attributes["MUST NOT"]} /></div>}
+            {st.attributes["CI gate"] && <div class="mono faint" style="font-size:0.72rem;margin-top:0.3rem"><Markdown text={st.attributes["CI gate"]} /></div>}
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {guards.length > 0 && (
+    <section>
+      <h2>CI guards <span class="faint" style="font-size:0.8rem;font-weight:400">— {guards.length}</span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Script</th><th>Enforces</th></tr></thead>
+          <tbody>
+            {guards.map((c) => (
+              <tr>
+                <td class="mono" style="font-size:0.82rem">{c.name}</td>
+                <td>{c.scope ? <Markdown text={c.scope} /> : <span class="muted">{c.enforces.join(", ")}</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+
+  {related.length > 0 && (
+    <section>
+      <h2>Related invariants <span class="faint" style="font-size:0.8rem;font-weight:400">— {related.length}</span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Status</th><th>Statement</th></tr></thead>
+          <tbody>
+            {related.map((r) => (
+              <tr>
+                <td class="mono"><a href={withBase(`/invariants/${r.id}`)}>{r.id}</a></td>
+                <td><StatusBadge status={r.status} /></td>
+                <td>{r.statement.length > 150 ? r.statement.slice(0, 150) + "…" : r.statement}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+</Base>

@@ -1,0 +1,94 @@
+---
+import Base from "../layouts/Base.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import Markdown from "../components/Markdown.astro";
+import { headDeltas, ruleById, withBase } from "../lib/site-data.ts";
+
+const h = headDeltas;
+const ruleLink = (id: string) =>
+  ruleById(id) ? withBase(`/invariants/${id}`) : null;
+---
+
+<Base active="deltas" title="HEAD Deltas" description="What changed since the last baseline.">
+  <h1>HEAD Deltas</h1>
+  <p class="lede">Baseline <code>{h.baseline}</code> → HEAD <code>{h.head}</code></p>
+
+  <div class="grid cols-4">
+    <div class="stat"><div class="num">{h.commit_count}</div><div class="label">commits</div></div>
+    <div class="stat"><div class="num">{h.files_changed}</div><div class="label">files changed</div></div>
+    <div class="stat"><div class="num" style="color:var(--green)">+{h.lines_added}</div><div class="label">lines added</div></div>
+    <div class="stat"><div class="num" style="color:var(--red)">-{h.lines_removed}</div><div class="label">lines removed</div></div>
+  </div>
+
+  <h2>Rule delta</h2>
+  <p>{h.rules_at_baseline} → {h.rules_at_head} rules (<strong>+{(h.rules_at_head ?? 0) - (h.rules_at_baseline ?? 0)}</strong>, append-only)</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>Status</th><th>Cluster</th><th>Summary</th></tr></thead>
+      <tbody>
+        {h.new_rules.map((r) => (
+          <tr>
+            <td class="mono">{ruleLink(r.id) ? <a href={ruleLink(r.id)!}>{r.id}</a> : r.id}</td>
+            <td><StatusBadge status={r.status} /></td>
+            <td class="mono" style="font-size:0.82rem">{r.cluster}</td>
+            <td><Markdown text={r.summary} /></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {h.strengthenings.length > 0 && (
+    <section>
+      <h2>Strengthenings</h2>
+      <ul style="padding-left:1.1rem">
+        {h.strengthenings.map((s) => <li style="font-size:0.88rem;margin-bottom:0.3rem"><Markdown text={s} /></li>)}
+      </ul>
+    </section>
+  )}
+
+  <h2>New modules</h2>
+  {h.new_modules.length === 0 ? <p class="muted">None.</p> : (
+    <div class="table-wrap"><table>
+      <thead><tr><th>Module</th><th>Detail</th></tr></thead>
+      <tbody>{h.new_modules.map((m) => (
+        <tr><td class="mono">{m.module}</td><td><Markdown text={m.detail} /></td></tr>
+      ))}</tbody>
+    </table></div>
+  )}
+
+  <h2>Modified modules</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Module</th><th>Changes</th></tr></thead>
+    <tbody>{h.modified_modules.map((m) => (
+      <tr><td class="mono">{m.module}</td><td><Markdown text={m.detail} /></td></tr>
+    ))}</tbody>
+  </table></div>
+
+  {h.new_ci_checks.length > 0 && (
+    <section>
+      <h2>CI checks</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Check</th><th>Status</th><th>What it checks</th></tr></thead>
+        <tbody>{h.new_ci_checks.map((c) => (
+          <tr><td class="mono" style="font-size:0.82rem">{c.check}</td><td>{c.status}</td><td><Markdown text={c.detail} /></td></tr>
+        ))}</tbody>
+      </table></div>
+    </section>
+  )}
+
+  <h2>Commit log</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Hash</th><th>Type</th><th>Summary</th></tr></thead>
+    <tbody>{h.commits.map((c) => (
+      <tr><td class="mono">{c.hash}</td><td><span class="badge fam">{c.type}</span></td><td>{c.summary}</td></tr>
+    ))}</tbody>
+  </table></div>
+
+  {h.residual && (
+    <section>
+      <h2>Honest residual</h2>
+      <div class="banner warn"><Markdown text={h.residual} /></div>
+    </section>
+  )}
+</Base>

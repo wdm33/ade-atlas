@@ -1,0 +1,60 @@
+{
+  "_note": "Curated bounty/certification criteria. The spec's area 6 draws on challenge criteria + project plan, which are NOT among the five generated source docs. To avoid a hand-curated record that can drift, each criterion references ONLY invariant IDs; the evidence itself is sourced live from invariants.json / traceability.json. Certification targets are NOT constitutional laws and must never weaken a true invariant.",
+  "schema_version": "0.1.0",
+  "criteria": [
+    {
+      "id": "sync-to-tip",
+      "title": "Sync to tip",
+      "description": "Follow a chain from genesis to the current tip with byte-identical, replay-equivalent state.",
+      "invariants": ["T-DET-01", "T-ENC-03", "T-REC-02", "T-CONS-01", "CN-CONS-01", "DC-CONS-18"]
+    },
+    {
+      "id": "block-production",
+      "title": "Block production",
+      "description": "Forge a valid block: leader check, KES-signed real header, single canonical envelope, self-accept before serve.",
+      "invariants": ["CN-FORGE-01", "CN-FORGE-02", "CN-FORGE-03", "CN-FORGE-04", "CN-PROD-03", "CN-PROD-04", "DC-PROD-03", "CN-KES-HEADER-01"]
+    },
+    {
+      "id": "n2n-n2c-coverage",
+      "title": "N2N / N2C protocol coverage",
+      "description": "Closed mini-protocol grammar with byte-identical round-trip across the N2N and N2C taxonomies.",
+      "invariants": ["T-ENC-03", "CN-WIRE-01", "CN-WIRE-02", "CN-NET-01", "CN-OUTBOUND-RELAY-01"]
+    },
+    {
+      "id": "private-testnet",
+      "title": "Private testnet readiness",
+      "description": "Operator-pass evidence on a private testnet, with a closed evidence manifest schema.",
+      "invariants": ["CN-OPERATOR-EVIDENCE-01", "RO-LIVE-01", "CN-CONS-06"]
+    },
+    {
+      "id": "tx-validity-agreement",
+      "title": "Tx validity agreement",
+      "description": "Per-transaction validity verdicts agree with the reference node across the Conway corpus.",
+      "invariants": ["DC-TXV-01", "DC-TXV-02", "DC-TXV-07", "DC-EVIDENCE-01", "T-DET-01"]
+    },
+    {
+      "id": "block-validity-agreement",
+      "title": "Block validity agreement",
+      "description": "Block-level validity verdicts agree with the reference node.",
+      "invariants": ["DC-VAL-01", "DC-VAL-02", "DC-VAL-06", "DC-EVIDENCE-01"]
+    },
+    {
+      "id": "consensus-tip-agreement",
+      "title": "Consensus tip agreement",
+      "description": "Fork-choice selects the same tip as the reference node under the same inputs.",
+      "invariants": ["T-CONS-01", "T-CONS-02", "CN-CONS-01", "DC-CONS-18"]
+    },
+    {
+      "id": "power-loss-recovery",
+      "title": "Power-loss recovery",
+      "description": "Restart after a crash produces byte-identical state to a clean run (replay-equivalent recovery).",
+      "invariants": ["T-REC-01", "T-REC-02"]
+    },
+    {
+      "id": "memory-measurement",
+      "title": "Memory measurement",
+      "description": "Bounded, measured memory footprint on the authoritative paths.",
+      "invariants": ["DC-MEM-01", "DC-MEM-02", "CN-MEM-01", "OP-MEM-01"]
+    }
+  ]
+}

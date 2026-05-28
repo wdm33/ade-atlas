@@ -1,0 +1,12 @@
+---
+import { marked } from "marked";
+
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+// Source docs are trusted, repo-generated content (no untrusted HTML).
+marked.setOptions({ gfm: true, breaks: false });
+const html = marked.parse(text ?? "", { async: false }) as string;
+---
+<div class="section-md" set:html={html}></div>

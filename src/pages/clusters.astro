@@ -1,0 +1,65 @@
+---
+import Base from "../layouts/Base.astro";
+import { clusters, ruleById, withBase } from "../lib/site-data.ts";
+
+// Closed clusters first, then declared; newest-ish ordering by id descending.
+const ordered = [...clusters.clusters].sort((a, b) => {
+  if (a.status !== b.status) return a.status === "declared" ? -1 : 1;
+  return b.id.localeCompare(a.id);
+});
+const ruleChip = (id: string) =>
+  ruleById(id)
+    ? `<a class="badge" href="${withBase(`/invariants/${id}`)}">${id}</a>`
+    : `<span class="badge gap">${id}</span>`;
+---
+
+<Base active="clusters" title="Clusters" description="Cluster and slice history.">
+  <h1>Clusters</h1>
+  <p class="lede">
+    {clusters.clusters.length} clusters, derived from the invariant registry's
+    <code>introduced_in</code> / <code>strengthened_in</code> fields, the HEAD-delta commit log,
+    and the CODEMAP CI table. A cluster is "declared" until at least one of its rules is live.
+  </p>
+
+  {ordered.map((c) => (
+    <section id={c.id} class="card" style="margin-bottom:1rem;scroll-margin-top:70px">
+      <div class="pill-row" style="justify-content:space-between">
+        <h3 class="mono" style="margin:0">{c.id}</h3>
+        <span class={`badge ${c.status === "declared" ? "declared" : "enforced"}`}>{c.status}</span>
+      </div>
+
+      {c.follow_ons.length > 0 && (
+        <div class="banner warn" style="margin:0.6rem 0">
+          {c.follow_ons.map((f) => <div style="font-size:0.85rem">{f}</div>)}
+        </div>
+      )}
+
+      <div class="grid cols-2" style="margin-top:0.5rem">
+        <div>
+          <div class="muted" style="font-size:0.8rem;margin-bottom:0.3rem">introduced {c.rules_introduced.length}</div>
+          <div class="tag-list" set:html={c.rules_introduced.map(ruleChip).join("")} />
+        </div>
+        <div>
+          <div class="muted" style="font-size:0.8rem;margin-bottom:0.3rem">strengthened {c.rules_strengthened.length}</div>
+          <div class="tag-list" set:html={c.rules_strengthened.map(ruleChip).join("")} />
+        </div>
+      </div>
+
+      {c.ci_checks.length > 0 && (
+        <div style="margin-top:0.7rem">
+          <div class="muted" style="font-size:0.8rem;margin-bottom:0.3rem">CI checks</div>
+          <div class="tag-list">{c.ci_checks.map((s) => <span class="badge fam mono" style="font-size:0.68rem">{s}</span>)}</div>
+        </div>
+      )}
+
+      {c.commits.length > 0 && (
+        <details style="margin-top:0.7rem">
+          <summary class="muted" style="cursor:pointer;font-size:0.84rem">{c.commits.length} commit{c.commits.length === 1 ? "" : "s"}</summary>
+          <ul style="margin:0.4rem 0 0;padding-left:1.1rem;font-size:0.82rem">
+            {c.commits.map((cm) => <li><span class="mono">{cm.hash}</span> <span class="faint">{cm.type}</span> — {cm.summary}</li>)}
+          </ul>
+        </details>
+      )}
+    </section>
+  ))}
+</Base>

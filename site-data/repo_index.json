@@ -1,0 +1,2653 @@
+{
+  "schema_version": "0.1.0",
+  "generated_at": "2026-05-28",
+  "repo_head": "22eef90",
+  "github_repo": null,
+  "count": 261,
+  "files": [
+    {
+      "path": "ci/build_consensus_inputs_bundle.sh",
+      "color": null,
+      "referenced_by": [
+        "DC-EVIDENCE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "ci/ci_check_operator_evidence_manifest_schema.sh",
+      "color": null,
+      "referenced_by": [
+        "CN-OPERATOR-EVIDENCE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_codec/src/cbor/envelope.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-FORGE-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_codec/src/conway/cert.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-08",
+        "DC-LEDGER-10",
+        "DC-TXV-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_codec/src/conway/governance.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-11"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_codec/src/conway/tx.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-11"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_codec/src/error.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-TXV-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_codec/src/preserved.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "T-ENC-01",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_codec/src/shelley/cert.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-08",
+        "DC-LEDGER-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_codec/src/shelley/opcert.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-11"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core_interop/src/bin/live_block_fetch_session.rs",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core_interop/src/bin/live_block_follow_session.rs",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core_interop/src/bin/live_block_production_session.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-CONS-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core_interop/src/bin/live_consensus_session.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CONSENSUS-01",
+        "DC-CORE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core_interop/src/lib.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CONSENSUS-01",
+        "DC-CORE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/candidate.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-01",
+        "CN-CONS-05",
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/encoding.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-04",
+        "T-DET-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/era_schedule.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-07",
+        "DC-CONS-08",
+        "DC-CONS-09",
+        "DC-EPOCH-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/errors.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/events.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-04",
+        "DC-CONS-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/fork_choice.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-01",
+        "CN-CONS-02",
+        "CN-CONS-03",
+        "CN-CONS-04",
+        "CN-CONS-05",
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/header_summary.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-04",
+        "DC-CONS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/header_validate.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-04",
+        "CN-CONS-05",
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/kes_check.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-04",
+        "DC-CRYPTO-01",
+        "DC-VAL-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/leader_check.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-FORGE-02",
+        "CN-FORGE-04",
+        "DC-FORGE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/leader_schedule.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-EPOCH-01",
+        "CN-FORGE-04",
+        "DC-CONS-09",
+        "DC-CONS-15",
+        "DC-CONSENSUS-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/ledger_view.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02",
+        "DC-VAL-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/nonce.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/op_cert.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/opcert_validate.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-11",
+        "DC-CONS-12"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/praos_state.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/rollback.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-05",
+        "DC-CONS-06",
+        "DC-CONSENSUS-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_core/src/consensus/vrf_cert.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CRYPTO-02",
+        "DC-CONSENSUS-02",
+        "DC-CRYPTO-01",
+        "T-CORE-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/kes_sum/",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-04",
+        "DC-CRYPTO-08",
+        "OP-OPS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/kes_sum/cardano_cli_corpus.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-08"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/kes_sum/errors.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/kes_sum/period.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/kes_sum/single.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/kes_sum/sum.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-05",
+        "DC-CRYPTO-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/kes_sum/tests.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-08"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/kes.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_crypto/src/lib.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CRYPTO-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/block_body_hash.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-16"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/block_validity/",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-VAL-02",
+        "DC-VAL-04",
+        "DC-VAL-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/block_validity/header_input.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-04",
+        "CN-PROTO-06",
+        "DC-CONS-16",
+        "DC-CONS-18",
+        "DC-VAL-02",
+        "T-ENC-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/block_validity/transition.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-04",
+        "CN-CONS-07",
+        "DC-VAL-02",
+        "DC-VAL-03",
+        "DC-VAL-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/block_validity/unsigned_header_pre_image.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-KES-HEADER-01",
+        "CN-PREIMAGE-FIXTURE-01",
+        "DC-KES-HEADER-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/block_validity/verdict.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-VAL-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-ANCHOR-01",
+        "DC-ANCHOR-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/byron.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-03",
+        "T-CONSERV-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/cert_classify.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-TXV-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/consensus_input_extract.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-VAL-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/consensus_view.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02",
+        "DC-VAL-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/conway.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-VAL-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/delegation.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-08"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/epoch.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/error.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-09",
+        "DC-TXV-06",
+        "T-ERR-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/fingerprint.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-02",
+        "DC-LEDGER-09",
+        "DC-LEDGER-10",
+        "DC-TXV-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/gov_cert.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/governance.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-EPOCH-01",
+        "DC-LEDGER-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/hfc.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-EPOCH-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/lib.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "T-BUILD-01",
+        "T-CORE-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/mempool/admit.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-12",
+        "DC-MEM-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/mempool/canonicalize.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-MEM-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/mempool/ingress.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-MEM-01",
+        "DC-MEM-03",
+        "DC-MEM-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/mempool/policy.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-MEM-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/plutus_eval.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/pparams.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-09",
+        "DC-TXV-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/producer/forge.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-FORGE-01",
+        "CN-FORGE-03",
+        "DC-CONS-13",
+        "DC-CONS-14",
+        "DC-CONS-15",
+        "DC-CONS-16",
+        "DC-LEDGER-12"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/producer/self_accept.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-07",
+        "CN-FORGE-01",
+        "CN-PROD-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/producer/served_chain.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-07",
+        "DC-CONS-17"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/producer/state.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-13"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/receive/admitted.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-07",
+        "CN-CONS-08"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/receive/chain_write.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-07",
+        "CN-CONS-08"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/receive/events.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-PROTO-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/receive/reducer.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-CONS-08",
+        "DC-CONS-13",
+        "DC-CONS-16",
+        "DC-CONS-19",
+        "DC-CONS-20",
+        "DC-PROTO-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/rollback/commit.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-CONS-20"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/rollback/materialize.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-STORE-07",
+        "DC-CONS-20",
+        "DC-CONS-22"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/rollback/traits.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-STORE-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/rules.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-EPOCH-01",
+        "DC-LEDGER-01",
+        "DC-LEDGER-03",
+        "DC-LEDGER-04",
+        "DC-LEDGER-09",
+        "DC-LEDGER-10",
+        "DC-TXV-05",
+        "T-CORE-01",
+        "T-DET-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/scripts.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/snapshot/",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-STORE-08",
+        "DC-CONS-21",
+        "DC-STORE-08"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/snapshot/framing.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-STORE-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/state.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-02",
+        "DC-LEDGER-09",
+        "DC-LEDGER-10",
+        "DC-TXV-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/tx_validity/phase1.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-TXV-01",
+        "DC-TXV-02",
+        "DC-TXV-03",
+        "T-ENC-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/tx_validity/required_signers.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-LEDGER-09",
+        "DC-TXV-05",
+        "DC-VAL-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/tx_validity/transition.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-TXV-01",
+        "DC-TXV-02",
+        "DC-TXV-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/tx_validity/verdict.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-TXV-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/tx_validity/witness.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-LEDGER-09",
+        "DC-LEDGER-05",
+        "DC-TXV-05",
+        "DC-VAL-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/utxo.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "T-NOSPEND-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/value.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "T-CONSERV-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/wal/replay.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-WAL-02",
+        "DC-WAL-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/wal/store_trait.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "CN-WAL-01",
+        "DC-WAL-01",
+        "DC-WAL-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/src/witness.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_ledger/tests/tx_validity_adversarial_corpus.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-TXV-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/block_fetch/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/block_fetch/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/block_fetch/server.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-PROTO-06",
+        "CN-SNAPSHOT-02",
+        "DC-CONS-17",
+        "DC-PROTO-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/block_fetch/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/block_fetch/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/chain_sync/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/chain_sync/server.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-PROTO-06",
+        "DC-CONS-18",
+        "DC-PROTO-07",
+        "DC-PROTO-08"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/chain_sync/signal.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/chain_sync/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/chain_sync/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/block_fetch.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/chain_sync.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/error.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/handshake.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/keep_alive.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/local_chain_sync.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/local_state_query.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/local_tx_monitor.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/local_tx_submission.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/n2c_handshake.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/peer_sharing.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/tx_submission.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/codec/version.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-WIRE-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/handshake/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/handshake/mod.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/handshake/selection.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/handshake/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/handshake/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-SESS-02",
+        "DC-PROTO-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/handshake/version_table.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/keep_alive/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/keep_alive/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/keep_alive/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/keep_alive/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/mux/frame.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-SESS-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/mux/transport.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-SESS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_chain_sync/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_chain_sync/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_chain_sync/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_chain_sync/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_state_query/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_state_query/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_state_query/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_state_query/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_tx_monitor/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_tx_monitor/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_tx_monitor/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_tx_monitor/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_tx_submission/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_tx_submission/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_tx_submission/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/n2c/local_tx_submission/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/peer_sharing/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/peer_sharing/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/peer_sharing/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/peer_sharing/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/session/",
+      "color": null,
+      "referenced_by": [
+        "DC-SESS-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/session/core.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-SESS-03",
+        "CN-SESS-04",
+        "DC-SESS-01",
+        "DC-SESS-02",
+        "DC-SESS-03",
+        "DC-SESS-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/session/demux.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-SESS-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/session/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-SESS-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/session/state.rs",
+      "color": null,
+      "referenced_by": [
+        "CN-SESS-04",
+        "DC-SESS-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/tx_submission/agency.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/tx_submission/event.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/tx_submission/state.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_network/src/tx_submission/transition.rs",
+      "color": null,
+      "referenced_by": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/admission_log/",
+      "color": "RED",
+      "referenced_by": [
+        "DC-ADMIT-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/admission_log/event.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-ADMIT-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/admission_log/writer.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-ADMIT-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/admission/",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/admission/bootstrap.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-ADMIT-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/admission/runner.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-ADMIT-01",
+        "DC-ADMIT-02",
+        "DC-ADMIT-03",
+        "DC-ADMIT-05",
+        "DC-ADMIT-10",
+        "DC-ADMIT-11",
+        "DC-ADMIT-12",
+        "DC-VIEW-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/admission/seed_to_snapshot.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-ADMIT-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/admission/verdict.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-ADMIT-01",
+        "DC-ADMIT-06",
+        "DC-ADMIT-08"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/cli.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-PROD-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/key_gen.rs",
+      "color": "RED",
+      "referenced_by": [
+        "OP-OPS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/live_log/event.rs",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/live_log/writer.rs",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/main.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-NODE-04",
+        "RO-LIVE-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/node.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-NODE-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/produce_mode.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-CONS-06",
+        "CN-FORGE-01",
+        "CN-FORGE-02",
+        "CN-FORGE-04",
+        "CN-KES-HEADER-01",
+        "CN-OUTBOUND-RELAY-01",
+        "CN-PEER-OUTBOUND-MAP-01",
+        "CN-PROD-02",
+        "CN-PROD-03",
+        "CN-PROD-04",
+        "DC-PROD-01",
+        "RO-LIVE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/src/wire_only.rs",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/tests/admission_adversarial_corpus.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-EVIDENCE-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/tests/admission_live_operator_pass.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-EVIDENCE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/tests/admission_replay_equivalence.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-ADMIT-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_node/tests/forge_handler_variants.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-FORGE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_plutus/src/evaluator.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/admission/wire_pump.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-PUMP-01",
+        "DC-PUMP-01",
+        "DC-PUMP-02",
+        "RO-LIVE-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/bootstrap_anchor.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-ANCHOR-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/bootstrap.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-NODE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/chaindb/contract.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-STORE-05",
+        "DC-STORE-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/chaindb/crash_safety.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-STORE-03",
+        "DC-STORE-01",
+        "T-REC-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/chaindb/persistent.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-STORE-04",
+        "CN-STORE-05",
+        "DC-STORE-02",
+        "DC-STORE-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/chaindb/snapshot_contract.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-STORE-04",
+        "DC-STORE-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/clock.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-NODE-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/consensus_inputs/",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/consensus_inputs/canonical.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-CONS-IN-01",
+        "DC-CONS-IN-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/consensus_inputs/importer.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-CONS-IN-01",
+        "DC-CONS-IN-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/consensus_inputs/json.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-CONS-IN-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/consensus_inputs/view.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-VIEW-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/consensus/candidate_fragment.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CONS-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/consensus/chain_selector.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CONSENSUS-01",
+        "DC-CORE-01",
+        "T-DET-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/consensus/genesis_parser.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CONS-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/network/mux_pump.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-OUTBOUND-RELAY-01",
+        "DC-SESS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/network/n2n_dialer.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-SESS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/network/n2n_listener.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-PEER-OUTBOUND-MAP-01",
+        "CN-PROD-01",
+        "RO-LIVE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/network/outbound_command.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-OUTBOUND-RELAY-01",
+        "CN-PEER-OUTBOUND-MAP-01",
+        "DC-OUTBOUND-FIFO-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/orchestrator/core.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-NODE-01",
+        "DC-NODE-02",
+        "DC-NODE-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/orchestrator/keep_alive_session.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-SESS-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/orchestrator/n2n_server_pump.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-PROD-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/orchestrator/peer_session.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-NODE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/ade_kes_envelope.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CRYPTO-06",
+        "OP-OPS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/broadcast_to_served.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-PROTO-07",
+        "DC-SNAPSHOT-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/chain_evolution.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-PROD-03",
+        "DC-PROD-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/coordinator.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-CONS-06",
+        "CN-PROD-02",
+        "DC-PROD-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/genesis_parser.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-GENESIS-01",
+        "CN-PROD-02",
+        "DC-GENESIS-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/keys.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CRYPTO-06",
+        "DC-CRYPTO-07",
+        "OP-OPS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/opcert_envelope.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-OPCERT-01",
+        "CN-PROD-02",
+        "DC-OPCERT-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/producer_log.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-PROD-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/producer_shell.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-CONS-06",
+        "CN-KES-HEADER-01",
+        "CN-PROD-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/scheduler.rs",
+      "color": "RED",
+      "referenced_by": [
+        "OP-OPS-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/served_chain_handle.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-PROD-04",
+        "DC-SNAPSHOT-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/served_chain_lookups.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CONS-16",
+        "DC-CONS-17",
+        "DC-CONS-18",
+        "DC-PROTO-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/producer/signing.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CRYPTO-03",
+        "DC-CRYPTO-04",
+        "DC-CRYPTO-05",
+        "OP-OPS-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/receive/events_to_state.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-PROTO-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/receive/in_memory_chain_write.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-PROTO-09"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/recovery.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-STORE-05",
+        "T-REC-01",
+        "T-REC-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/rollback/",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CONS-20"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/rollback/cadence.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-STORE-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/rollback/chaindb_block_source.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-STORE-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/rollback/in_memory_cache.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-STORE-07"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/rollback/persistent_cache.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-CONS-21"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/rollback/persistent_writer.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-NODE-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/seed_import/",
+      "color": "RED",
+      "referenced_by": [
+        "DC-EVIDENCE-01",
+        "RO-LIVE-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/seed_import/importer.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-SEED-01",
+        "DC-ADMIT-09",
+        "DC-SEED-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/seed_import/json.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-SEED-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/src/wal/file_wal_store.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-WAL-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/tests/cross_impl_server_pipeline.rs",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/tests/producer_pipeline_slot_deadline.rs",
+      "color": "RED",
+      "referenced_by": [
+        "OP-OPS-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/tests/receive_pipeline_corpus_drive.rs",
+      "color": "RED",
+      "referenced_by": [
+        "RO-LIVE-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/tests/stress_kill_harness.rs",
+      "color": "RED",
+      "referenced_by": [
+        "CN-STORE-03",
+        "DC-STORE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_runtime/tests/wal_replay_from_anchor.rs",
+      "color": "RED",
+      "referenced_by": [
+        "DC-WAL-03"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/consensus/stream_replay.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "T-DET-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/governance/proposal_procedures_replay.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-LEDGER-11"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/harness/ledger_diff.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-DIFF-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/harness/provenance.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-REF-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/harness/snapshot_loader.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-LEDGER-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/mempool/ingress_replay.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-MEM-01",
+        "DC-MEM-04"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/producer/cross_impl_adapter.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "CN-CONS-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/producer/fixtures.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-CONS-14"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/producer/replay.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-CONS-14"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/tx_validity/",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-TXV-03",
+        "T-DET-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/tx_validity/adversarial.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-LEDGER-02",
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/validity/adversarial.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-LEDGER-02",
+        "DC-VAL-04",
+        "DC-VAL-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_testkit/src/validity/replay.rs",
+      "color": "GREEN",
+      "referenced_by": [
+        "DC-VAL-04",
+        "T-DET-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_types/src/conway/cert.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-08",
+        "DC-TXV-06"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_types/src/conway/governance.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-10",
+        "DC-LEDGER-11"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "crates/ade_types/src/shelley/cert.rs",
+      "color": "BLUE",
+      "referenced_by": [
+        "DC-LEDGER-08",
+        "DC-LEDGER-10"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/clusters/completed/PHASE4-N-G/CE-N-G-8_PROCEDURE.md",
+      "color": null,
+      "referenced_by": [
+        "RO-LIVE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/clusters/completed/PHASE4-N-H/CE-N-H-6_PROCEDURE.md",
+      "color": null,
+      "referenced_by": [
+        "RO-LIVE-02"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/clusters/PHASE4-N-Q/CE-N-Q-OPERATOR_PROCEDURE.md",
+      "color": null,
+      "referenced_by": [
+        "RO-LIVE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/clusters/PHASE4-N-S-C/cluster.md",
+      "color": null,
+      "referenced_by": [
+        "CN-OPERATOR-EVIDENCE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/evidence/phase4-n-m-",
+      "color": null,
+      "referenced_by": [
+        "RO-LIVE-05"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/evidence/phase4-n-m-a1.1-admission-bootstrap-transcript.jsonl",
+      "color": null,
+      "referenced_by": [
+        "DC-EVIDENCE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/evidence/phase4-n-m-c-consensus-inputs.json",
+      "color": null,
+      "referenced_by": [
+        "DC-EVIDENCE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/evidence/phase4-n-m-c-operator-pass-README.md",
+      "color": null,
+      "referenced_by": [
+        "DC-EVIDENCE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    },
+    {
+      "path": "docs/evidence/phase4-n-m-c-wire-only-transcript.jsonl",
+      "color": null,
+      "referenced_by": [
+        "DC-EVIDENCE-01"
+      ],
+      "github_url": null,
+      "on_disk": null
+    }
+  ]
+}

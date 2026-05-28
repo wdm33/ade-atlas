@@ -1,0 +1,7254 @@
+{
+  "schema_version": "0.1.0",
+  "generated_at": "2026-05-28",
+  "count": 971,
+  "tests": [
+    {
+      "name": "accepted_block_header_bytes_equals_validator_split_on_corpus",
+      "proves": [
+        "CN-PROTO-06",
+        "DC-CONS-16",
+        "DC-CONS-18"
+      ],
+      "drift": false
+    },
+    {
+      "name": "accepted_block_header_bytes_is_subslice_of_as_bytes",
+      "proves": [
+        "CN-PROTO-06",
+        "DC-CONS-16"
+      ],
+      "drift": false
+    },
+    {
+      "name": "accepted_block_header_bytes_rejects_malformed_envelope",
+      "proves": [
+        "CN-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "accepted_envelope_decodes_to_expected_opcert",
+      "proves": [
+        "CN-OPCERT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "accepted_shelley_genesis_parses_to_expected_anchor",
+      "proves": [
+        "CN-GENESIS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_load_error_io_carries_no_path_bytes",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_loader_rejects_signing_at_past_period",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_loader_returns_kes_at_loaded_period",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_loader_returns_malformed_json",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_loader_returns_missing_seed_32",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_loader_returns_period_idx_overflow",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_loader_returns_unknown_format",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_loader_returns_unsupported_crypto",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_loader_returns_wrong_role",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_envelope_round_trips_through_loader_at_period_0",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::event::tests::admission_log_event_agreement_verdict_carries_kind_discriminator",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::event::tests::admission_log_event_discriminator_round_trips_for_each_variant",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::event::tests::admission_log_event_match_is_exhaustive",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::writer::tests::admission_log_writer_emits_agreement_verdict_with_kind_field",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::writer::tests::admission_log_writer_emits_one_object_per_line",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::writer::tests::admission_log_writer_lines_are_parseable_as_one_json_object_per_line",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::writer::tests::admission_log_writer_omits_optional_fields_when_none",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::writer::tests::admission_log_writer_serializes_admission_started_canonically",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission_log::writer::tests::admission_log_writer_two_runs_are_byte_identical",
+      "proves": [
+        "DC-ADMIT-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::runner::tests::exit_code_constants_round_trip_to_i32",
+      "proves": [
+        "DC-ADMIT-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::runner::tests::halt_for_verdict_only_diverged_or_input_not_found_halts",
+      "proves": [
+        "DC-ADMIT-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::runner::tests::run_admission_disconnect_to_zero_peers_clean_exit",
+      "proves": [
+        "CN-ADMIT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::runner::tests::run_admission_emits_shutdown_on_channel_close",
+      "proves": [
+        "CN-ADMIT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::runner::tests::run_admission_emits_shutdown_on_signal",
+      "proves": [
+        "CN-ADMIT-01",
+        "DC-ADMIT-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::seed_to_snapshot::tests::seed_to_snapshot_propagates_pre_conway_encode_error_as_authority_fatal",
+      "proves": [
+        "CN-ADMIT-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::seed_to_snapshot::tests::seed_to_snapshot_returns_initial_ledger_fingerprint",
+      "proves": [
+        "CN-ADMIT-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::seed_to_snapshot::tests::seed_to_snapshot_two_runs_byte_identical",
+      "proves": [
+        "CN-ADMIT-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::seed_to_snapshot::tests::seed_to_snapshot_writes_via_persistent_cache",
+      "proves": [
+        "CN-ADMIT-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::verdict::tests::verdict_agreed_when_hashes_match",
+      "proves": [
+        "DC-ADMIT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::verdict::tests::verdict_derive_is_pure_two_runs_byte_identical",
+      "proves": [
+        "DC-ADMIT-01",
+        "DC-ADMIT-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::verdict::tests::verdict_diverged_when_admit_invalid_at_same_slot",
+      "proves": [
+        "DC-ADMIT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::verdict::tests::verdict_diverged_when_our_admit_differs_from_peer_hash",
+      "proves": [
+        "DC-ADMIT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::verdict::tests::verdict_input_not_found_when_admit_missing_input",
+      "proves": [
+        "DC-ADMIT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::verdict::tests::verdict_kind_discriminator_round_trips_each_variant",
+      "proves": [
+        "DC-ADMIT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::verdict::tests::verdict_lagging_when_peer_ahead_of_our_slot",
+      "proves": [
+        "DC-ADMIT-01",
+        "DC-ADMIT-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ade_node::admission::verdict::tests::verdict_lagging_when_peer_tip_is_origin",
+      "proves": [
+        "DC-ADMIT-01",
+        "DC-ADMIT-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_equals_tx_validity_verdict",
+      "proves": [
+        "DC-MEM-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_log::event::tests::admission_log_event_discriminator_round_trips_for_each_variant",
+      "proves": [
+        "DC-ADMIT-12"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_log::writer::tests::admission_log_writer_emits_agreement_verdict_with_kind_field",
+      "proves": [
+        "DC-ADMIT-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_log::writer::tests::admission_log_writer_emits_one_object_per_line",
+      "proves": [
+        "DC-ADMIT-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_log::writer::tests::admission_log_writer_serializes_admission_started_canonically",
+      "proves": [
+        "DC-ADMIT-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_replay_equivalence::admission_disconnect_to_zero_peers_exits_clean",
+      "proves": [
+        "DC-ADMIT-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_replay_equivalence::admission_exit_codes_match_registered_values",
+      "proves": [
+        "DC-ADMIT-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_replay_equivalence::admission_replay_equivalence_byte_identical_wal_after_two_runs",
+      "proves": [
+        "DC-ADMIT-05",
+        "DC-ADMIT-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_replay_equivalence::admission_signal_shutdown_returns_clean_exit",
+      "proves": [
+        "DC-ADMIT-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission_replay_equivalence::admission_tip_update_does_not_emit_wal_entry",
+      "proves": [
+        "DC-ADMIT-02",
+        "DC-ADMIT-05",
+        "DC-ADMIT-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission::bootstrap::tests::imported_window_schedule_uses_bundle_epoch",
+      "proves": [
+        "DC-VIEW-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission::wire_pump::tests::extract_chain_sync_header_point_rejects_malformed_envelope",
+      "proves": [
+        "CN-PUMP-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission::wire_pump::tests::extract_chain_sync_header_point_returns_slot_and_hash",
+      "proves": [
+        "CN-PUMP-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission::wire_pump::tests::pump_emits_tip_update_and_request_next_on_intersect_found_no_block_fetch",
+      "proves": [
+        "CN-PUMP-01",
+        "DC-PUMP-01",
+        "DC-PUMP-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission::wire_pump::tests::pump_emits_tip_update_on_intersect_not_found",
+      "proves": [
+        "CN-PUMP-01",
+        "DC-PUMP-01",
+        "DC-PUMP-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admission::wire_pump::tests::rollforward_drives_block_fetch_then_request_next",
+      "proves": [
+        "CN-PUMP-01",
+        "DC-PUMP-01",
+        "DC-PUMP-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admit_prefix_property_documented",
+      "proves": [
+        "DC-LEDGER-12"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admit_via_block_validity_accepts_corpus_block",
+      "proves": [
+        "CN-CONS-07",
+        "CN-CONS-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "admit_via_block_validity_rejects_corrupted_body",
+      "proves": [
+        "CN-CONS-07",
+        "CN-CONS-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "advance_rejects_invalid_bytes",
+      "proves": [
+        "DC-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "advance_threads_post_state_forward",
+      "proves": [
+        "DC-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "advance_two_runs_byte_identical",
+      "proves": [
+        "DC-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_corpus_rejects_all_four_mutation_classes",
+      "proves": [
+        "DC-EVIDENCE-02",
+        "RO-LIVE-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_decode_layer_rejects_guard_gov_path",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_double_resign_is_deterministic",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_drep_expiry_overflow_rejected",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_drep_register_update_missing_env_rejected",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_imbalanced_via_deposit",
+      "proves": [
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_imbalanced_via_withdrawal",
+      "proves": [
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_no_false_accept",
+      "proves": [
+        "DC-LEDGER-08",
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_removed_tag_rejects_as_era_invalid",
+      "proves": [
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_replays_identically",
+      "proves": [
+        "DC-LEDGER-02",
+        "DC-TXV-03",
+        "DC-VAL-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_state_dependent_unaccountable_rejects",
+      "proves": [
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_truncated_withdrawals_rejects_as_decode",
+      "proves": [
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_unknown_cert_tag_rejects_as_decode",
+      "proves": [
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "adversarial_verdicts_replay_byte_identical",
+      "proves": [
+        "DC-TXV-03",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "aiken_fixture_tx_evaluates_end_to_end",
+      "proves": [
+        "DC-LEDGER-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "all_corpus_blocks_valid",
+      "proves": [
+        "DC-VAL-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "all_corpus_txs_valid",
+      "proves": [
+        "DC-TXV-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "all_eras_determinism_summary",
+      "proves": [
+        "DC-LEDGER-01",
+        "DC-LEDGER-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "all_eras_replay_summary",
+      "proves": [
+        "DC-LEDGER-03",
+        "T-CONSERV-01",
+        "T-NOSPEND-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "all_plutus_boundaries_aggregate_zero_rejections",
+      "proves": [
+        "DC-LEDGER-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "all_required_covered_is_valid",
+      "proves": [
+        "CN-LEDGER-09",
+        "DC-LEDGER-05",
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "allegra_determinism",
+      "proves": [
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "alonzo_determinism",
+      "proves": [
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "alonzo_epoch_boundary_end_to_end",
+      "proves": [
+        "DC-LEDGER-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "altered_body_rejected_by_hash_binding",
+      "proves": [
+        "CN-CONS-04",
+        "T-ENC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "answer_slot_mismatch_emits_structured_error",
+      "proves": [
+        "CN-FORGE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "apply_block_byron_ebb_passes_through",
+      "proves": [
+        "DC-LEDGER-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "apply_block_deterministic",
+      "proves": [
+        "DC-LEDGER-01",
+        "T-CORE-01",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "apply_block_never_returns_ok",
+      "proves": [
+        "T-CORE-01"
+      ],
+      "drift": true
+    },
+    {
+      "name": "apply_failure_surfaces_with_slot",
+      "proves": [
+        "T-REC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "apply_outcome_agrees_with_action",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "b_track_adversarial_rejections_preserved_through_ingress",
+      "proves": [
+        "DC-MEM-01",
+        "DC-MEM-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "babbage_determinism",
+      "proves": [
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "blake2b_256_rfc_test_vectors",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": true
+    },
+    {
+      "name": "block_body_hash_from_block_equals_from_buckets",
+      "proves": [
+        "DC-CONS-16"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_body_hash_none_invalid_txs_equals_empty_bucket",
+      "proves": [
+        "DC-CONS-16"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_body_hash_pinned_recipe_byte_identical",
+      "proves": [
+        "DC-CONS-16"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch_frame_corpus",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch_real_capture_corpus::block_body_is_wrapped_cbor_item",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch_real_capture_corpus::real_capture_round_trips_byte_identical",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-02",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch_server_reply_into_message_only_yields_server_variants",
+      "proves": [
+        "CN-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch_server_reply_round_trips_through_codec",
+      "proves": [
+        "CN-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::block_delivered_event_carries_bytes_verbatim",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::busy_no_blocks_returns_to_idle_with_event",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::client_done_terminates_session",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::idle_request_range_yields_busy_then_start_batch",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::illegal_message_in_idle_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::inverted_range_returns_malformed",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::multi_block_streaming_preserves_order",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::streaming_batch_done_returns_to_idle",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::streaming_block_delivers_bytes_byte_identical",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::version_gating_rejects_out_of_version_message",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "block_fetch::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "body_and_sub_decoder_agree_on_proposal_procedures",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "body_encoder_is_single_authority",
+      "proves": [
+        "DC-CONS-16"
+      ],
+      "drift": false
+    },
+    {
+      "name": "body_none_skips_proposal_procedures_key_20",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "body_with_proposal_procedures_round_trips_through_typed_field",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "bootstrap_anchor_hash_distinguishes_genesis_variants",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "boundary_fingerprint_matches_pins",
+      "proves": [
+        "DC-LEDGER-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "broadcast_callable_only_with_accept_verdict",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "broadcast_pushes_self_accepted_block_to_served",
+      "proves": [
+        "CN-PROD-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "broadcast_rejects_non_self_accepted_block",
+      "proves": [
+        "CN-PROD-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "byron_determinism",
+      "proves": [
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "byron_replay_all_1500",
+      "proves": [
+        "T-CONSERV-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "canonical_corpus_covers_all_gov_action_variants",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "canonical_corpus_decodes_to_expected_shape",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "canonical_corpus_includes_update_committee_discriminant_case",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "canonical_corpus_round_trips_byte_identical",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_corpus_constants_have_expected_sizes",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_corpus_negative_flip_one_byte_in_vk_left_fail_closed",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_corpus_sign_then_upstream_verifies",
+      "proves": [
+        "DC-CRYPTO-04",
+        "DC-CRYPTO-08",
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_corpus_skey_deserializes_and_vk_matches_ground_truth",
+      "proves": [
+        "DC-CRYPTO-07",
+        "DC-CRYPTO-08",
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_corpus_skey_period_inference_is_zero",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_corpus_skey_round_trips_through_ade_serde",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_kes_envelope_accepts_real_608_byte_payload",
+      "proves": [
+        "DC-CRYPTO-07",
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_kes_envelope_rejects_32_byte_payload",
+      "proves": [
+        "DC-CRYPTO-07",
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_kes_envelope_rejects_608_byte_leaf_zero_payload",
+      "proves": [
+        "DC-CRYPTO-07",
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_kes_envelope_rejects_612_byte_payload",
+      "proves": [
+        "DC-CRYPTO-07",
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_cli_kes_envelope_rejects_synthetic_608_byte_payload",
+      "proves": [
+        "DC-CRYPTO-07",
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cardano_node_session_sustained_window",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "DC-CORE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cert_state_replay_byte_identical",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync_real_capture_corpus::real_capture_round_trips_byte_identical",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-02",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync_real_capture_corpus::rollforward_header_opaque_pass_through",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync_server_reply_into_message_only_yields_server_variants",
+      "proves": [
+        "CN-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync_server_reply_round_trips_through_codec",
+      "proves": [
+        "CN-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::client_done_terminates_session",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::empty_find_intersect_points_returns_malformed",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::find_intersect_with_known_point_yields_intersected_signal",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::find_intersect_with_unknown_points_yields_no_intersection",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::idle_request_next_with_immediate_data_yields_can_await_then_roll_forward",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::idle_request_next_with_no_data_yields_must_reply_via_await",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::illegal_message_in_idle_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::roll_backward_signal_carries_point_and_tip_byte_identical",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::roll_forward_signal_carries_header_and_tip_byte_identical",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::version_gating_rejects_out_of_version_message",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "chain_sync::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "check_duplicate_inputs_catches_dupes",
+      "proves": [
+        "DC-LEDGER-03",
+        "T-NOSPEND-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "class_mapping_is_total",
+      "proves": [
+        "DC-TXV-04",
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "closure_is_deterministic",
+      "proves": [
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec_error_conversion",
+      "proves": [
+        "T-ERR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::block_fetch::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::block_fetch::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::block_fetch::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::chain_sync::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::chain_sync::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::chain_sync::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::handshake::tests::decode_rejects_invalid_utf8_in_text_fields",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::handshake::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::handshake::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::handshake::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::keep_alive::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::keep_alive::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::keep_alive::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_chain_sync::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_chain_sync::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_chain_sync::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_state_query::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_state_query::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_state_query::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_tx_monitor::tests::decode_rejects_invalid_utf8_measure_name",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_tx_monitor::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_tx_monitor::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_tx_monitor::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_tx_submission::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_tx_submission::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::local_tx_submission::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::n2c_handshake::tests::decode_rejects_invalid_utf8_in_text_fields",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::n2c_handshake::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::n2c_handshake::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::n2c_handshake::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-04",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::peer_sharing::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::peer_sharing::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::peer_sharing::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::tx_submission::tests::decode_rejects_truncated_input",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::tx_submission::tests::decode_rejects_unknown_tag",
+      "proves": [
+        "CN-WIRE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "codec::tx_submission::tests::roundtrip_every_variant",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-03",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "collateral_payment_key_is_required",
+      "proves": [
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "commit_rollback_advances_chaindb_and_ledger_atomically",
+      "proves": [
+        "DC-CONS-20"
+      ],
+      "drift": false
+    },
+    {
+      "name": "commit_rollback_chain_write_failure_leaves_state_unchanged",
+      "proves": [
+        "DC-CONS-20"
+      ],
+      "drift": false
+    },
+    {
+      "name": "commit_rollback_resets_pending_headers",
+      "proves": [
+        "DC-CONS-20"
+      ],
+      "drift": false
+    },
+    {
+      "name": "committee_discriminant_changes_fingerprint",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "committee_enactment_replays_byte_identical",
+      "proves": [
+        "DC-EPOCH-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "committee_keyhash_scripthash_do_not_cross_resolve",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "committee_keyhash_scripthash_same_bytes_distinct",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "committee_oracle_mainnet_575_576_noop_agreement",
+      "proves": [
+        "DC-EPOCH-01",
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "composite_gov_half_applied_once_certstate_untouched_by_b5",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::canonical::tests::canonical_field_count_is_fifteen",
+      "proves": [
+        "DC-CONS-IN-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::canonical::tests::fingerprint_changes_when_any_canonical_input_changes",
+      "proves": [
+        "DC-CONS-IN-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::canonical::tests::fingerprint_is_blake2b_256_of_encode_canonical_cbor",
+      "proves": [
+        "DC-CONS-IN-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::canonical::tests::fingerprint_is_deterministic_across_repeated_imports",
+      "proves": [
+        "CN-CONS-IN-01",
+        "DC-CONS-IN-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::canonical::tests::import_round_trip_yields_canonical_form_with_fingerprint",
+      "proves": [
+        "CN-CONS-IN-01",
+        "DC-CONS-IN-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::bad_json_surface_is_json_variant",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::empty_era_string_fails_fast",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::epoch_end_before_start_is_bad_window",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::import_is_deterministic_across_repeated_calls",
+      "proves": [
+        "CN-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::minimal_round_trip_imports_to_typed",
+      "proves": [
+        "CN-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::non_hex_in_hash_is_bad_hash_hex",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::pool_id_wrong_width_is_bad_hash_hex",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::pool_in_distribution_missing_from_vrf_map_is_bad_pool",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::short_genesis_hash_is_bad_hash_hex",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::tip_outside_window_is_bad_window",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::unsupported_era_fails_fast",
+      "proves": [
+        "CN-CONS-IN-01",
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::importer::tests::zero_asc_denom_is_bad_field",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::json::tests::missing_required_field_is_error",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::json::tests::unknown_field_is_rejected",
+      "proves": [
+        "DC-CONS-IN-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::view::tests::in_window_epoch_answers_total_active_stake",
+      "proves": [
+        "DC-VIEW-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::view::tests::in_window_per_pool_lookups_return_imported_values",
+      "proves": [
+        "DC-VIEW-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::view::tests::in_window_unknown_pool_returns_none",
+      "proves": [
+        "DC-VIEW-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_inputs::view::tests::out_of_window_epoch_returns_none",
+      "proves": [
+        "DC-VIEW-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus_view::tests::pool_distr_view_no_hashmap",
+      "proves": [
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::candidate::tests::candidate_fragment_carries_anchor_block_no",
+      "proves": [
+        "CN-CONS-04",
+        "DC-CONS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::candidate::tests::tiebreaker_view_eq_is_field_wise",
+      "proves": [
+        "DC-CONS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::chain_selector::tests::epoch_boundary_emits_no_event",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "DC-CORE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::chain_selector::tests::header_arrival_updates_state_and_selector",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "DC-CORE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::chain_selector::tests::rollback_to_block_older_than_snapshots_rejected",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "DC-CORE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::chain_selector::tests::rollback_walks_back_via_recent_snapshots",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "DC-CORE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::encoding::tests::op_cert_counter_map_iteration_is_deterministic",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::determinism_across_runs",
+      "proves": [
+        "DC-CONS-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::eraschedule_constructor_rejects_empty",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::eraschedule_constructor_rejects_non_monotonic",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::eraschedule_constructor_rejects_zero_epoch_length",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::eraschedule_constructor_rejects_zero_slot_length",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::forecast_horizon_boundary",
+      "proves": [
+        "DC-CONS-09",
+        "DC-EPOCH-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::locate_before_system_start_errors",
+      "proves": [
+        "DC-CONS-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::locate_first_slot_of_each_era",
+      "proves": [
+        "DC-CONS-08",
+        "DC-EPOCH-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::locate_last_slot_of_each_era",
+      "proves": [
+        "DC-CONS-08",
+        "DC-EPOCH-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::slot_to_time_monotone_increasing",
+      "proves": [
+        "DC-CONS-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::era_schedule::tests::slot_to_time_overflow_returns_structured_error",
+      "proves": [
+        "DC-CONS-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::fork_choice::tests::equal_to_current_keeps_current_via_tiebreaker_loss",
+      "proves": [
+        "DC-CONS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::fork_choice::tests::no_candidates_returns_no_candidates_error",
+      "proves": [
+        "DC-CONS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::fork_choice::tests::tiebreaker_prefer_higher_op_cert_wins_on_equal_slot_and_issuer",
+      "proves": [
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::fork_choice::tests::tiebreaker_prefer_lower_slot_wins",
+      "proves": [
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::fork_choice::tests::tiebreaker_prefer_lower_vrf_value_wins_on_full_tie",
+      "proves": [
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::genesis_parser::tests::anchor_hash_deterministic",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::genesis_parser::tests::anchor_hash_distinguishes_inputs",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::header_validate::tests::nonce_contribution_uses_nonce_role_vrf_output_not_leader_role",
+      "proves": [
+        "CN-CONS-04",
+        "CN-CONS-05",
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::header_validate::tests::pipeline_short_circuits_on_first_failure",
+      "proves": [
+        "CN-CONS-04",
+        "CN-CONS-05",
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::leader_schedule::tests::is_leader_for_vrf_output_delegates_to_vrf_cert",
+      "proves": [
+        "DC-CONSENSUS-02"
+      ],
+      "drift": true
+    },
+    {
+      "name": "consensus::leader_schedule::tests::query_does_not_mutate_state",
+      "proves": [
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::leader_schedule::tests::query_returns_outside_forecast_range_for_far_future",
+      "proves": [
+        "DC-CONS-09",
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::leader_schedule::tests::query_returns_unknown_pool_when_no_vrf_key",
+      "proves": [
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::leader_schedule::tests::query_uses_state_epoch_nonce_for_vrf_input",
+      "proves": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::blake2b_input_order_is_evolving_then_vrf_output_first_32",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::candidate_freeze_copies_evolving_to_candidate",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::candidate_freeze_does_not_advance_slot",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::epoch_boundary_preserves_lab_nonce",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::epoch_boundary_preserves_op_cert_counters",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::epoch_boundary_promotes_candidate_to_epoch_nonce",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::epoch_boundary_rejects_uninitialised_candidate",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::epoch_boundary_rotates_previous_epoch_nonce",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::header_contribution_advances_evolving_nonce_deterministically",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::header_contribution_does_not_touch_epoch_nonce",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::nonce::tests::header_contribution_rejects_non_monotonic_slot",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::op_cert::tests::apply_op_cert_advances_existing_strictly",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::op_cert::tests::apply_op_cert_does_not_touch_last_slot_or_block_no",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::op_cert::tests::apply_op_cert_does_not_touch_nonces",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::op_cert::tests::apply_op_cert_independent_kes_periods_dont_collide",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::op_cert::tests::apply_op_cert_independent_pools_dont_collide",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::op_cert::tests::apply_op_cert_inserts_first_observation",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::op_cert::tests::apply_op_cert_rejects_equal_counter",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": true
+    },
+    {
+      "name": "consensus::op_cert::tests::apply_op_cert_rejects_lower_counter",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::praos_state::tests::genesis_state_is_well_formed",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::praos_state::tests::nonce_zero_constant_is_zero_bytes",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::praos_state::tests::op_cert_upsert_accepts_strictly_increasing",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": true
+    },
+    {
+      "name": "consensus::praos_state::tests::op_cert_upsert_rejects_equal_counter",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": true
+    },
+    {
+      "name": "consensus::praos_state::tests::op_cert_upsert_rejects_regression",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::rollback::tests::rollback_preserves_immutable_tip",
+      "proves": [
+        "DC-CONS-05",
+        "DC-CONS-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::rollback::tests::rollback_preserves_security_param",
+      "proves": [
+        "DC-CONS-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::rollback::tests::rollback_to_equal_block_no_as_immutable_succeeds",
+      "proves": [
+        "DC-CONS-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::rollback::tests::rollback_to_one_below_immutable_rejected",
+      "proves": [
+        "DC-CONS-05",
+        "DC-CONS-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "consensus::rollback::tests::rollback_with_zero_depth_is_noop",
+      "proves": [
+        "DC-CONS-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conservation_early_out_removed",
+      "proves": [
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conservation_error_display",
+      "proves": [
+        "T-ERR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_apply_error_is_fail_closed",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_cert_action_total",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_conservation_full",
+      "proves": [
+        "CN-LEDGER-07",
+        "DC-VAL-06",
+        "T-CONSERV-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_corpus_headers_all_pass_leader_check",
+      "proves": [
+        "CN-CONS-04",
+        "DC-CRYPTO-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_corpus_nonce_contribution_is_deterministic",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_credential_preserves_discriminant",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_decode_error_is_fail_closed",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_deposit_params_canonical_source",
+      "proves": [
+        "DC-TXV-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_determinism",
+      "proves": [
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_envelope_head_is_82_07",
+      "proves": [
+        "CN-FORGE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_epoch_boundary_end_to_end",
+      "proves": [
+        "DC-EPOCH-01",
+        "DC-LEDGER-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_governance_cert_routed_out_of_scope",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_governance_ratification_test",
+      "proves": [
+        "DC-EPOCH-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_removed_tag_is_fail_closed",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "conway_unknown_tag_is_fail_closed",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corpus_block_count_is_14",
+      "proves": [
+        "DC-VAL-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corpus_is_deterministic_across_runs",
+      "proves": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corpus_is_leader_helper_matches_pinned_probe",
+      "proves": [
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corpus_loads_and_is_self_consistent",
+      "proves": [
+        "DC-VAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corpus_rejects_out_of_forecast_horizon",
+      "proves": [
+        "DC-CONS-09",
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corpus_rejects_unknown_pool",
+      "proves": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corpus_returns_canonical_answer_for_known_pools",
+      "proves": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corpus_tx_count_nonzero",
+      "proves": [
+        "DC-TXV-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "corrupted_magic_returns_corruption_error",
+      "proves": [
+        "CN-STORE-04",
+        "DC-STORE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs::tests::bootstrap_anchor_decode_rejects_short_buffer",
+      "proves": [
+        "DC-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs::tests::bootstrap_anchor_decode_rejects_short_hash",
+      "proves": [
+        "DC-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs::tests::bootstrap_anchor_decode_rejects_trailing_bytes",
+      "proves": [
+        "DC-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs::tests::bootstrap_anchor_decode_rejects_unknown_version",
+      "proves": [
+        "DC-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs::tests::bootstrap_anchor_decode_rejects_wrong_outer_array_length",
+      "proves": [
+        "DC-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs::tests::bootstrap_anchor_encode_two_runs_byte_identical",
+      "proves": [
+        "DC-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs::tests::bootstrap_anchor_match_is_exhaustive",
+      "proves": [
+        "CN-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/bootstrap_anchor/anchor.rs::tests::bootstrap_anchor_round_trips_via_canonical_cbor",
+      "proves": [
+        "DC-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/wal/replay.rs::tests::replay_from_anchor_catches_chain_break",
+      "proves": [
+        "DC-WAL-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/wal/replay.rs::tests::replay_from_anchor_three_entry_chain_ok",
+      "proves": [
+        "DC-WAL-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_ledger/src/wal/replay.rs::tests::replay_from_anchor_two_runs_byte_identical",
+      "proves": [
+        "DC-WAL-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/mux/frame.rs::tests::round_trip_canonical_frames",
+      "proves": [
+        "CN-SESS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/mux/transport.rs::tests::mux_transport_duplex_inbound_overflow_returns_backpressure",
+      "proves": [
+        "DC-SESS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/mux/transport.rs::tests::mux_transport_duplex_round_trips_bytes_over_loopback",
+      "proves": [
+        "DC-SESS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::fragmented_block_fetch_block_assembles_one_deliver",
+      "proves": [
+        "CN-SESS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::fragmented_chain_sync_message_assembles_one_deliver",
+      "proves": [
+        "CN-SESS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::fragmented_replay_equivalence_two_runs_byte_identical",
+      "proves": [
+        "DC-SESS-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::interleaved_chain_sync_and_block_fetch_fragments_stay_isolated",
+      "proves": [
+        "CN-SESS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::malformed_cbor_at_item_boundary_returns_session_error",
+      "proves": [
+        "DC-SESS-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::pipelined_two_chain_sync_messages_in_one_mux_frame_emit_two_delivers",
+      "proves": [
+        "CN-SESS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::proto_buffers_isolation_across_accepted_protocols",
+      "proves": [
+        "CN-SESS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::session_blocks_frames_before_handshake",
+      "proves": [
+        "DC-SESS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::session_handshake_completion_transitions_state",
+      "proves": [
+        "CN-SESS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::session_outbound_frame_encodes_via_encode_frame",
+      "proves": [
+        "CN-SESS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::session_post_handshake_handshake_frame_is_peer_fatal",
+      "proves": [
+        "DC-SESS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::session_step_two_runs_byte_identical",
+      "proves": [
+        "CN-SESS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::session_unknown_mini_protocol_id_is_peer_fatal",
+      "proves": [
+        "DC-SESS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/core.rs::tests::truncated_then_complete_two_step_drain",
+      "proves": [
+        "CN-SESS-04",
+        "DC-SESS-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/demux.rs::tests::frame_buffer_two_runs_deterministic",
+      "proves": [
+        "DC-SESS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/event.rs::tests::accepted_mini_protocol_match_is_exhaustive",
+      "proves": [
+        "DC-SESS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/event.rs::tests::accepted_mini_protocol_round_trips_all_ids",
+      "proves": [
+        "DC-SESS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/event.rs::tests::accepted_mini_protocol_unknown_id_returns_none",
+      "proves": [
+        "DC-SESS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/handshake_driver.rs::tests::handshake_initiator_accepts_when_responder_supports_proposed_version",
+      "proves": [
+        "CN-SESS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/src/session/handshake_driver.rs::tests::handshake_initiator_rejects_on_no_overlap",
+      "proves": [
+        "CN-SESS-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/tests/session_replay_equivalence.rs::session_replay_corpus_builds_deterministically",
+      "proves": [
+        "DC-SESS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_network/tests/session_replay_equivalence.rs::session_replay_equivalence_holds",
+      "proves": [
+        "DC-SESS-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/src/live_log/event.rs::tests::live_log_event_match_is_exhaustive",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/src/live_log/writer.rs::tests::live_log_writer_emits_one_object_per_line",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/src/live_log/writer.rs::tests::live_log_writer_serializes_node_started_canonically",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/src/live_log/writer.rs::tests::live_log_writer_two_runs_are_byte_identical",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/authority_fatal_decode.rs::binary_halts_on_authority_fatal_decode_error",
+      "proves": [
+        "DC-NODE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/shutdown_resume_identity.rs::cold_start_without_genesis_fails_with_generic_startup_code",
+      "proves": [
+        "DC-NODE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/shutdown_resume_identity.rs::shutdown_clean_exits_with_evidence",
+      "proves": [
+        "DC-NODE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/shutdown_resume_identity.rs::shutdown_then_resume_produces_byte_identical_state",
+      "proves": [
+        "DC-NODE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/wire_only_loopback.rs::admission_mode_fails_closed_with_ledger_seed_unavailable",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/wire_only_loopback.rs::jsonl_events_are_valid_one_object_per_line",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/wire_only_loopback.rs::main_wire_only_emits_peer_tip_read_with_responder_tip",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/wire_only_loopback.rs::main_wire_only_exits_zero_after_tip_read",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/wire_only_loopback.rs::main_wire_only_never_emits_agreement_verdict",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/wire_only_loopback.rs::main_without_genesis_does_not_attempt_admission",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_node/tests/wire_only_loopback.rs::peer_dial_failure_exits_nonzero_with_error_event",
+      "proves": [
+        "RO-LIVE-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap_anchor.rs::tests::mint_carries_seed_point_correctly",
+      "proves": [
+        "CN-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap_anchor.rs::tests::mint_composes_inputs_byte_identically",
+      "proves": [
+        "CN-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap_anchor.rs::tests::mint_propagates_utxo_fingerprint_into_anchor",
+      "proves": [
+        "CN-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap_anchor.rs::tests::mint_then_round_trip_via_canonical_cbor",
+      "proves": [
+        "CN-ANCHOR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap.rs::tests::bootstrap_cold_start_returns_genesis_when_empty",
+      "proves": [
+        "CN-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap.rs::tests::bootstrap_cold_start_without_genesis_errors",
+      "proves": [
+        "CN-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap.rs::tests::bootstrap_two_runs_produce_byte_identical_state",
+      "proves": [
+        "CN-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap.rs::tests::bootstrap_warm_start_equals_direct_materialize",
+      "proves": [
+        "CN-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/bootstrap.rs::tests::bootstrap_warm_start_materializes_from_persistent_snapshot",
+      "proves": [
+        "CN-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/clock.rs::tests::deterministic_clock_is_pure",
+      "proves": [
+        "DC-NODE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/orchestrator/core.rs::tests::step_admit_triggers_capture_snapshot_at_cadence",
+      "proves": [
+        "DC-NODE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/orchestrator/core.rs::tests::step_per_peer_decode_error_isolates",
+      "proves": [
+        "DC-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/orchestrator/core.rs::tests::step_two_runs_produce_byte_identical_effects",
+      "proves": [
+        "DC-NODE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/orchestrator/keep_alive_session.rs::tests::keep_alive_cadence_default_is_60s",
+      "proves": [
+        "DC-SESS-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/orchestrator/keep_alive_session.rs::tests::keep_alive_session_emits_one_event_per_clock_tick",
+      "proves": [
+        "DC-SESS-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/orchestrator/keep_alive_session.rs::tests::keep_alive_session_is_pure_under_deterministic_clock",
+      "proves": [
+        "DC-SESS-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/orchestrator/leadership_session.rs::tests::leadership_session_slot_arithmetic_is_pure",
+      "proves": [
+        "DC-NODE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/orchestrator/peer_session.rs::tests::peer_session_isolation_across_two_concurrent_tasks",
+      "proves": [
+        "DC-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/rollback/persistent_writer.rs::tests::persistent_writer_force_capture_skips_cadence_but_updates_state",
+      "proves": [
+        "DC-NODE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/rollback/persistent_writer.rs::tests::persistent_writer_on_admitted_captures_only_on_cadence",
+      "proves": [
+        "DC-NODE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/rollback/persistent_writer.rs::tests::persistent_writer_round_trips_via_framing",
+      "proves": [
+        "DC-NODE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/rollback/persistent_writer.rs::tests::persistent_writer_two_runs_are_deterministic",
+      "proves": [
+        "DC-NODE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_accepts_plutus_v1_reference_script",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_accepts_plutus_v2_reference_script",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_accepts_plutus_v3_reference_script",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_accepts_simple_script_reference_script",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_btree_order_independent_of_json_order",
+      "proves": [
+        "CN-SEED-01",
+        "DC-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_canonical_script_ref_encoder_known_vector",
+      "proves": [
+        "CN-SEED-01",
+        "DC-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_canonical_txout_address_extracted",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_inline_datum_entry_round_trips",
+      "proves": [
+        "CN-SEED-01",
+        "DC-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_parses_minimal_two_entry_fixture",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_reference_script_changes_fingerprint",
+      "proves": [
+        "CN-SEED-01",
+        "DC-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_reference_script_deterministic_across_two_imports",
+      "proves": [
+        "CN-SEED-01",
+        "DC-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_rejects_bad_address",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_rejects_bad_txin_key",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_rejects_missing_cbor_hex",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_rejects_non_hex_cbor_hex",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_rejects_unknown_script_type",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_rejects_unparseable_json",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/importer.rs::tests::utxo_seed_two_imports_byte_identical",
+      "proves": [
+        "CN-SEED-01",
+        "DC-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/seed_import/json.rs::tests::parse_utxo_seed_json_reference_script_entry",
+      "proves": [
+        "CN-SEED-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/wal/file_wal_store.rs::tests::file_wal_store_append_then_read_all_round_trips",
+      "proves": [
+        "CN-WAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/wal/file_wal_store.rs::tests::file_wal_store_reopens_existing_directory_and_preserves_entries",
+      "proves": [
+        "CN-WAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/wal/file_wal_store.rs::tests::file_wal_store_rotates_at_max_bytes_when_forced",
+      "proves": [
+        "CN-WAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/src/wal/file_wal_store.rs::tests::file_wal_store_verify_chain_passes_then_catches_break",
+      "proves": [
+        "DC-WAL-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/orchestrator_peer_isolation.rs::peer_disconnect_removes_only_that_peer",
+      "proves": [
+        "DC-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/orchestrator_peer_isolation.rs::peer_session_isolation_holds_under_failure",
+      "proves": [
+        "DC-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/orchestrator_peer_isolation.rs::peer_session_per_peer_state_does_not_cross",
+      "proves": [
+        "DC-NODE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/orchestrator_replay_equivalence.rs::replay_corpus_is_present_and_decodable",
+      "proves": [
+        "DC-NODE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/orchestrator_replay_equivalence.rs::replay_equivalence_under_deterministic_clock_holds",
+      "proves": [
+        "DC-NODE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/wal_replay_from_anchor.rs::wal_replay_from_anchor_persists_across_reopen",
+      "proves": [
+        "DC-WAL-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/wal_replay_from_anchor.rs::wal_replay_from_anchor_post_fp_matches_wal_tail",
+      "proves": [
+        "DC-WAL-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/wal_replay_from_anchor.rs::wal_replay_from_anchor_rejects_chain_break",
+      "proves": [
+        "DC-WAL-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "crates/ade_runtime/tests/wal_replay_from_anchor.rs::wal_replay_from_anchor_two_runs_byte_identical",
+      "proves": [
+        "DC-WAL-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "credential_accumulation_replays_byte_identical",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cross_epoch_block_triggers_halt_without_admit",
+      "proves": [
+        "DC-ADMIT-11",
+        "RO-LIVE-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cross_impl_adapter_corpus_round_trips_byte_identical",
+      "proves": [
+        "CN-CONS-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cross_impl_adapter_forged_block_decodes_through_ade_codec",
+      "proves": [
+        "CN-CONS-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cross_impl_adapter_forged_block_structurally_agrees_with_decoder",
+      "proves": [
+        "CN-CONS-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cross_impl_server_pipeline_request_range_byte_identical_to_self_accept_input",
+      "proves": [
+        "RO-LIVE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "cross_impl_server_pipeline_request_range_returns_decodable_bytes",
+      "proves": [
+        "RO-LIVE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "decode_is_replay_deterministic",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "decode_rejects_short_array",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "decode_rejects_unknown_discriminant",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "decode_total_over_tags_0_18",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "dependent_pair_through_ingress_admits_b_after_a",
+      "proves": [
+        "DC-MEM-01",
+        "DC-MEM-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "dependent_tx_admitted_against_accumulating_state",
+      "proves": [
+        "DC-MEM-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "determinism",
+      "proves": [
+        "DC-MEM-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "diff_ledger_sequence",
+      "proves": [
+        "DC-DIFF-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "discriminant_changes_fingerprint",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "discriminant_changes_fingerprint_corpus",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drain_and_admit_admits_every_queued_block",
+      "proves": [
+        "DC-SNAPSHOT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drain_and_admit_is_deterministic_over_arrival_sequence",
+      "proves": [
+        "DC-PROTO-07",
+        "DC-SNAPSHOT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drain_and_admit_no_io_no_clock",
+      "proves": [
+        "DC-SNAPSHOT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drep_expiry_overflow_is_fail_closed",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drep_expiry_uses_epoch_plus_activity",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drep_grammar_total",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drep_keyhash_scripthash_do_not_cross_resolve",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drep_register_missing_env_is_fail_fast",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drep_registration_is_owner_tagged_not_applied",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "drep_vote_discriminant_changes_fingerprint",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "duplicate_inputs_detected",
+      "proves": [
+        "T-NOSPEND-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "each_mutation_maps_to_expected_class",
+      "proves": [
+        "DC-TXV-03",
+        "DC-VAL-04",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "each_tag_retains_owner_payloads",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ed25519_rfc_8032_test_1",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": true
+    },
+    {
+      "name": "eligible_on_threshold_with_high_stake_emits_eligible_verdict",
+      "proves": [
+        "CN-FORGE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "empty_witness_set",
+      "proves": [
+        "DC-LEDGER-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "enact_noconfidence_dissolves_committee",
+      "proves": [
+        "DC-EPOCH-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "enact_update_committee_applies_changes",
+      "proves": [
+        "DC-EPOCH-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "enact_update_committee_keyhash_scripthash_distinct",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "enactment_committee_changes_keyhash_scripthash_distinct",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "encode_block_envelope_reencodes_corpus_block_identically",
+      "proves": [
+        "CN-FORGE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "encode_decode_block_envelope_round_trips",
+      "proves": [
+        "CN-FORGE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "env_free_gov_certs_need_no_env",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "envelope_error_carries_no_seed_bytes",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "epoch_boundary_freezes_and_rotates_correctly",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "epoch_boundary_ratified_noconfidence_dissolves_committee",
+      "proves": [
+        "DC-EPOCH-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "equal_block_no_tiebreaker_decides",
+      "proves": [
+        "CN-CONS-01",
+        "CN-CONS-03",
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "era_dispatch_conway_accumulates_via_conway_path",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "era_dispatch_shelley_accumulates_via_shelley_path",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "event_kinds_are_distinct_and_stable",
+      "proves": [
+        "DC-PROD-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "exceeded_rollback_rejected",
+      "proves": [
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "expect_size_rejects_wrong_length",
+      "proves": [
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "extra_inert_keys_produce_byte_identical_anchor",
+      "proves": [
+        "CN-GENESIS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "extra_irrelevant_witness_does_not_substitute",
+      "proves": [
+        "CN-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "extract_nonces_field_order",
+      "proves": [
+        "DC-VAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "extract_nonces_is_deterministic",
+      "proves": [
+        "DC-VAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "extract_nonces_requires_exactly_five",
+      "proves": [
+        "DC-VAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_accepts_empty_mempool",
+      "proves": [
+        "CN-FORGE-01",
+        "DC-CONS-18"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_empty_mempool_produces_empty_body",
+      "proves": [
+        "CN-FORGE-01",
+        "DC-LEDGER-12"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_output_decodes_via_decode_block",
+      "proves": [
+        "CN-FORGE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_pure_no_io",
+      "proves": [
+        "DC-CONS-13"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_rejects_non_leader_tick",
+      "proves": [
+        "DC-CONS-15"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_rejects_tx_not_in_mempool_accepted_prefix",
+      "proves": [
+        "DC-LEDGER-12"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_rejects_tx_permuted_from_accumulating_order",
+      "proves": [
+        "DC-LEDGER-12"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_replay_byte_identical",
+      "proves": [
+        "DC-CONS-13",
+        "DC-CONS-14"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_block_uses_validator_leader_check_function",
+      "proves": [
+        "DC-CONS-15"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_failed_emits_slot_missed_with_mapped_reason",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_not_leader_emits_log_and_clears_pending",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_succeeded_emits_broadcast_and_log",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forge_to_served_block_fetch_roundtrip",
+      "proves": [
+        "CN-PROD-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "forged_body_hash_matches_validator_recomputation",
+      "proves": [
+        "DC-CONS-16"
+      ],
+      "drift": false
+    },
+    {
+      "name": "fork_before_immutable_tip_rejected",
+      "proves": [
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "full_corpus_round_trip",
+      "proves": [
+        "T-ENC-03"
+      ],
+      "drift": true
+    },
+    {
+      "name": "full_stake_answer_reaches_self_accept_and_rejects",
+      "proves": [
+        "CN-FORGE-01",
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "gov_accumulation_applies_drep_registration_into_gov_state",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "gov_apply_error_halts_accumulation",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "gov_apply_is_deterministic",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "gov_apply_total_over_18_tags",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "gov_cert_env_missing_drep_activity_is_fail_fast",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "gov_cert_env_present_ok",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "gov_state_accumulation_replays_byte_identical",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handle_construction_yields_empty_snapshot",
+      "proves": [
+        "CN-SNAPSHOT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake_real_capture_corpus::iog_capture_accepted_at_known_version",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake_real_capture_corpus::real_capture_round_trips_byte_identical",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-05",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake_real_capture_corpus::refuse_capture_carries_supported_set",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::empty_intersection_refuses_deterministically",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::illegal_message_in_idle_returns_error",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2c_happy_path_each_supported_version",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2c_v15_no_longer_advertised",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2c_v21_happy_path",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2c_v22_happy_path",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2c_v23_happy_path",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2n_happy_path_each_supported_version",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2n_overlap_picks_v16_when_both_offer_v14_to_v16",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2n_v15_happy_path",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::n2n_v16_happy_path_with_peras_support_field",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::overlap_picks_highest_common",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::version_data_passed_through_byte_identical",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::version_mismatch_refused",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "handshake::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "header_before_body_fail_fast",
+      "proves": [
+        "DC-VAL-02",
+        "DC-VAL-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "header_beyond_forecast_horizon_rejected",
+      "proves": [
+        "CN-CONS-04",
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "header_with_block_no_regression_rejected",
+      "proves": [
+        "CN-CONS-04",
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "header_with_invalid_vrf_proof_rejected",
+      "proves": [
+        "CN-CONS-04",
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "header_with_op_cert_regression_rejected",
+      "proves": [
+        "CN-CONS-04",
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "header_with_slot_regression_rejected",
+      "proves": [
+        "CN-CONS-04",
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "higher_block_no_wins",
+      "proves": [
+        "CN-CONS-01",
+        "CN-CONS-03",
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "huge_array_count_rejects_without_overallocating",
+      "proves": [
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "in_memory_passes_contract",
+      "proves": [
+        "CN-STORE-05",
+        "DC-STORE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "in_memory_passes_snapshot_contract",
+      "proves": [
+        "CN-STORE-04",
+        "DC-STORE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "in_memory_snapshot_cache_iteration_is_btreemap_ordered",
+      "proves": [
+        "DC-STORE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "in_memory_snapshot_cache_nearest_le_returns_largest_key",
+      "proves": [
+        "DC-STORE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_admit_equals_direct_admit_on_b_track_corpus",
+      "proves": [
+        "DC-MEM-01",
+        "DC-MEM-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_admits_valid_tx_via_n2c",
+      "proves": [
+        "DC-MEM-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_admits_valid_tx_via_n2n",
+      "proves": [
+        "DC-MEM-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_equals_direct_admit_on_synthetic_corpus",
+      "proves": [
+        "DC-MEM-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_preserves_tx_bytes_verbatim",
+      "proves": [
+        "DC-MEM-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_rejects_invalid_tx_no_false_accept",
+      "proves": [
+        "DC-MEM-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_source_does_not_change_verdict_adversarial",
+      "proves": [
+        "DC-MEM-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_source_does_not_change_verdict_valid",
+      "proves": [
+        "DC-MEM-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_source_is_closed_two_variants",
+      "proves": [
+        "DC-MEM-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_trace_replay_byte_identical",
+      "proves": [
+        "DC-MEM-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ingress_trace_source_invariant_n2n_vs_n2c",
+      "proves": [
+        "DC-MEM-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "init_emits_started_event_and_zero_other_effects",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "invalid_block_leaves_state_unchanged",
+      "proves": [
+        "DC-VAL-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "invalid_tx_leaves_state_unchanged",
+      "proves": [
+        "DC-TXV-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "invalid_tx_rejected_no_false_accept",
+      "proves": [
+        "DC-MEM-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "is_leader_determinism",
+      "proves": [
+        "T-CORE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "is_leader_known_vector_matches_reference",
+      "proves": [
+        "T-CORE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "iso8601_parse_anchors_to_known_unix_ms_values",
+      "proves": [
+        "CN-GENESIS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "json_serialization_round_trips_byte_identical_for_replay",
+      "proves": [
+        "DC-PROD-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive_event_trace",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive_real_capture_corpus::cookie_echo_invariant_holds",
+      "proves": [
+        "DC-PROTO-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive_real_capture_corpus::real_capture_round_trips_byte_identical",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-02",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive::transition::tests::client_done_terminates_session",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive::transition::tests::client_ping_then_server_pong_round_trips",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive::transition::tests::cookie_mismatch_returns_malformed",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive::transition::tests::illegal_message_in_idle_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive::transition::tests::version_gating_rejects_out_of_version_message",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keep_alive::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "kes_period_out_of_range_errors",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "kes_period_outside_window_emits_forge_failed_kes_period_mismatch",
+      "proves": [
+        "CN-FORGE-01",
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "kes_sign_matches_reference_vectors",
+      "proves": [
+        "DC-CRYPTO-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "kes_sign_rejects_period_past_evolutions_remaining",
+      "proves": [
+        "DC-CRYPTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "kes_sign_then_verify_round_trip",
+      "proves": [
+        "DC-CRYPTO-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "kes_signature_from_bytes_round_trips",
+      "proves": [
+        "DC-CRYPTO-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "kes_update_chain_matches_reference",
+      "proves": [
+        "DC-CRYPTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "kes_update_rejects_backwards_evolution",
+      "proves": [
+        "DC-CRYPTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "key_load_error_io_carries_no_path_bytes",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keyhash_scripthash_same_bytes_are_distinct_certstate",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keyhash_scripthash_same_bytes_are_distinct_govstate",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keys_loader_rejects_malformed_cbor_hex",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "keys_loader_rejects_wrong_envelope_type",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "layout_is_stable",
+      "proves": [
+        "DC-CONS-04",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "ledger_error_equality",
+      "proves": [
+        "T-ERR-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "legacy_unregistration_resolves_recorded_deposit",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "legacy_unregistration_unresolved_is_unsupported_state_dependent",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "live_block_fetch_session_hermetic_default_prints_readiness",
+      "proves": [
+        "RO-LIVE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "live_block_follow_session_hermetic_default_prints_readiness",
+      "proves": [
+        "RO-LIVE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "live_bundle_imports_with_conway_era_and_deterministic_fingerprint",
+      "proves": [
+        "DC-EVIDENCE-01",
+        "RO-LIVE-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "live_operator_pass_against_docker_preprod",
+      "proves": [
+        "DC-EVIDENCE-01",
+        "RO-LIVE-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "local_chain_sync_event_trace",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "local_state_query_event_trace",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "local_tx_monitor_event_trace",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "local_tx_submission_event_trace",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "mainnet_corpus_translation_matches_oracle",
+      "proves": [
+        "DC-CONS-07",
+        "DC-CONS-08",
+        "DC-CONS-09",
+        "DC-EPOCH-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "mainnet_parser_eras_match_corpus_oracle",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "malformed_cbor_hex_envelope_emits_malformed_cbor_hex",
+      "proves": [
+        "CN-OPCERT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "malformed_cert_cbor_rejected",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "malformed_numeric_negative_slot_length_rejected",
+      "proves": [
+        "CN-GENESIS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "malformed_proof_emits_verification_failed",
+      "proves": [
+        "CN-FORGE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "malformed_type_envelope_emits_wrong_envelope_type",
+      "proves": [
+        "CN-OPCERT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "mary_determinism",
+      "proves": [
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "materialize_fails_closed_on_invalid_block",
+      "proves": [
+        "CN-STORE-07",
+        "DC-CONS-22"
+      ],
+      "drift": false
+    },
+    {
+      "name": "materialize_replay_forward_equals_direct_apply",
+      "proves": [
+        "CN-STORE-07",
+        "DC-CONS-22"
+      ],
+      "drift": false
+    },
+    {
+      "name": "materialize_returns_rollback_too_deep_when_no_snapshot",
+      "proves": [
+        "CN-STORE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "materialize_with_snapshot_at_target_returns_snapshot_state",
+      "proves": [
+        "CN-STORE-07",
+        "DC-CONS-22"
+      ],
+      "drift": false
+    },
+    {
+      "name": "materialize_with_snapshot_below_target_replays_forward",
+      "proves": [
+        "CN-STORE-07",
+        "DC-CONS-22"
+      ],
+      "drift": false
+    },
+    {
+      "name": "mismatched_block_count_returns_error",
+      "proves": [
+        "DC-DIFF-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "missing_certificate_witness_rejected",
+      "proves": [
+        "CN-LEDGER-09",
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "missing_explicit_required_signer_rejected",
+      "proves": [
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "missing_governance_voter_witness_rejected",
+      "proves": [
+        "CN-LEDGER-09",
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "missing_input_payment_witness_rejected",
+      "proves": [
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "missing_required_field_emits_structured_error",
+      "proves": [
+        "CN-GENESIS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "missing_withdrawal_witness_rejected",
+      "proves": [
+        "CN-LEDGER-09",
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "missing_witnesses_rejected",
+      "proves": [
+        "DC-LEDGER-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "multi_peer_round_robin_by_sorted_peer_id",
+      "proves": [
+        "DC-MEM-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n_r_b_partial_overlap_both_endpoints_fabricated_yields_no_blocks",
+      "proves": [
+        "CN-SNAPSHOT-02",
+        "DC-CONS-17"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n_r_b_partial_overlap_from_endpoint_not_in_snapshot_yields_no_blocks",
+      "proves": [
+        "CN-SNAPSHOT-02",
+        "DC-CONS-17"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n_r_b_partial_overlap_to_endpoint_not_in_snapshot_yields_no_blocks",
+      "proves": [
+        "CN-SNAPSHOT-02",
+        "DC-CONS-17"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c_handshake_real_capture_corpus::accept_version_decodes_to_semantic_version_range",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c_handshake_real_capture_corpus::real_capture_round_trips_byte_identical",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-05",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_chain_sync::transition::tests::local_chain_sync_client_done_terminates",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_chain_sync::transition::tests::local_chain_sync_find_intersect_known_point",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_chain_sync::transition::tests::local_chain_sync_find_intersect_unknown",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_chain_sync::transition::tests::local_chain_sync_request_next_then_roll_forward",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_chain_sync::transition::tests::local_chain_sync_roll_backward_signal",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_chain_sync::transition::tests::local_chain_sync_version_gating",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_chain_sync::transition::tests::local_chain_sync_wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_state_query::transition::tests::acquire_then_acquired_transitions_to_acquired",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_state_query::transition::tests::acquire_then_failure_returns_to_idle",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_state_query::transition::tests::client_done_from_acquired_terminates",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_state_query::transition::tests::client_done_from_idle_terminates",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_state_query::transition::tests::query_then_result_round_trips",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_state_query::transition::tests::re_acquire_from_acquired_transitions_to_acquiring",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_state_query::transition::tests::release_returns_to_idle",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_state_query::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::acquired_await_acquire_re_acquires",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::acquired_get_measures_then_reply",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::acquired_get_sizes_then_reply",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::acquired_has_tx_then_reply_absent",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::acquired_has_tx_then_reply_present",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::acquired_next_tx_then_reply_empty_mempool",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::acquired_next_tx_then_reply_with_tx",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::acquired_release_returns_to_idle",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::client_done_terminates_from_idle",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::get_measures_rejected_below_v2",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::idle_acquire_then_acquired",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::version_gating_rejects_out_of_version_message",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_monitor::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_submission::transition::tests::client_done_terminates",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_submission::transition::tests::submit_tx_then_accept_round_trips",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_submission::transition::tests::submit_tx_then_reject_carries_reason_bytes",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_submission::transition::tests::version_gating",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2c::local_tx_submission::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-04",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "n2n_listener_loopback_handshake_succeeds",
+      "proves": [
+        "CN-PROD-01",
+        "RO-LIVE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "no_candidates_returns_error",
+      "proves": [
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "no_mutation_is_ever_valid",
+      "proves": [
+        "DC-LEDGER-02",
+        "DC-TXV-03",
+        "DC-VAL-04",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "no_starting_point_error",
+      "proves": [
+        "DC-STORE-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "no_string_fields_in_any_variant",
+      "proves": [
+        "DC-PROD-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "non_conway_era_is_unsupported",
+      "proves": [
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "non_conway_state_has_no_conway_deposit_params",
+      "proves": [
+        "DC-TXV-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "nonce_evolution_replay_is_deterministic",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "normal_progression_records_highest_counter_per_window",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "not_eligible_with_zero_stake_emits_not_eligible_verdict",
+      "proves": [
+        "CN-FORGE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "op_cert_counter_map_iteration_is_deterministic",
+      "proves": [
+        "DC-CONS-04",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "op_cert_regression_header_rejected_mid_stream",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "op_cert_replay_is_deterministic",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_encoder_matches_cardano_cli_byte_identical",
+      "proves": [
+        "DC-CONS-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_round_trip_byte_identical",
+      "proves": [
+        "DC-CONS-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_signable_format",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_validate_accepts_canonical_fixture",
+      "proves": [
+        "DC-CONS-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_validate_first_opcert_no_prev_counter",
+      "proves": [
+        "DC-CONS-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_validate_rejects_bad_signature_over_cold_key",
+      "proves": [
+        "DC-CONS-12"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_validate_rejects_counter_regression",
+      "proves": [
+        "DC-CONS-12"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_validate_rejects_counter_repeat",
+      "proves": [
+        "DC-CONS-12"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_validate_rejects_period_mismatch",
+      "proves": [
+        "DC-CONS-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "opcert_validate_rejects_short_hot_vkey",
+      "proves": [
+        "DC-CONS-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "outbound_command_carries_typed_reply_not_raw_bytes",
+      "proves": [
+        "CN-OUTBOUND-RELAY-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "outbound_command_peer_accessor_returns_target_peer",
+      "proves": [
+        "CN-OUTBOUND-RELAY-01",
+        "CN-PEER-OUTBOUND-MAP-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_accepts_optional_metadata_fields",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_accepts_period_idx_boundary",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_malformed_json",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_malformed_seed_32_length",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_missing_seed_32",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_period_idx_overflow",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_unknown_format",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_unknown_load_bearing_field",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_unsupported_crypto",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_unsupported_format_version",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_uppercase_seed_hex",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_rejects_wrong_role",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_round_trips_at_nonzero_period",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parse_round_trips_serialize",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parser_anchor_is_deterministic",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "parser_is_byte_identical_across_two_runs",
+      "proves": [
+        "CN-OPCERT-01",
+        "DC-GENESIS-01",
+        "DC-OPCERT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing_event_trace",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing_real_capture_corpus::real_capture_round_trips_byte_identical",
+      "proves": [
+        "CN-WIRE-07",
+        "DC-PROTO-02",
+        "T-ENC-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing::transition::tests::client_done_terminates_session",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing::transition::tests::illegal_message_in_idle_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing::transition::tests::reply_exceeds_amount_returns_malformed",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing::transition::tests::share_request_then_empty_reply_is_legal",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing::transition::tests::share_request_then_full_reply_round_trips",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing::transition::tests::version_gating_rejects_out_of_version_message",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "peer_sharing::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "period_from_zeroed_sum6_tree_shape_agrees_with_update_kes_chain",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "period_from_zeroed_sum6_tree_shape_rejects_leaf_all_zero",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "persistent_passes_contract",
+      "proves": [
+        "CN-STORE-05",
+        "DC-STORE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "persistent_passes_crash_safety_with_no_kill",
+      "proves": [
+        "CN-STORE-03",
+        "DC-STORE-01",
+        "T-REC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "persistent_passes_snapshot_contract",
+      "proves": [
+        "CN-STORE-04",
+        "DC-STORE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "phase1_failure_short_circuits_phase2",
+      "proves": [
+        "DC-TXV-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "plutus_era_contiguous_smoke",
+      "proves": [
+        "DC-LEDGER-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "policy_does_not_change_validity",
+      "proves": [
+        "DC-MEM-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "pool_new_registration_charges_pool_deposit",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "pool_reregistration_is_neutral",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "positive_synthetic_cert_state_accumulates",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "positive_synthetic_gov_state_accumulates",
+      "proves": [
+        "DC-LEDGER-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "pparams_fingerprint_includes_conway_deposits_when_present",
+      "proves": [
+        "DC-TXV-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "pparams_fingerprint_stable_for_non_conway",
+      "proves": [
+        "DC-TXV-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "praos_malformed_kes_sig_rejected",
+      "proves": [
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "praos_malformed_vrf_proof_rejected",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "praos_vrf_keyhash_mismatch_rejected",
+      "proves": [
+        "CN-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "precise_boundary_comparison_eta_diagnosis",
+      "proves": [
+        "DC-LEDGER-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "preprod_corpus_translation_matches_oracle",
+      "proves": [
+        "DC-CONS-07",
+        "DC-CONS-08",
+        "DC-CONS-09",
+        "DC-EPOCH-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "preprod_parser_eras_match_corpus_oracle",
+      "proves": [
+        "DC-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "preserved_wire_bytes_returned_exactly",
+      "proves": [
+        "T-ENC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "produce_cli_requires_seed_and_consensus_inputs",
+      "proves": [
+        "CN-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "produce_mode_bootstrap_cold_start_seeds_real_ledger",
+      "proves": [
+        "CN-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "produce_mode_starts_runs_three_slots_and_exits_via_max_slots",
+      "proves": [
+        "CN-FORGE-01",
+        "DC-PROD-01",
+        "RO-LIVE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_block_fetch_serve_block_bytes_equal_accepted_block_as_bytes",
+      "proves": [
+        "DC-CONS-17"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_block_fetch_serve_replays_byte_identical_over_corpus",
+      "proves": [
+        "DC-PROTO-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_block_fetch_serve_request_range_empty_in_chain_yields_no_blocks",
+      "proves": [
+        "CN-SNAPSHOT-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_block_fetch_serve_request_range_outside_chain_yields_no_blocks",
+      "proves": [
+        "CN-SNAPSHOT-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_block_fetch_serve_request_range_with_origin_endpoint_yields_no_blocks",
+      "proves": [
+        "CN-SNAPSHOT-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_advance_tip_can_await_yields_none_when_cursor_at_head",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_advance_tip_can_await_yields_roll_forward_when_block_available",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_advance_tip_idle_yields_none",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_advance_tip_must_reply_yields_roll_forward_when_block_available",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_serve_done_terminates_session",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_serve_find_intersect_known_point_yields_intersect_found",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_serve_find_intersect_unknown_point_yields_intersect_not_found",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_serve_rejects_illegal_grammar_pair",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_serve_replays_byte_identical_over_corpus",
+      "proves": [
+        "DC-PROTO-07",
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_serve_request_next_idle_yields_await_reply_when_served_empty",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_serve_request_next_idle_yields_roll_forward_when_served_has_block",
+      "proves": [
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_chain_sync_serve_roll_forward_header_equals_accepted_block_header_bytes",
+      "proves": [
+        "DC-CONS-18",
+        "DC-PROTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "producer_full_path_under_slot_deadline_on_reference_fixture",
+      "proves": [
+        "OP-OPS-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "provenance_validation",
+      "proves": [
+        "DC-REF-01"
+      ],
+      "drift": true
+    },
+    {
+      "name": "raw_deserialize_signature_kes_rejects_wrong_payload_size",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "raw_deserialize_signing_key_kes_rejects_inconsistent_vk_left_at_level_6",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "raw_deserialize_signing_key_kes_rejects_inconsistent_vk_right_at_level_6",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "raw_deserialize_signing_key_kes_rejects_leaf_all_zero",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "raw_deserialize_signing_key_kes_rejects_wrong_payload_size",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "real_cert_withdrawal_txs_are_valid_at_track_utxo_true",
+      "proves": [
+        "DC-TXV-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "real_positive_verdict_stream_replays_byte_identical",
+      "proves": [
+        "DC-TXV-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_apply_block_delivered_validity_invalid_rejects",
+      "proves": [
+        "CN-CONS-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_apply_block_delivered_with_matching_header_admits",
+      "proves": [
+        "CN-CONS-07",
+        "CN-CONS-08",
+        "DC-CONS-13",
+        "DC-CONS-16",
+        "DC-CONS-19",
+        "DC-CONS-20"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_apply_block_delivered_with_mismatched_cached_header_rejects",
+      "proves": [
+        "DC-CONS-19"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_apply_block_delivered_with_no_cached_header_rejects",
+      "proves": [
+        "DC-CONS-19"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_apply_replay_byte_identical_over_corpus",
+      "proves": [
+        "CN-CONS-08",
+        "DC-PROTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_apply_rollback_returns_out_of_scope",
+      "proves": [
+        "CN-CONS-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_effect_round_trips_through_pattern_match",
+      "proves": [
+        "CN-PROTO-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_error_round_trips_through_pattern_match",
+      "proves": [
+        "CN-PROTO-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_event_round_trips_through_pattern_match",
+      "proves": [
+        "CN-PROTO-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_pipeline_corpus_drive_admits_every_block",
+      "proves": [
+        "RO-LIVE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_pipeline_corpus_drive_admitted_bytes_equal_corpus_bytes",
+      "proves": [
+        "DC-CONS-16",
+        "RO-LIVE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_pipeline_corpus_drive_chaindb_tip_matches_expected",
+      "proves": [
+        "RO-LIVE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_pipeline_corpus_drive_ledger_fingerprint_changes_on_admit",
+      "proves": [
+        "RO-LIVE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "receive_session_transcript_replay_byte_identical",
+      "proves": [
+        "DC-PROTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "recipe_output_is_byte_identical_across_two_runs",
+      "proves": [
+        "CN-KES-HEADER-01",
+        "DC-KES-HEADER-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "reconcile_verdicts_both_invalid_ok",
+      "proves": [
+        "DC-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "reconcile_verdicts_both_valid_ok",
+      "proves": [
+        "DC-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "reconcile_verdicts_reject_vs_valid_mismatches",
+      "proves": [
+        "DC-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "reconcile_verdicts_valid_vs_reject_mismatches",
+      "proves": [
+        "DC-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "recover_from_genesis_when_no_snapshot",
+      "proves": [
+        "DC-STORE-05",
+        "T-REC-01",
+        "T-REC-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "recover_from_snapshot_and_replay_forward",
+      "proves": [
+        "DC-STORE-05",
+        "T-REC-01",
+        "T-REC-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "regression_after_progression_rejected_with_typed_error",
+      "proves": [
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "regular_epoch_boundary_comparison",
+      "proves": [
+        "DC-LEDGER-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "reject_reason_bytes_are_stable",
+      "proves": [
+        "CN-CONS-01",
+        "CN-CONS-02",
+        "CN-CONS-05",
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rejects_empty_proposal_procedures_set",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rejects_invalid_stake_credential_in_update_committee",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rejects_trailing_garbage",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rejects_truncated_proposal_procedure",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rejects_unknown_gov_action_tag",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "removed_tag_5_6_is_not_valid_in_conway",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "removed_tag_rejects_as_era_invalid",
+      "proves": [
+        "DC-LEDGER-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "reopen_observes_committed_block",
+      "proves": [
+        "CN-STORE-05",
+        "DC-STORE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "replay_byte_identity_across_two_runs",
+      "proves": [
+        "DC-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "replay_is_deterministic",
+      "proves": [
+        "CN-CONS-01",
+        "CN-CONS-02",
+        "CN-CONS-05",
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "resolve_inputs_missing_input",
+      "proves": [
+        "DC-LEDGER-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_before_immutable_tip_rejected",
+      "proves": [
+        "DC-CONS-05",
+        "DC-CONS-06",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_branch_returns_rollback_too_deep_when_no_snapshot",
+      "proves": [
+        "DC-CONS-20"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_branch_returns_rolled_back_on_in_memory_snapshot",
+      "proves": [
+        "DC-CONS-20"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_branch_state_unchanged_on_materialize_failure",
+      "proves": [
+        "DC-CONS-20"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_equivalent_to_truncated_replay",
+      "proves": [
+        "DC-CONS-05",
+        "DC-CONS-06",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_event_bytes_are_stable",
+      "proves": [
+        "DC-CONS-05",
+        "DC-CONS-06",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_exceeding_k_rejected_with_typed_reason",
+      "proves": [
+        "DC-CONS-05",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_is_deterministic",
+      "proves": [
+        "DC-CONS-05",
+        "DC-CONS-06",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_then_continue_admit_equals_straight_line_admit",
+      "proves": [
+        "DC-CONS-20"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback_within_k_succeeds",
+      "proves": [
+        "DC-CONS-05",
+        "DC-CONS-06",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback::persistent_cache::tests::persistent_cache_capture_then_nearest_le_round_trips",
+      "proves": [
+        "DC-CONS-21"
+      ],
+      "drift": false
+    },
+    {
+      "name": "rollback::persistent_cache::tests::persistent_cache_matches_in_memory_cache_semantics",
+      "proves": [
+        "DC-CONS-21"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_chain_event_all_variants",
+      "proves": [
+        "DC-CONS-04",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_chain_selection_reject_all_variants",
+      "proves": [
+        "DC-CONS-04",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_empty_state",
+      "proves": [
+        "DC-CONS-04",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_genesis_state",
+      "proves": [
+        "DC-CONS-04",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_hard_fork_initiation",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_info_action_proposal",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_multi_procedure",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_new_constitution",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_no_confidence",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_parameter_change",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_populated_state",
+      "proves": [
+        "DC-CONS-04",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_treasury_withdrawals",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "roundtrip_update_committee",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "run_key_gen_kes_rejects_short_seed_file",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "run_key_gen_kes_writes_at_loaded_period",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "run_key_gen_kes_writes_loadable_envelope",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "run_real_forge_is_byte_identical_across_two_runs",
+      "proves": [
+        "CN-FORGE-01",
+        "DC-FORGE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "script_credential_certificate_not_a_vkey_signer",
+      "proves": [
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "script_credential_input_not_a_vkey_signer",
+      "proves": [
+        "DC-TXV-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "self_accept_accepts_freshly_forged_block",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "self_accept_rejects_corrupted_body_hash",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "self_accept_rejects_invalid_kes_signature",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "self_accept_rejects_unbalanced_tx_in_body",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "self_comparison_block_fields",
+      "proves": [
+        "DC-REF-01"
+      ],
+      "drift": true
+    },
+    {
+      "name": "serialize_does_not_leak_extra_fields",
+      "proves": [
+        "DC-CRYPTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_chain_admit_admits_corpus_block",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_chain_admit_idempotent_on_byte_identity",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_chain_admit_independent_of_order",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_chain_block_bytes_accessor_returns_accepted_block_slice",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_chain_fingerprint_replay_byte_identical",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_chain_range_bytes_returns_inclusive_window",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_chain_snapshot_iteration_is_btreemap_ordered",
+      "proves": [
+        "CN-CONS-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_snapshot_two_run_replay_byte_identical",
+      "proves": [
+        "DC-PROD-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "served_tip_is_closed_value_type",
+      "proves": [
+        "CN-SNAPSHOT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "session_transcript_announced_header_matches_served_body_recipe",
+      "proves": [
+        "DC-CONS-16",
+        "DC-CONS-18"
+      ],
+      "drift": false
+    },
+    {
+      "name": "session_transcript_replay_byte_identical",
+      "proves": [
+        "DC-PROTO-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "session_transcript_served_block_bytes_equal_admitted_accepted_block_bytes",
+      "proves": [
+        "DC-CONS-17"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shell_debug_redacts_secret_fields",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shell_init_rejects_kes_period_below_opcert_start",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shell_init_rejects_malformed_opcert_hot_vkey_length",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shell_kes_advance_to_evolves_key_one_way",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shell_kes_sign_at_current_period_succeeds_and_verifies",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shell_kes_sign_at_wrong_period_errors",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shell_kes_sign_header_produces_verifiable_signature",
+      "proves": [
+        "CN-KES-HEADER-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shelley_credential_preserves_discriminant",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shelley_determinism",
+      "proves": [
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "shelley_replay_all_1500",
+      "proves": [
+        "T-CONSERV-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "should_snapshot_after_block_every_n_returns_true_at_cadence",
+      "proves": [
+        "DC-STORE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "should_snapshot_after_block_is_pure",
+      "proves": [
+        "DC-STORE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "should_snapshot_after_block_returns_false_off_cadence",
+      "proves": [
+        "DC-STORE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "should_snapshot_after_block_returns_false_when_already_at_or_after_slot",
+      "proves": [
+        "DC-STORE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "signal_trace_synthetic_divergence_corpus",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "signature_over_wrong_body_rejected",
+      "proves": [
+        "DC-LEDGER-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "slot_missed_reason_serializes_to_stable_strings",
+      "proves": [
+        "DC-PROD-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "slot_tick_emits_request_forge_and_log",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot_cadence_default_is_100_blocks",
+      "proves": [
+        "DC-STORE-07"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot_decode_failure_surfaces_as_error",
+      "proves": [
+        "T-REC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot_table_intact_after_kill_loop",
+      "proves": [
+        "CN-STORE-03",
+        "DC-STORE-01",
+        "T-REC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot_with_no_post_blocks_is_ok",
+      "proves": [
+        "DC-STORE-05",
+        "T-REC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::cert_state::tests::cert_state_encode_deterministic_across_runs",
+      "proves": [
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::chain_dep::tests::chain_dep_encode_deterministic_across_runs",
+      "proves": [
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::epoch_state::tests::epoch_state_encode_deterministic_across_runs",
+      "proves": [
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::framing::tests::decode_rejects_fingerprint_mismatch",
+      "proves": [
+        "DC-STORE-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::framing::tests::decode_rejects_unknown_version",
+      "proves": [
+        "DC-STORE-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::framing::tests::round_trip_via_fingerprint_combined",
+      "proves": [
+        "DC-CONS-21",
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::framing::tests::snapshot_encode_deterministic_across_runs",
+      "proves": [
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::framing::tests::snapshot_round_trip",
+      "proves": [
+        "DC-CONS-21",
+        "DC-STORE-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::gov_state::tests::gov_state_encode_deterministic_across_runs",
+      "proves": [
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::gov_state::tests::pparams_encode_deterministic_across_runs",
+      "proves": [
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::ledger::tests::encode_then_decode_roundtrips_via_fingerprint",
+      "proves": [
+        "DC-CONS-21"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::ledger::tests::ledger_state_encode_deterministic_across_runs",
+      "proves": [
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshot::utxo_state::tests::utxo_state_encode_deterministic_across_runs",
+      "proves": [
+        "DC-STORE-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "snapshots_persist_across_reopen",
+      "proves": [
+        "CN-STORE-04",
+        "DC-STORE-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "stale_forge_result_after_new_tick_drops_with_slot_missed",
+      "proves": [
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "stress_kill_1000",
+      "proves": [
+        "CN-STORE-03",
+        "DC-STORE-01",
+        "T-REC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "stress_kill_smoke",
+      "proves": [
+        "CN-STORE-03",
+        "DC-STORE-01",
+        "T-REC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "stringly_int_emits_malformed_field_type",
+      "proves": [
+        "CN-GENESIS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum_signing_key_debug_is_redacted",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum0_kes_rejects_period_1",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum0_kes_signs_and_verifies_at_period_0",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum0_kes_update_expires_after_period_0",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum0_kes_verify_rejects_wrong_message",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum0_signing_key_debug_is_redacted",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum1_kes_signs_at_period_0_and_period_1",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_kes_chain_advances_through_all_64_periods",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_kes_seed_expansion_diverges_from_cardano_crypto_rust_1_0_8",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_kes_sign_rejects_period_64",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_kes_sizes_match_recurrence",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_kes_total_periods_is_64",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_kes_update_after_period_63_expires",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_kes_verify_rejects_wrong_period_signature",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_kes_vk_diverges_from_cardano_crypto_rust_for_same_seed",
+      "proves": [
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_raw_serialize_signature_kes_size_is_448",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_raw_serialize_signing_key_kes_size_is_608",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_signature_round_trip_at_every_period",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "sum6_skey_round_trip_at_every_period_0_to_63",
+      "proves": [
+        "DC-CRYPTO-09"
+      ],
+      "drift": false
+    },
+    {
+      "name": "synthetic_balanced_cert_withdrawal_txs_are_valid",
+      "proves": [
+        "DC-TXV-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "synthetic_positive_verdict_stream_replays_byte_identical",
+      "proves": [
+        "DC-TXV-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "synthetic_session_event_kinds_match_corpus",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "synthetic_session_final_state_matches_corpus",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "synthetic_session_replays_identically",
+      "proves": [
+        "DC-CONSENSUS-01",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "taylor_exp_cmp_le_monotone_in_x",
+      "proves": [
+        "T-CORE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "taylor_exp_cmp_le_x_equals_one_returns_true",
+      "proves": [
+        "T-CORE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "taylor_exp_cmp_le_zero_x_returns_false",
+      "proves": [
+        "T-CORE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tiebreaker_loss_keeps_current",
+      "proves": [
+        "CN-CONS-03",
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "trailing_bytes_after_cert_array_rejected",
+      "proves": [
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "transition_proof_surface",
+      "proves": [
+        "DC-EPOCH-02"
+      ],
+      "drift": true
+    },
+    {
+      "name": "translation_comparison_surface",
+      "proves": [
+        "DC-EPOCH-02"
+      ],
+      "drift": true
+    },
+    {
+      "name": "translation_summary_proof",
+      "proves": [
+        "DC-EPOCH-02"
+      ],
+      "drift": true
+    },
+    {
+      "name": "two_interleavings_replay_byte_identical",
+      "proves": [
+        "DC-MEM-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_id_uses_preserved_bytes",
+      "proves": [
+        "T-ENC-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::blocking_reply_empty_is_malformed",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::done_terminates_session",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::illegal_message_in_init_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::init_handshake_opens_session",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::reply_ids_overfill_is_malformed",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::reply_txs_overfill_is_malformed",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::request_blocking_ids_then_reply_round_trips",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::request_non_blocking_ids_with_empty_reply_round_trips",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::request_txs_empty_is_malformed",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::request_txs_then_reply_delivers_bytes_byte_identical",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::request_txs_with_partial_reply_legal",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::version_gating_rejects_out_of_version_message",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission::transition::tests::wrong_agency_returns_error",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_submission2_mempool_trace",
+      "proves": [
+        "DC-PROTO-01",
+        "DC-PROTO-02",
+        "DC-PROTO-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_validity_is_deterministic",
+      "proves": [
+        "DC-TXV-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "tx_verdict_stream_replays_identically",
+      "proves": [
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "unknown_cert_tag_is_codec_error",
+      "proves": [
+        "DC-TXV-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "unknown_credential_tag_rejects",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "unresolvable_collateral_input_is_fail_fast",
+      "proves": [
+        "DC-TXV-05",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "unresolvable_input_is_fail_fast",
+      "proves": [
+        "DC-TXV-05",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "unsigned_header_preimage_matches_decode_block_extraction_for_corpus",
+      "proves": [
+        "CN-KES-HEADER-01",
+        "CN-PREIMAGE-FIXTURE-01",
+        "DC-CONS-18"
+      ],
+      "drift": false
+    },
+    {
+      "name": "unsorted_input_canonicalizes_identically_to_sorted_input",
+      "proves": [
+        "DC-MEM-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "update_committee_decode_rejects_malformed",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "update_committee_decodes_removed_added_threshold",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "update_committee_keeps_stake_credential_discriminant",
+      "proves": [
+        "DC-LEDGER-11"
+      ],
+      "drift": false
+    },
+    {
+      "name": "update_committee_keyhash_scripthash_members_distinct",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "update_committee_structured_fields_change_fingerprint",
+      "proves": [
+        "DC-LEDGER-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "utxo_state_deterministic",
+      "proves": [
+        "DC-LEDGER-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "valid_block_evolves_both_states",
+      "proves": [
+        "DC-VAL-02",
+        "DC-VAL-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "valid_header_accepted_advances_state",
+      "proves": [
+        "CN-CONS-04",
+        "DC-CONS-04",
+        "DC-CONS-10"
+      ],
+      "drift": false
+    },
+    {
+      "name": "valid_tx_admitted_and_accumulates",
+      "proves": [
+        "DC-MEM-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "valid_tx_is_valid_and_applies",
+      "proves": [
+        "DC-TXV-02",
+        "DC-TXV-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "validate_replay_is_deterministic",
+      "proves": [
+        "CN-CONS-04",
+        "CN-CONS-05",
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "verdict_is_byte_identical_across_two_runs",
+      "proves": [
+        "CN-FORGE-02",
+        "DC-FORGE-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "verdict_stream_replays_identically",
+      "proves": [
+        "DC-VAL-04",
+        "T-DET-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "verify_kes_signature_agrees_with_existing_verify_kes",
+      "proves": [
+        "DC-CRYPTO-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "verify_vrf_cert_accepts_valid_proof",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "verify_vrf_cert_rejects_malformed_proof",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "verify_vrf_cert_rejects_wrong_alpha",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "version_negotiation_across_supported_table",
+      "proves": [
+        "DC-PROTO-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "view_is_pure",
+      "proves": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02",
+        "DC-VAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "view_returns_corpus_pool_stake_and_vrf_keyhash",
+      "proves": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02",
+        "DC-VAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "view_subscribe_creates_independent_receiver",
+      "proves": [
+        "CN-SNAPSHOT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "view_unknown_epoch_returns_none",
+      "proves": [
+        "CN-EPOCH-01",
+        "DC-CONSENSUS-02",
+        "DC-VAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "view_unknown_pool_returns_none",
+      "proves": [
+        "DC-CONSENSUS-02",
+        "DC-VAL-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "vrf_and_cold_cardano_cli_skey_envelopes_round_trip",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "vrf_ietf_draft03_section_a3",
+      "proves": [
+        "DC-CRYPTO-01"
+      ],
+      "drift": true
+    },
+    {
+      "name": "vrf_input_byte_layout",
+      "proves": [
+        "CN-CRYPTO-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "vrf_input_layout_is_41_bytes_with_correct_tag",
+      "proves": [
+        "CN-CRYPTO-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "vrf_input_mismatch_emits_structured_error",
+      "proves": [
+        "CN-FORGE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "vrf_output_fingerprint_is_first_8_bytes_of_output",
+      "proves": [
+        "CN-FORGE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "vrf_prove_matches_reference_vectors",
+      "proves": [
+        "DC-CRYPTO-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "vrf_prove_then_verify_round_trip",
+      "proves": [
+        "DC-CRYPTO-03"
+      ],
+      "drift": false
+    },
+    {
+      "name": "vrf_role_tags_match_convention",
+      "proves": [
+        "CN-CRYPTO-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "within_epoch_evolving_nonce_matches_corpus",
+      "proves": [
+        "DC-CONS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "witness_correct_key_wrong_body_rejected",
+      "proves": [
+        "CN-LEDGER-09",
+        "DC-LEDGER-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "witness_info_no_plutus",
+      "proves": [
+        "DC-LEDGER-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "witness_info_plutus_detection",
+      "proves": [
+        "DC-LEDGER-05"
+      ],
+      "drift": false
+    },
+    {
+      "name": "write_ade_kes_envelope_sets_0600_permissions",
+      "proves": [
+        "OP-OPS-04"
+      ],
+      "drift": false
+    },
+    {
+      "name": "wrong_arity_envelope_emits_malformed_cbor",
+      "proves": [
+        "CN-OPCERT-01"
+      ],
+      "drift": false
+    },
+    {
+      "name": "wrong_size_signature_rejected",
+      "proves": [
+        "DC-LEDGER-05",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "wrong_size_vkey_rejected",
+      "proves": [
+        "DC-LEDGER-05",
+        "DC-VAL-06"
+      ],
+      "drift": false
+    },
+    {
+      "name": "wrong_vk_emits_verification_failed",
+      "proves": [
+        "CN-FORGE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "zero_stake_answer_emits_forge_not_leader",
+      "proves": [
+        "CN-FORGE-01",
+        "CN-FORGE-02",
+        "CN-PROD-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "zero_stake_denominator_emits_structured_error",
+      "proves": [
+        "CN-FORGE-02"
+      ],
+      "drift": false
+    },
+    {
+      "name": "zeroizing_seed_drop_overwrites_bytes",
+      "proves": [
+        "DC-CRYPTO-05",
+        "DC-CRYPTO-08"
+      ],
+      "drift": false
+    }
+  ]
+}

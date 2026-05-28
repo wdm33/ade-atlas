@@ -1,0 +1,925 @@
+{
+  "schema_version": "0.1.0",
+  "generated_at": "2026-05-28",
+  "referenced_count": 88,
+  "declared_total": 97,
+  "checks": [
+    {
+      "name": "ci_check_admission_log_vocabulary_closed.sh",
+      "enforces": [
+        "DC-ADMIT-04",
+        "DC-ADMIT-10"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_admission_no_red_verdicts.sh",
+      "enforces": [
+        "DC-PUMP-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_admission_no_refscript_skip.sh",
+      "enforces": [
+        "CN-ADMIT-02",
+        "DC-ADMIT-09"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_admission_runner_closure.sh",
+      "enforces": [
+        "CN-ADMIT-01",
+        "DC-ADMIT-02",
+        "DC-ADMIT-03",
+        "DC-ADMIT-05"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_admission_wire_pump_closure.sh",
+      "enforces": [
+        "CN-PUMP-01",
+        "DC-ADMIT-12",
+        "DC-PUMP-01",
+        "DC-PUMP-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_admit_replay_equivalence.sh",
+      "enforces": [
+        "DC-ADMIT-07"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_admitted_block_closure.sh",
+      "enforces": [
+        "CN-CONS-07",
+        "CN-CONS-08",
+        "CN-PROTO-07"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_adversarial_false_accept_corpus.sh",
+      "enforces": [
+        "DC-EVIDENCE-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_block_fetch_server_closure.sh",
+      "enforces": [
+        "DC-CONS-17",
+        "DC-PROTO-07"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_bootstrap_anchor_closure.sh",
+      "enforces": [
+        "CN-ANCHOR-01",
+        "DC-ANCHOR-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_bootstrap_closure.sh",
+      "enforces": [
+        "CN-NODE-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_broadcast_to_served_purity.sh",
+      "enforces": [
+        "DC-CONS-17",
+        "DC-CONS-18",
+        "DC-PROTO-07"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_cbor_round_trip.sh",
+      "enforces": [
+        "T-ENC-03"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_chain_sync_server_closure.sh",
+      "enforces": [
+        "DC-PROTO-07",
+        "DC-PROTO-08"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_chaindb_contract.sh",
+      "enforces": [
+        "CN-STORE-04",
+        "CN-STORE-05",
+        "DC-STORE-02",
+        "DC-STORE-03"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_chaindb_crash_safety.sh",
+      "enforces": [
+        "CN-STORE-03",
+        "DC-STORE-01",
+        "T-REC-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_clock_seam.sh",
+      "enforces": [
+        "DC-NODE-03",
+        "DC-SESS-05"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_consensus_closed_enums.sh",
+      "enforces": [
+        "CN-CONS-02",
+        "DC-CONS-03",
+        "DC-CONS-04",
+        "DC-CONS-05",
+        "DC-CONS-06",
+        "DC-CONS-09",
+        "DC-CONS-10",
+        "DC-CONSENSUS-01",
+        "DC-MEM-01",
+        "DC-MEM-02",
+        "DC-TXV-01",
+        "DC-TXV-02",
+        "DC-TXV-03",
+        "DC-TXV-04",
+        "DC-TXV-05",
+        "DC-VAL-01",
+        "DC-VAL-02",
+        "DC-VAL-03",
+        "DC-VAL-04",
+        "DC-VAL-05",
+        "DC-VAL-06",
+        "T-DET-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_constitution_coverage.sh",
+      "enforces": [
+        "T-CI-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_conway_cert_classification_closed.sh",
+      "enforces": [
+        "DC-TXV-06"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_credential_discriminant_closed.sh",
+      "enforces": [
+        "DC-EPOCH-01",
+        "DC-LEDGER-10"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_crypto_vectors.sh",
+      "enforces": [
+        "DC-CRYPTO-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_dependency_boundary.sh",
+      "enforces": [
+        "T-BOUND-02",
+        "T-CORE-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_deposit_param_authority.sh",
+      "enforces": [
+        "DC-TXV-07"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_differential_divergence.sh",
+      "enforces": [
+        "DC-LEDGER-02",
+        "DC-LEDGER-03",
+        "T-CONSERV-01",
+        "T-NOSPEND-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_forbidden_patterns.sh",
+      "enforces": [
+        "DC-LEDGER-08",
+        "T-CORE-01",
+        "T-CORE-02",
+        "T-DET-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_forge_decode_round_trip.sh",
+      "enforces": [
+        "CN-FORGE-03"
+      ],
+      "clusters": [
+        "N-V"
+      ],
+      "scope": "CN-FORGE-03 — `decode_block(forge_block(tick).bytes)` is `Ok`; forge output is the enveloped `[era, block]` form.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_forge_purity.sh",
+      "enforces": [
+        "DC-CONS-13",
+        "DC-CONS-14",
+        "DC-CONS-15",
+        "DC-LEDGER-12"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_gov_cert_accumulation_closed.sh",
+      "enforces": [
+        "DC-LEDGER-09"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_handshake_closure.sh",
+      "enforces": [
+        "CN-SESS-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_hash_uses_wire_bytes.sh",
+      "enforces": [
+        "T-ENC-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_hfc_translation.sh",
+      "enforces": [
+        "DC-EPOCH-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_kes_envelope_closed.sh",
+      "enforces": [
+        "DC-CRYPTO-06",
+        "DC-CRYPTO-07",
+        "OP-OPS-04"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_kes_sum_compatibility.sh",
+      "enforces": [
+        "DC-CRYPTO-04",
+        "DC-CRYPTO-05",
+        "DC-CRYPTO-07",
+        "DC-CRYPTO-08",
+        "DC-CRYPTO-09",
+        "OP-OPS-04"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_lagging_is_evidence_only.sh",
+      "enforces": [
+        "DC-ADMIT-01",
+        "DC-ADMIT-06",
+        "DC-ADMIT-08"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_leader_check_authority.sh",
+      "enforces": [
+        "CN-FORGE-02"
+      ],
+      "clusters": [
+        "N-R-A"
+      ],
+      "scope": "CN-FORGE-02 — BLUE leader-check has no LedgerView/EraSchedule/RED dep; never sees private keys; closed `LeaderCheckVerdict`.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_ledger_determinism.sh",
+      "enforces": [
+        "DC-LEDGER-01",
+        "DC-LEDGER-02",
+        "T-DET-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_live_consensus_inputs_closure.sh",
+      "enforces": [
+        "CN-CONS-IN-01",
+        "DC-CONS-IN-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_live_consensus_inputs_fingerprint.sh",
+      "enforces": [
+        "CN-CONS-IN-01",
+        "DC-CONS-IN-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_live_ledger_view_epoch_window.sh",
+      "enforces": [
+        "DC-ADMIT-10",
+        "DC-ADMIT-11",
+        "DC-VIEW-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_live_operator_pass_scaffold.sh",
+      "enforces": [
+        "DC-EVIDENCE-01",
+        "RO-LIVE-05"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_mempool_ingress_closure.sh",
+      "enforces": [
+        "DC-MEM-03"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_mempool_ingress_replay.sh",
+      "enforces": [
+        "DC-MEM-04"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_mini_protocol_id_registry_closed.sh",
+      "enforces": [
+        "DC-SESS-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_mux_frame_closure.sh",
+      "enforces": [
+        "CN-SESS-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_async_in_blue.sh",
+      "enforces": [
+        "DC-CORE-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_chaindb_in_consensus_blue.sh",
+      "enforces": [
+        "DC-CONS-03",
+        "DC-CONS-05",
+        "DC-CONS-07",
+        "DC-CONSENSUS-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_density_in_fork_choice.sh",
+      "enforces": [
+        "CN-CONS-01",
+        "CN-CONS-02",
+        "CN-CONS-03",
+        "CN-CONS-05",
+        "DC-CONS-03",
+        "DC-CONSENSUS-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_float_in_consensus.sh",
+      "enforces": [
+        "CN-CONS-05",
+        "DC-CONS-03",
+        "DC-CONS-08",
+        "T-CORE-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_independent_forge_codepath.sh",
+      "enforces": [],
+      "clusters": [
+        "N-V"
+      ],
+      "scope": "CN-FORGE-03 — single forge codepath; no parallel block serializer.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_parallel_header_splitter.sh",
+      "enforces": [
+        "CN-PROTO-06",
+        "DC-CONS-16",
+        "DC-CONS-18"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_private_keys_in_corpus.sh",
+      "enforces": [
+        "DC-CONS-14"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_produce_mode_direct_transport_writes.sh",
+      "enforces": [
+        "CN-OUTBOUND-RELAY-01"
+      ],
+      "clusters": [
+        "N-S-B"
+      ],
+      "scope": "CN-OUTBOUND-RELAY-01 — `produce_mode` emits bytes only via `OutboundCommand` → `MuxPump`; no direct transport write.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_producer_body_encoder.sh",
+      "enforces": [
+        "DC-CONS-16"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_semantic_cfg.sh",
+      "enforces": [
+        "T-BUILD-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_no_signing_in_blue.sh",
+      "enforces": [
+        "DC-CRYPTO-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_node_binary_uses_single_bootstrap.sh",
+      "enforces": [
+        "DC-NODE-04"
+      ],
+      "clusters": [],
+      "scope": "Re-scoped from \"exactly one call site in the whole crate\" to \"every production `.rs` file calls `bootstrap_initial_state` at most once (no double-bootstrap per path) AND the crate calls it at least once (authority actually used)\" — accommodating produce mode as a second legitimate startup path. Enforces CN-NODE-01.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_node_mode_closure.sh",
+      "enforces": [],
+      "clusters": [
+        "N-Q"
+      ],
+      "scope": "closed `ade_node` mode set.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_opcert_closed.sh",
+      "enforces": [
+        "DC-CONS-11",
+        "DC-CONS-12"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_operator_evidence_manifest_schema.sh",
+      "enforces": [
+        "CN-OPERATOR-EVIDENCE-01"
+      ],
+      "clusters": [
+        "N-S-C"
+      ],
+      "scope": "CN-OPERATOR-EVIDENCE-01 — closed evidence-manifest TOML schema + peer-log SHA256 cross-check.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_peer_session_isolation.sh",
+      "enforces": [
+        "DC-NODE-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_persistent_writer_no_parallel_cadence.sh",
+      "enforces": [
+        "DC-NODE-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_private_key_custody.sh",
+      "enforces": [
+        "DC-CRYPTO-03",
+        "DC-CRYPTO-04",
+        "DC-CRYPTO-05",
+        "DC-CRYPTO-08",
+        "OP-OPS-04"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_produce_mode_uses_bootstrap_initial_state.sh",
+      "enforces": [
+        "CN-NODE-01",
+        "CN-PROD-02",
+        "CN-PROD-03"
+      ],
+      "clusters": [
+        "N-T"
+      ],
+      "scope": "CN-NODE-01 / N-T — produce_mode obtains initial state only via `bootstrap_initial_state`.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_producer_coordinator_no_secrets.sh",
+      "enforces": [
+        "CN-FORGE-01",
+        "CN-PROD-02"
+      ],
+      "clusters": [
+        "N-Q"
+      ],
+      "scope": "CN-PROD-02 — GREEN coordinator never owns/stores private signing material.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_producer_corpus_present.sh",
+      "enforces": [
+        "CN-CONS-06"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_proposal_procedures_closed.sh",
+      "enforces": [
+        "DC-LEDGER-11"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_receive_paths_corpus_present.sh",
+      "enforces": [
+        "RO-LIVE-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_receive_reducer_closure.sh",
+      "enforces": [
+        "CN-CONS-07",
+        "CN-CONS-08",
+        "DC-CONS-13",
+        "DC-CONS-16",
+        "DC-CONS-19",
+        "DC-CONS-20",
+        "DC-PROTO-09"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_receive_replay_purity.sh",
+      "enforces": [
+        "DC-PROTO-09"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_recovery_contract.sh",
+      "enforces": [
+        "DC-STORE-05",
+        "T-REC-01",
+        "T-REC-02"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_ref_provenance.sh",
+      "enforces": [
+        "DC-REF-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_rollback_materialize_closure.sh",
+      "enforces": [
+        "CN-STORE-07",
+        "DC-CONS-20",
+        "DC-CONS-22"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_scheduler_closure.sh",
+      "enforces": [
+        "OP-OPS-05"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_seed_import_closure.sh",
+      "enforces": [
+        "CN-SEED-01",
+        "DC-SEED-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_seed_import_full_preprod_support.sh",
+      "enforces": [
+        "CN-SEED-01",
+        "DC-SEED-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_self_accept_gate.sh",
+      "enforces": [
+        "CN-CONS-07"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_served_chain_closure.sh",
+      "enforces": [
+        "CN-CONS-07"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_server_paths_corpus_present.sh",
+      "enforces": [
+        "RO-LIVE-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_session_core_closure.sh",
+      "enforces": [
+        "CN-SESS-03",
+        "DC-SESS-01",
+        "DC-SESS-03"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_session_no_unbounded.sh",
+      "enforces": [
+        "DC-SESS-04"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_session_proto_reassembly.sh",
+      "enforces": [
+        "CN-SESS-04",
+        "DC-SESS-06"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_snapshot_cadence_purity.sh",
+      "enforces": [
+        "DC-STORE-07"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_snapshot_encoder_closure.sh",
+      "enforces": [
+        "CN-STORE-08",
+        "DC-CONS-21",
+        "DC-STORE-08",
+        "DC-STORE-09"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_unsigned_header_preimage_single_source.sh",
+      "enforces": [
+        "CN-KES-HEADER-01",
+        "DC-CONS-18"
+      ],
+      "clusters": [
+        "N-S-A"
+      ],
+      "scope": "CN-KES-HEADER-01 / DC-KES-HEADER-01 — single canonical pre-image recipe; branded `UnsignedHeaderPreImage`; pure.",
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_wal_append_only.sh",
+      "enforces": [
+        "CN-WAL-01",
+        "DC-ADMIT-05",
+        "DC-WAL-01"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_wire_only_event_vocabulary_closed.sh",
+      "enforces": [
+        "RO-LIVE-04"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    },
+    {
+      "name": "ci_check_wire_only_no_bootstrap.sh",
+      "enforces": [
+        "RO-LIVE-04"
+      ],
+      "clusters": [],
+      "scope": null,
+      "on_disk": null
+    }
+  ]
+}

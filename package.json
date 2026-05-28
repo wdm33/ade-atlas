@@ -1,0 +1,38 @@
+{
+  "name": "ade-atlas",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "description": "Interactive authority, invariant, and enforcement map for the replay-first Cardano node",
+  "scripts": {
+    "build:data": "tsx tools/parser/src/index.ts",
+    "build:data:check": "tsx tools/parser/src/index.ts --strict",
+    "dev": "astro dev",
+    "build": "npm run build:data && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --import tsx --test tools/parser/test/*.test.ts"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.2.0",
+    "astro": "^5.5.0",
+    "fuse.js": "^7.0.0",
+    "marked": "^15.0.12",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/node": "^22.13.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "smol-toml": "^1.3.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
+    "zod": "^3.24.0"
+  }
+}

@@ -1,0 +1,68 @@
+---
+import Base from "../../layouts/Base.astro";
+import ColorBadge from "../../components/ColorBadge.astro";
+import DependencyGraph from "../../components/DependencyGraph.tsx";
+import Markdown from "../../components/Markdown.astro";
+import { codemap, modulesByColor, graphData, moduleSlug, COLOR_ORDER, withBase } from "../../lib/site-data.ts";
+
+const groups = modulesByColor();
+const { nodes, edges } = graphData();
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const colorBlurb: Record<string, string> = {
+  BLUE: "Deterministic, authoritative core — pure transitions, no I/O.",
+  GREEN: "Deterministic glue — may depend on BLUE, must not affect authoritative outputs.",
+  RED: "Imperative shell — I/O, network, storage, clocks, keys.",
+};
+---
+
+<Base active="modules" title="Architecture Map" description="Modules by TCB color, dependency graph, and authority boundaries.">
+  <h1>Architecture Map</h1>
+  <p class="lede">
+    {codemap.modules.length} module entries across {codemap.counts.crates} workspace crates,
+    grouped by TCB color. Dependencies flow inward only — RED → GREEN → BLUE, never outward.
+  </p>
+
+  <h2>Dependency graph</h2>
+  <DependencyGraph client:load nodes={nodes} edges={edges} basePath={base} />
+
+  {COLOR_ORDER.map((color) => (
+    <section>
+      <h2><ColorBadge color={color} /> &nbsp;{color} modules <span class="faint" style="font-size:0.8rem;font-weight:400">— {groups[color].length}</span></h2>
+      <p class="muted" style="margin-top:-0.4rem">{colorBlurb[color]}</p>
+      <div class="grid cols-2">
+        {groups[color].map((m) => (
+          <a class="card" href={withBase(`/modules/${moduleSlug(m.kind === "subtree" && m.parent ? m.parent : m.name)}`)} style="display:block">
+            <div class="pill-row" style="justify-content:space-between">
+              <strong class="mono">{m.name}</strong>
+              <span class="badge fam">{m.kind}</span>
+            </div>
+            {m.kind === "subtree" && m.parent && <div class="faint" style="font-size:0.78rem">in {m.parent}</div>}
+            {m.note && <div class="faint" style="font-size:0.78rem;margin:0.2rem 0">{m.note}</div>}
+            {m.attributes["Purpose"] && (
+              <div class="muted" style="font-size:0.85rem;margin-top:0.35rem">
+                <Markdown text={(m.attributes["Purpose"].length > 180 ? m.attributes["Purpose"].slice(0, 180) + "…" : m.attributes["Purpose"])} />
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  {codemap.closed_surfaces.length > 0 && (
+    <section>
+      <h2>Closed semantic surfaces</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Surface</th><th>Location</th></tr></thead>
+          <tbody>
+            {codemap.closed_surfaces.map((c) => (
+              <tr><td class="mono">{c.name}</td><td><Markdown text={c.location} /></td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+</Base>

@@ -1,0 +1,9 @@
+---
+interface Props {
+  status: string | null;
+}
+const { status } = Astro.props;
+const s = (status ?? "declared").toLowerCase();
+const known = ["enforced", "partial", "declared", "deprecated"].includes(s) ? s : "declared";
+---
+<span class={`badge ${known}`}>{status ?? "declared"}</span>

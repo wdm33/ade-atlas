@@ -1,0 +1,65 @@
+---
+import "../styles/global.css";
+import { manifest, withBase } from "../lib/site-data.ts";
+
+interface Props {
+  title?: string;
+  description?: string;
+  active?: string;
+}
+const { title, description, active } = Astro.props;
+const fullTitle = title ? `${title} · Ade Atlas` : "Ade Atlas";
+
+const nav = [
+  { key: "home", label: "Dashboard", href: "/" },
+  { key: "modules", label: "Modules", href: "/modules" },
+  { key: "seams", label: "Seams", href: "/seams" },
+  { key: "invariants", label: "Invariants", href: "/invariants" },
+  { key: "deltas", label: "Deltas", href: "/deltas" },
+  { key: "clusters", label: "Clusters", href: "/clusters" },
+  { key: "enforcement", label: "Enforcement", href: "/enforcement" },
+  { key: "certification", label: "Certification", href: "/certification" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href={withBase("/")}>Ade<span>Atlas</span></a>
+        <nav class="nav">
+          {nav.map((n) => (
+            <a href={withBase(n.href)} class={active === n.key ? "active" : ""}>{n.label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <span>Read-only projection of the ade repo · regenerated, not authoritative.</span>
+        <span>HEAD <code>{manifest.repo_head}</code></span>
+        <span>docs {manifest.docs_generated_at}</span>
+        <span>mode <code>{manifest.mode}</code></span>
+        <span>
+          drift {manifest.drift.hard} hard / {manifest.drift.soft} soft
+        </span>
+        <span>schema {manifest.schema_version}</span>
+      </div>
+    </footer>
+  </body>
+</html>

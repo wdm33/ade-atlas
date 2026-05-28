@@ -1,0 +1,22 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "baseUrl": ".",
+    "paths": {
+      "@data/*": ["site-data/*"],
+      "@parser/*": ["tools/parser/src/*"],
+      "@components/*": ["src/components/*"],
+      "@lib/*": ["src/lib/*"]
+    }
+  },
+  "include": ["src", "tools", "*.ts", "*.mjs", ".astro/types.d.ts"],
+  "exclude": ["dist", "node_modules"]
+}

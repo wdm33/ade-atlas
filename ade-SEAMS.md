@@ -1,0 +1,365 @@
+# Seams — Where New Work Can Attach (Ade)
+
+> **Status:** Living architectural document. Regenerated; not hand-edited.
+> Per-project instance of `~/.claude/methodology/templates/seams.md`.
+
+> 11 crates, **444 canonical types**, **97 CI checks** at HEAD (`22eef90`, post-PHASE4-N-V).
+> Reads CODEMAP (`docs/ade-CODEMAP.md`, regenerated at the same HEAD) for the module
+> list + TCB colors, and the invariant registry (`docs/ade-invariant-registry.toml` —
+> **291 entries**) for the rule IDs that gate each closed surface.
+>
+> **This regeneration is a FULL seams map at HEAD, not a delta refresh.** It supersedes
+> the stale PHASE4-N-P SEAMS (HEAD `d6f3399`); the prior doc's "N-P-scope-narrow" caveat
+> is **retired** — every producer/network/node surface shipped since is classified below.
+> The six clusters closed since the prior anchor are folded in:
+> **N-Q** (live producer-mode composition surface), **N-R-A/B/C** (real forge composition
+> + served snapshot + per-peer dispatch + bounty-artifact parsers), **N-S-A/B/C**
+> (KES-signs-real-unsigned-header pre-image + typed outbound relay + operator-evidence
+> schema), **N-T** (`ChainEvolution` linear typestate + real-bootstrap forge base), and
+> **N-V** (canonical block-envelope **encoder** — forge output round-trips through
+> `decode_block`). The N-Q/N-R/N-S cluster docs remain under `docs/clusters/`; N-T and
+> N-V are archived under `docs/clusters/completed/`.
+
+---
+
+## 1. Surface Reduction Rules
+
+> External inputs reduce to canonical form before entering authoritative pipelines. Ade
+> is a Cardano node, not a request/response service — its "external surfaces" are the
+> N2N/N2C wire, operator-supplied key/genesis/opcert files, the cardano-cli UTxO seed
+> dump, and argv. Each reduces to a canonical BLUE type before any authoritative
+> transition. There is **no HTTP/gRPC/message-bus ingress**; the search for those
+> patterns returned nothing (confirmed absent — not a gap).
+
+### Surface: N2N inbound wire (received blocks/headers/txs)
+
+```
+Surface: N2N mini-protocol traffic over TCP+mux (RED ade_runtime::network::{n2n_listener, mux_pump, n2n_dialer})
+Reduces to: decoded mini-protocol messages → PreservedCbor<T> → DecodedBlock (BLUE ade_codec)
+Pipeline (fixed; steps may not be reordered or shortcut):
+  1. mux::frame::decode_frame                      (BLUE — single frame-decode authority)
+  2. session::core::step                           (GREEN — partial-frame buffer + payload reassembly + closed AcceptedMiniProtocol registry)
+  3. per-mini-protocol *_transition reducer        (BLUE — chain_sync / block_fetch / etc.)
+  4. ade_codec decode_block_envelope / decode_*    (BLUE — sole PreservedCbor construction site)
+  5. ade_ledger::receive::reducer / mempool_ingress (BLUE — header→body bridge / wire-ingress chokepoint)
+  6. block_validity / tx_validity / admission       (BLUE verdict; GREEN admission compares already-authoritative outputs)
+Cross-surface state sharing: the served ServedChainSnapshot (read by both serve and broadcast paths);
+  the per-peer outbound map (PerPeerOutbound) is keyed by PeerId — no cross-peer byte leakage.
+```
+
+### Surface: producer-mode forge → serve → broadcast (the live producer half)
+
+```
+Surface: --mode produce slot loop (RED ade_node::produce_mode + GREEN producer::coordinator)
+Reduces to: ForgedBlock → AcceptedBlock (BLUE self_accept) → ServedChainSnapshot
+Pipeline (fixed; the BLUE-then-RED-then-BLUE composition of run_real_forge):
+  1. bootstrap_initial_state                        (RED/GREEN — sole forge-state source; N-T)
+  2. RED vrf_prove                                  (operator VRF key; RED-confined)
+  3. BLUE verify_and_evaluate_leader → LeaderCheckVerdict  (ade_core::consensus::leader_check; N-R-A)
+  4. RED kes_sign_header(UnsignedHeaderPreImage)    (signs ONLY the branded pre-image; N-S-A)
+  5. GREEN assemble_tick
+  6. BLUE forge_block → encode_block_envelope       (single canonical block encoder; N-V)
+  7. BLUE self_accept                               (gate — no ForgeSucceeded without Accepted)
+  8. ChainEvolution::advance(self)                  (GREEN linear typestate; token only via self_accept; N-T)
+  9. ServedChainHandle::push_atomic                 (single served-admit authority; N-R-B/N-T)
+ 10. OutboundCommand → MuxPump                      (typed relay; no byte tunnel; N-S-B)
+Cross-surface state sharing: ChainEvolution threads each forge's post-state into the next
+  forge's base (advance consumes self — a stale base is unrepresentable); ServedChainSnapshot
+  is shared with the N2N serve path; the per-peer outbound map is shared with the listener.
+```
+
+### Surface: operator file ingress (KES skey / opcert / Shelley genesis / UTxO seed dump)
+
+```
+Surface: operator-supplied files (RED ade_runtime::producer::{keys, opcert_envelope, genesis_parser}, seed_import)
+Reduces to: Sum6Kes signing key (via BLUE deserializer) / OperationalCert / GenesisAnchor / canonical seed entries
+Pipeline:
+  1. RED parse text/JSON/CBOR envelope               (closed parser per file type; structured fail-closed error)
+  2. BLUE structural validator                       (e.g. Sum6Kes::raw_deserialize_signing_key_kes — byte layout is the validator)
+  3. canonical type handed to the BLUE core          (never raw bytes)
+Cross-surface state sharing: GenesisAnchor + opcert public metadata feed the producer coordinator;
+  KES/VRF/cold private material is RED-confined and never enters GREEN CoordinatorState.
+```
+
+### Surface: argv (closed mode set)
+
+```
+Surface: command line (RED ade_node::cli — Cli / ProduceCli)
+Reduces to: a closed mode enum {produce, admission, wire-only, key-gen-KES} (ci_check_node_mode_closure.sh)
+Pipeline: argv → Cli → mode driver. --mode produce requires --json-seed + --consensus-inputs.
+Cross-surface state sharing: none.
+```
+
+**Rule:** New ingress attaches by producing the canonical BLUE type's bytes and entering
+the **same** pipeline. A new mini-protocol attaches through `session::core::step` + a BLUE
+`*_transition` reducer + a closed `AcceptedMiniProtocol` registry entry — never by a back
+door into the core. A new operator file type attaches as a RED parser feeding a BLUE
+structural validator. New ingress **may not** introduce a second `PreservedCbor`
+construction site, a second block-envelope encoder, or a direct-transport write that
+bypasses `OutboundCommand`.
+
+---
+
+## 2. Data-Only vs. Authoritative Layers
+
+### Domain: block codec (decode + encode)
+
+| Layer | Module | Color | Role |
+|-------|--------|-------|------|
+| **Authoritative ingress** | `ade_codec::cbor::envelope::decode_block_envelope` + the per-era `decode_*_block` | BLUE | Sole `PreservedCbor` construction site; the only place raw bytes become typed semantic values. |
+| **Authoritative egress (NEW, N-V)** | `ade_codec::cbor::envelope::encode_block_envelope` | BLUE | The **single** block-envelope **encoder**, inverse-symmetric to the decoder. Emits the era-tagged `[era, block]` form (Conway = discriminant 7, head `82 07`). |
+| **Producer consumer** | `ade_ledger::producer::forge::forge_block` | BLUE | Wraps forged output via `encode_block_envelope` so `decode_block(forge_block(tick).bytes)` is `Ok`. |
+
+**Rule (CN-FORGE-03):** the workspace has **one** block-envelope grammar in both directions.
+The producer (forge) and the validator (receive) share it: forge output round-trips through
+the same `decode_block` authority that validates received blocks. A second/parallel block
+serializer is CI-gated impossible (`ci_check_no_independent_forge_codepath.sh`,
+`ci_check_forge_decode_round_trip.sh`). New era support adds a `decode_*_block` arm + an
+`encode_block_envelope` discriminant; **the encode/decode chokepoint pair never moves.**
+
+### Domain: KES signing-key custody
+
+| Layer | Module | Color | Role |
+|-------|--------|-------|------|
+| **Data-only loader** | `ade_runtime::producer::keys::load_kes_signing_key_skey` | RED | Reads the 608-byte cardano-cli skey envelope from disk. |
+| **Authoritative deserializer** | `ade_crypto::kes_sum::Sum6Kes::raw_deserialize_signing_key_kes` | BLUE | Byte layout is the structural validator; the only path from bytes to a signing key. |
+| **Authoritative algorithm** | `ade_crypto::kes_sum` (`KesAlgorithm` trait, `Sum6Kes`) | BLUE | Ade-native Sum6KES, byte-identical to Haskell `cardano-base`. |
+| **Signing operation** | `ade_runtime::producer::signing` / `producer_shell::kes_sign_header` | RED | Sole key-custody surface; signs only the branded `UnsignedHeaderPreImage`. |
+
+**Rule:** the RED loader **may not** call `KesSecret::from_bytes_zeroizing` /
+`from_seed_at_period` inside `load_kes_signing_key_skey` — only the BLUE deserializer path
+(`ci_check_kes_envelope_closed.sh` Guard 2). Signing is RED-confined; BLUE never signs
+(`ci_check_no_signing_in_blue.sh`).
+
+### Domain: leader eligibility (RED/BLUE split)
+
+| Layer | Module | Color | Role |
+|-------|--------|-------|------|
+| **VRF proof producer** | `ade_node::produce_mode` (`run_real_forge` step 2) | RED | Produces the VRF proof/output for the slot using the operator's VRF key. |
+| **Authoritative evaluator** | `ade_core::consensus::leader_check::verify_and_evaluate_leader` | BLUE | Verifies the proof + evaluates eligibility from canonical inputs only; emits the closed `LeaderCheckVerdict`. |
+
+**Rule (CN-FORGE-02):** BLUE **never** sees the VRF/KES/cold signing keys. The BLUE
+evaluator has **no** dependency on `LedgerView`, `EraSchedule`, `ChainDepState`, wall-clock,
+storage, or any RED crate. The caller derives `LeaderScheduleAnswer` via the authority path
+(`query_leader_schedule`) and passes it in. `ci_check_leader_check_authority.sh` enforces the
+import allow-list. New leader-eligibility logic adds to the BLUE evaluator; the RED/BLUE split
+never moves.
+
+### Domain: forged-block serving (data-only serve vs. authoritative admit)
+
+| Layer | Module | Color | Role |
+|-------|--------|-------|------|
+| **Authoritative admit** | `ade_ledger::producer::served_chain::served_chain_admit` | BLUE | The sole entry path into the served index; only self-accepted blocks may be admitted (CN-PROD-04). |
+| **Atomic publisher** | `ade_runtime::producer::served_chain_handle::push_atomic` | RED (GREEN-by-content glue) | Wraps `served_chain_admit` inside a `watch::Sender::send_modify` closure — no torn snapshot (CN-SNAPSHOT-01). |
+| **Read-side serve** | `ade_network::block_fetch::server::producer_block_fetch_serve` | BLUE | Serves a `RequestRange` only if both endpoints + every block between are present, else `NoBlocks` (CN-SNAPSHOT-02). |
+
+**Rule:** a forged block is visible to peers only **after** `push_atomic` succeeds; the
+read-side serve is data-only over the BLUE `ServedChainSnapshot`. New serve logic reads the
+snapshot; it never admits.
+
+---
+
+## 3. Closed vs. Extensible Registries
+
+### Closed (frozen — version-gated changes only)
+
+| Registry | Location | Count | Change Rule |
+|----------|----------|-------|-------------|
+| `LeaderCheckVerdict` *(NEW, N-R-A)* | `ade_core::consensus::leader_check` (BLUE) | 2 (`Eligible` / `NotEligible`) | New variant = strengthening of **CN-FORGE-02** + a registry amendment. The 2-variant shape is load-bearing: `NotEligible` carries only a bounded `vrf_output_fingerprint`, never forge-capable material — illegal observation is structurally impossible. Do **not** add a third variant without re-proving the no-forge-material property. |
+| `OutboundCommand` *(NEW, N-S-B)* | `ade_runtime::network::outbound_command` (RED) | typed `ChainSyncServerMsg` / `BlockFetchServerMsg` variants | New variant = a new typed mini-protocol reply. **No `Vec<u8>` byte tunnel may be added** — the typed-only contract is enforced by `ci_check_no_produce_mode_direct_transport_writes.sh` (CN-OUTBOUND-RELAY-01). |
+| `DispatchError` *(NEW, N-S-B)* | `ade_node::produce_mode` + `ade_runtime::network::n2n_server` (RED) | closed sum (incl. `UnknownPeer`, `PeerOutboundMissing`) | Lookup failure must stay structured; no `String`-bearing or catch-all variant (CN-PEER-OUTBOUND-MAP-01). |
+| `ChainEvolutionError` *(NEW, N-T)* | `ade_runtime::producer::chain_evolution` (GREEN-by-content) | closed sum (incl. `AuthorityMismatch`, `SelfAcceptRejected`) | New variant requires a strengthening of **DC-PROD-03**. `AuthorityMismatch` fail-closes when BLUE `block_validity` and BLUE `self_accept` disagree. |
+| `BroadcastPushError` *(NEW, N-T)* | `ade_node::produce_mode` (RED) | closed sum (incl. `SelfAcceptReplayRejected`) | New variant requires a strengthening of **CN-PROD-04**. |
+| `ProducerLogEvent` *(N-Q)* | `ade_runtime::producer::producer_log` (GREEN-by-content) | closed JSONL vocab (`handshake_ok`, `slot_tick`, `leader_elected`, `block_forged`, `block_served`, `peer_chain_tip_observed`, `slot_missed{reason}`, `coordinator_shutdown{reason}`) | New variant = strengthening of **DC-PROD-01**. No free-form reason strings, no key material, no path strings; socket addresses excluded from the replay surface (PeerId is an opaque `u64`). |
+| `GenesisParseError` *(N-R-C)* | `ade_runtime::producer::genesis_parser` (RED) | closed sum | New variant = strengthening of **CN-GENESIS-01**. No `String` in load-bearing variants; no implicit defaults / stringly fallback. |
+| `OpCertParseError` *(N-R-C)* | `ade_runtime::producer::opcert_envelope` (RED) | closed sum | New variant = strengthening of **CN-OPCERT-01**. No `String` payloads in load-bearing variants. |
+| `UnsignedHeaderPreImageError` *(N-S-A)* | `ade_ledger::block_validity::unsigned_header_pre_image` (BLUE) | closed sum | New variant = strengthening of **DC-KES-HEADER-01**. |
+| `AcceptedMiniProtocol` *(N-L)* | `ade_network::session` (GREEN) | closed registry | New mini-protocol = registry entry + a `match` arm with **no wildcard accept**. |
+| `KesError` / `KesParseError` *(N-P)* | `ade_crypto::kes_sum::errors` (BLUE) | 5 / 6 variants | New variant = strengthening of **DC-CRYPTO-08/09**; carries only non-secret primitives. |
+| Operator-evidence manifest TOML schema *(N-S-C)* | `ci_check_operator_evidence_manifest_schema.sh` + `docs/clusters/PHASE4-N-S-C/cluster.md` | closed key set (`schema_version`, `ade_commit`, `cardano_node_version`, `cardano_cli_version`, `network`, `block_hash`, `slot`, `opcert_fingerprint`, `genesis_fingerprint`, `ade_evidence_file`, `peer_log_file`, `peer_log_capture_command`, `peer_log_filter`, `peer_log_file_sha256`, `acceptance_keyword_match`) | Any committed `CE-N-S-LIVE_*.toml` MUST conform; `peer_log_file_sha256` cross-checks the committed peer-log file's actual hash (CN-OPERATOR-EVIDENCE-01). |
+| `CardanoEra` + Conway cert / governance / withdrawal enums | `ade_types::{era, conway::*}` + `ade_codec::conway::*` | closed | New era / cert / gov-action = a versioned gate; no unknown-tag swallow, no silent skip, no catch-all (DC-LEDGER-08/09/10/11). |
+| Consensus message + verdict enums | `ade_core::consensus`, `ade_ledger::block_validity` / `tx_validity` | closed | `ci_check_consensus_closed_enums.sh` — closed consensus enums; `match` with no wildcard. |
+| JSONL event vocabularies (admission / wire-only / live-log) | `ade_node::{admission_log, live_log}`, `ade_runtime::admission` | closed | New event = strengthening of the owning DC rule; allow-list + negative tests; wire success ≠ admission ≠ agreement. |
+
+### Extensible (open within constraints)
+
+| Registry | Location | Extension Rule |
+|----------|----------|----------------|
+| `PerPeerOutbound` map *(N-S-B)* | `ade_runtime::network::outbound_command` — `Arc<RwLock<BTreeMap<PeerId, mpsc::Sender<OutboundCommand>>>>` | Grows at **runtime**: the listener (`run_per_peer_session`) inserts a sender on `PeerConnected`; MuxPump removes on `emit_peer_disconnected`. **`BTreeMap`, not `HashMap`** — deterministic iteration. `produce_mode` looks up by `PeerId` and cannot fabricate senders; no cross-peer byte leakage (CN-PEER-OUTBOUND-MAP-01, DC-OUTBOUND-FIFO-01). |
+| `OpCertCounterMap` | `ade_core::consensus::praos_state` (BLUE) | Grows as op-certs are observed; deterministic ordering (no raw `HashMap`). |
+| `ServedChainSnapshot` (served blocks) | `ade_ledger::producer::served_chain` (BLUE) | Grows via `served_chain_admit` only (self-accepted blocks); `push_atomic` is the sole publisher. |
+| `MempoolState` (admitted txs) | `ade_ledger::mempool` (BLUE) | Grows via `mempool_ingress` → `admit` only; sorted/deduplicated; the single BLUE wire-ingress chokepoint. |
+| Seed entries (imported UTxO) | `ade_runtime::seed_import` (GREEN-by-content) | Grows at import time from a cardano-cli UTxO dump; canonical decoders only, no bypass. |
+| Ade-native WAL (append-only) | `ade_runtime::wal` (GREEN-by-content) | Append-only; committed entries are never mutated/rewritten (`ci_check_wal_append_only.sh`). |
+| Sum_n KES family | `ade_crypto::kes_sum` (BLUE) | A new `Sum_n` attaches as an internal type-alias step (`Sum1Kes..Sum6Kes`); the `KesAlgorithm` trait surface does not change. |
+
+---
+
+## 4. Version-Gated vs. Frozen Contracts
+
+### Frozen (immutable at current version — change = new major version)
+
+- **Block-envelope grammar (NEW, N-V)** — `[era, block]`, Conway = discriminant 7
+  (head `82 07`). One encoder (`encode_block_envelope`), one decoder
+  (`decode_block_envelope`); inverse-symmetric; `encode` must re-encode a corpus block
+  byte-identically. Changing the envelope shape breaks every forged block AND every
+  received-block decode. (CN-FORGE-03.)
+- **Unsigned-header KES pre-image recipe (NEW, N-S-A)** — the canonical CBOR encoding of
+  `ShelleyHeaderBody`. The branded `UnsignedHeaderPreImage(Vec<u8>)`'s **only** constructor
+  is `unsigned_header_pre_image(...)`; `kes_sign_header` accepts only this type — arbitrary
+  byte signing is mechanically unrepresentable. Output is byte-identical to the validator
+  extractor `decode_block(...).header_input.kes.header_body_bytes` for every corpus block.
+  (CN-KES-HEADER-01, CN-PREIMAGE-FIXTURE-01.)
+- **Sum6KES algorithm + expand_seed prefix (N-P)** — Ade-owned, byte-identical to Haskell
+  `cardano-base`; `expand_seed` uses prefix bytes `0x01`/`0x02` (not cardano-crypto Rust's
+  `0x00`/`0x01`). 608-byte expanded skey + 448-byte signature layouts are pinned.
+- **Wire encoding** — `minicbor` / canonical CBOR; field order = wire order; `PreservedCbor`
+  aliases the input bytes (no re-encode for hashing — `ci_check_hash_uses_wire_bytes.sh`).
+- **Hash algorithms** — Blake2b-224 / Blake2b-256; the single `block_body_hash` recipe; the
+  `praos_vrf_input` transcript per era. Algorithm immutable per version.
+- **Mux frame format** — single `encode_frame` / `decode_frame` pair workspace-wide.
+- **All 444 canonical types** — existing wire formats frozen; new types may be added.
+
+### Version-gated (can evolve across major versions)
+
+- New era support: a `decode_*_block` arm + an `encode_block_envelope` discriminant + a
+  `CardanoEra` variant (versioned gate).
+- New mini-protocol: an `AcceptedMiniProtocol` registry entry + a BLUE `*_transition`
+  reducer + (for serving) an `OutboundCommand` variant.
+- New closed-enum variant (`LeaderCheckVerdict`, `OutboundCommand`, `ProducerLogEvent`,
+  the parse-error sums, the JSONL vocabularies): a `[[rules]]` registry entry + a
+  strengthening of the owning rule.
+- New canonical-type fields (sort/dedup invariants preserved).
+- New CI checks (existing checks may be tightened, **never** relaxed — RO-CLOSE-01).
+- **Producer VRF transcript (DECLARED, N-W)** — the producer-side TPraos→Praos VRF
+  migration (CN-FORGE-04). For a given era/protocol version there must be exactly one
+  VRF transcript authority; this is a **declared, not-yet-enforced** evolution (see §7).
+
+---
+
+## 5. Module Addition Rules
+
+Derived from CODEMAP's Cross-Module Rules + the shared BLUE header.
+
+| Color | Naming convention | Build-config flags | May depend on | MUST NOT depend on |
+|-------|-------------------|--------------------|----------------|--------------------|
+| **BLUE** | `ade_*` crate, or a BLUE `ade_network` submodule path in `.idd-config.json` `core_paths`; `// Core Contract:` + `//! BLUE …` banner first line | `#![deny(unsafe_code)]`, `deny(unwrap_used / expect_used / panic / float_arithmetic)`; no `#[cfg(feature = …)]` semantic gating | Other BLUE modules only (per the dep DAG: `ade_types` ← `ade_codec`/`ade_crypto` ← `ade_core` ← `ade_ledger`/`ade_plutus`; `ade_network` BLUE submodules ← `ade_codec`+`ade_types`) | `ade_runtime`, `ade_node`, `ade_core_interop`, the RED half of `ade_network`; std runtime / I/O / clock / rand / `HashMap` / float / async |
+| **GREEN** | `ade_testkit` crate, `ade_network::session`, or a GREEN-by-content sub-tree inside `ade_runtime` / `ade_node` with a `//! GREEN …` banner | Same deny attributes as BLUE; a purity CI gate per sub-tree | BLUE modules | RED modules in non-test deps; nondeterminism; secret material (e.g. `producer::coordinator` MUST NOT hold `KesSecret`/`VrfSigningKey`/`ColdSigningKey`) |
+| **RED** | `ade_runtime`, `ade_node`, `ade_core_interop`, `ade_network::mux::transport`; `//! RED …` banner | tokio/std/I/O allowed | Any module | — (RED is the leaf; `ade_core_interop` + the capture binaries are RED leaves nothing depends on) |
+
+### New module checklist
+
+1. Add to `Cargo.toml` `[workspace] members` (BLUE submodule paths: also add to
+   `.idd-config.json` `core_paths`).
+2. Apply the `// Core Contract:` + `//! BLUE|GREEN|RED` banner first line
+   (`ci_check_module_headers.sh`).
+3. BLUE/GREEN: inherit the deny attributes; pass `ci_check_forbidden_patterns.sh`,
+   `ci_check_no_async_in_blue.sh`, `ci_check_no_semantic_cfg.sh`.
+4. `ci_check_dependency_boundary.sh` rejects forbidden cross-color imports;
+   `ci_check_pallas_quarantine.sh` confines `pallas-*` to `ade_plutus`.
+5. New canonical types: add round-trip tests (no separate canonical-type registry file —
+   `canonical_type_registry: null`; canonical-type rules live inline in registry family T).
+6. New closed surface: add a `[[rules]]` entry and a CI gate; reference it by ID in the
+   cluster/slice docs.
+
+### CI gates that enforce the boundary (97 total; the producer/network/node set)
+
+| Script | Enforces | Cluster |
+|---|---|---|
+| `ci_check_produce_mode_uses_bootstrap_initial_state.sh` | CN-PROD-03 / N-T — `produce_mode` obtains initial state only via `bootstrap_initial_state`; no `SyntheticForgeInputs` / inline `LedgerState::new` forge base. | N-T |
+| `ci_check_forge_decode_round_trip.sh` | CN-FORGE-03 — `decode_block(forge_block(tick).bytes)` is `Ok`; forge output is the enveloped `[era, block]` form. | N-V |
+| `ci_check_no_independent_forge_codepath.sh` | CN-FORGE-03 — single forge codepath; no parallel block serializer. | N-V |
+| `ci_check_leader_check_authority.sh` | CN-FORGE-02 — BLUE leader-check has no LedgerView/EraSchedule/RED dep; never sees private keys; closed `LeaderCheckVerdict`. | N-R-A |
+| `ci_check_unsigned_header_preimage_single_source.sh` | CN-KES-HEADER-01 / DC-KES-HEADER-01 — single canonical pre-image recipe; branded `UnsignedHeaderPreImage`; pure. | N-S-A |
+| `ci_check_no_produce_mode_direct_transport_writes.sh` | CN-OUTBOUND-RELAY-01 — bytes only via `OutboundCommand` → `MuxPump`; no direct transport write; no byte tunnel. | N-S-B |
+| `ci_check_operator_evidence_manifest_schema.sh` | CN-OPERATOR-EVIDENCE-01 — closed evidence-manifest TOML schema + peer-log SHA256 cross-check. | N-S-C |
+| `ci_check_producer_coordinator_no_secrets.sh` | CN-PROD-02 — GREEN coordinator never owns/stores private signing material. | N-Q |
+| `ci_check_node_mode_closure.sh` | closed `ade_node` mode set. | N-Q |
+| `ci_check_served_chain_closure.sh`, `ci_check_snapshot_encoder_closure.sh` | served-chain + snapshot-encoder closure (carry-forward, exercised by per-peer dispatch). | N-R-B |
+
+> Earlier-cluster gates (N-A..N-P, the N-M-* admission/seed/WAL/anchor set, the N-L
+> wire-session set) are present in the 97 total; per-script detail is in the registry's
+> `ci_script` fields. The full list is `ls ci/ci_check_*.sh`.
+
+---
+
+## 6. Forbidden Patterns (per color)
+
+- **BLUE:** no clock, rand, raw `HashMap`/`HashSet`/`IndexMap`, float, env access,
+  network/filesystem, async runtime, locale-dependent ops, OS-dependent ordering. No
+  signing operations (`ci_check_no_signing_in_blue.sh`). No `#[cfg(feature = …)]` semantic
+  gating. No `PreservedCbor` construction outside `ade_codec`. No re-encode of wire bytes
+  when hashing.
+- **GREEN:** no nondeterminism; no participation in authoritative outputs. The
+  `producer::coordinator` MUST NOT own/store private signing material. **`ChainEvolution`
+  (N-T) MUST NEVER mint `AcceptedBlock`** — it obtains the token solely from BLUE
+  `self_accept`; `advance` consumes `self` (linear typestate — a stale base is
+  unrepresentable). Evidence/admission reducers compare already-authoritative outputs;
+  `lagging` ≠ success; wire success ≠ admission ≠ agreement.
+- **RED:** no direct mutation of BLUE state; no construction of semantic types from raw
+  bytes (must go through the canonical decoders / BLUE structural validators); no bypassing
+  canonical validation. `produce_mode` MUST emit outbound bytes only via `OutboundCommand`
+  (no direct `MuxTransportHandle::outbound` write, no `Vec<u8>` byte tunnel). The per-peer
+  outbound map is `BTreeMap` (deterministic), keyed by `PeerId` (no cross-peer leakage).
+  Key custody is confined to `producer::signing` / `producer_shell`.
+
+### Project-specific additions (Ade)
+
+- **No synthetic forge state (N-T hard prohibition):** `produce_mode` MUST NOT construct
+  `SyntheticForgeInputs`, a zero-stake `LeaderScheduleAnswer`, or an inline
+  `LedgerState::new(...)` forge base. `bootstrap_initial_state` is the sole forge-state
+  source.
+- **No durability in the produce_mode path (N-U scope):** no WAL/snapshot writes inside the
+  `produce_mode` loop — forged-block durability is deferred to N-U (see §7).
+- **`cardano_crypto::kes` is a `#[cfg(test)]` oracle only** under `crates/ade_crypto/src/**`
+  (`ci_check_kes_sum_compatibility.sh` Guard 3). `pallas-*` confined to `ade_plutus`.
+- **Commit-attribution override (CLAUDE.md):** this repo carries a model-attribution
+  trailer on commit messages only (bounty requirement). Source comments, PRs, releases,
+  issue comments still follow the global no-AI-attribution rule.
+
+---
+
+## 7. Candidate & Not-Yet-Wired Seams (declared follow-ons — NOT closed)
+
+> Surfaced honestly per IDD: these are **declared** future attach points, not closed
+> surfaces. Each is named in a registry rule or a cluster CLOSURE record.
+
+1. **Serve-side tag-24 wire-wrap** *(deferred from N-V — `open_obligation` on CN-FORGE-03).*
+   Wrapping the storage-form `[era, block]` into `[serialisationInfo, tag24([era, block])]`
+   so a **live cardano-node peer** accepts the served block over block-fetch. N-V closed only
+   the storage-form self-decode round-trip; the on-wire wrap for a real peer is a named
+   follow-on.
+2. **N-U — forged-block durability.** WAL / ChainDB / snapshot / warm-start for forged blocks
+   (crash → bootstrap warm-start). Explicitly out of N-T scope (`open_obligation` on
+   CN-PROD-03 / DC-PROD-03); N-T exercises only the cold-start branch.
+3. **N-W — producer-side TPraos→Praos VRF migration (CN-FORGE-04, status `declared`).**
+   The next block-production blocker: the producer leader-VRF alpha currently mismatches the
+   validator's Praos alpha (`praos_vrf_input(slot, eta0) = blake2b256(slot||eta0)` +
+   `vrfLeaderValue` range-extension, **not** the TPraos role-tagged `slot||eta0||0x4C`). One
+   era-correct Praos VRF authority is required across the four named sites (`run_real_forge`
+   VRF prove, `verify_and_evaluate_leader`, `query_leader_schedule`'s
+   `LeaderScheduleAnswer.expected_vrf_input`, the validator `verify_praos_vrf`). Pinned by
+   `forge_succeeds.rs::forge_to_self_accept_blocked_on_praos_vrf_construction`, which today
+   asserts the **BLOCKED** state; when N-W lands the test flips to `ForgeSucceeded` and
+   CN-FORGE-04 flips to `enforced`. **CN-FORGE-01 carries a deferred "ForgeSucceeded
+   reachable" strengthening gated on this.**
+
+### Operator-pass execution gates (schema enforced, execution blocked)
+
+- **CN-OPERATOR-EVIDENCE-01 / CN-CONS-06 / RO-LIVE-01** — the manifest schema is enforced,
+  but C1 (private testnet) / C2 (preprod) operator-pass execution is
+  `blocked_until_operator_pass_executed`. Until an operator commits a `CE-N-S-LIVE_*.toml`,
+  the CI gate is vacuously satisfied. This is an execution gate, not a code seam.
+
+---
+
+## Generation notes
+
+- Regenerated full at HEAD `22eef90` (`git rev-parse --short HEAD`), downstream of the
+  CODEMAP at the same HEAD. The prior PHASE4-N-P "N-P-scope-narrow" caveat is **retired** —
+  every producer/network/node surface is classified above.
+- Every closed surface was verified against the on-disk code (encoder, `ChainEvolution`,
+  `UnsignedHeaderPreImage`, `OutboundCommand`, the parse-error sums) and the registry
+  (`docs/ade-invariant-registry.toml`, 291 rules). All 11 named producer/network/node CI
+  scripts were confirmed present (97 total).
+- The doc is regenerated, not edited. If a value drifts, fix the source, not the doc.

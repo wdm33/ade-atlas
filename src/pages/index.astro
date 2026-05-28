@@ -1,0 +1,106 @@
+---
+import Base from "../layouts/Base.astro";
+import EnforcementCharts from "../components/EnforcementCharts.tsx";
+import { manifest, invariants, traceability, codemap, headDeltas, clusters, withBase } from "../lib/site-data.ts";
+
+const s = traceability.summary;
+const declared = clusters.clusters.filter((c) => c.status === "declared");
+
+const stats = [
+  { num: manifest.counts.crates, label: "crates", href: "/modules" },
+  { num: manifest.counts.canonical_types, label: "canonical types", href: "/modules" },
+  { num: invariants.count, label: "invariant rules", href: "/invariants" },
+  { num: manifest.counts.ci_checks, label: "CI checks", href: "/enforcement" },
+];
+const enforcedPct = ((s.enforced / s.total) * 100).toFixed(0);
+---
+
+<Base active="home" title="Dashboard" description="Authority, invariant, and enforcement map for the replay-first Cardano node.">
+  <h1>Ade Atlas</h1>
+  <p class="lede">
+    A read-only evidence dashboard over the Ade node's authority boundaries, invariants, seams,
+    recent changes, and enforcement status. The repo stays the source of truth — this is a
+    commit-pinned, regenerated projection of it.
+  </p>
+
+  <div class="grid cols-4">
+    {stats.map((st) => (
+      <a class="stat" href={withBase(st.href)} style="text-decoration:none;display:block">
+        <div class="num">{st.num ?? "—"}</div>
+        <div class="label">{st.label}</div>
+      </a>
+    ))}
+  </div>
+
+  <h2>Enforcement health</h2>
+  <div class="grid cols-4" style="margin-bottom:1rem">
+    <div class="stat"><div class="num" style="color:var(--enforced)">{s.enforced}</div><div class="label">enforced ({enforcedPct}%)</div></div>
+    <div class="stat"><div class="num" style="color:var(--partial)">{s.partial}</div><div class="label">partial</div></div>
+    <div class="stat"><div class="num" style="color:var(--declared)">{s.declared}</div><div class="label">declared (open gaps)</div></div>
+    <div class="stat"><div class="num" style="color:#ff7b72">{manifest.drift.soft + manifest.drift.hard}</div><div class="label">drift findings</div></div>
+  </div>
+  <EnforcementCharts
+    client:load
+    byStatus={invariants.by_status}
+    byTier={invariants.by_tier}
+    byFamily={invariants.by_family}
+    total={invariants.count}
+  />
+
+  <div class="grid cols-2" style="margin-top:1.5rem">
+    <div class="card">
+      <h3>Latest changes <a href={withBase("/deltas")} style="font-size:0.8rem;font-weight:400">view deltas →</a></h3>
+      <dl class="kv">
+        <dt>baseline</dt><dd class="mono">{headDeltas.baseline}</dd>
+        <dt>HEAD</dt><dd class="mono">{headDeltas.head}</dd>
+        <dt>commits</dt><dd>{headDeltas.commit_count} · +{headDeltas.lines_added} / -{headDeltas.lines_removed}</dd>
+        <dt>rules</dt><dd>{headDeltas.rules_at_baseline} → {headDeltas.rules_at_head} (+{(headDeltas.rules_at_head ?? 0) - (headDeltas.rules_at_baseline ?? 0)})</dd>
+        <dt>new rules</dt><dd>{headDeltas.new_rules.map((r) => r.id).join(", ")}</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <h3>Open work</h3>
+      {declared.length > 0 ? (
+        <ul style="margin:0;padding-left:1.1rem">
+          {declared.map((c) => (
+            <li><a href={withBase(`/clusters#${c.id}`)} class="mono">{c.id}</a> — declared follow-on ({c.follow_ons.length} obligation{c.follow_ons.length === 1 ? "" : "s"})</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="muted">No declared follow-on clusters.</p>
+      )}
+      <p class="muted" style="font-size:0.85rem;margin-bottom:0">
+        {s.declared} declared invariants remain open enforcement gaps. See
+        <a href={withBase("/enforcement")}>Enforcement</a>.
+      </p>
+    </div>
+  </div>
+
+  <h2>Explore</h2>
+  <div class="grid cols-3">
+    <a class="card" href={withBase("/modules")} style="display:block">
+      <h3>Architecture map</h3>
+      <p class="muted" style="margin:0">Modules by BLUE/GREEN/RED, the dependency graph, MUST-NOT rules, and the CI guarding each boundary.</p>
+    </a>
+    <a class="card" href={withBase("/seams")} style="display:block">
+      <h3>Seam explorer</h3>
+      <p class="muted" style="margin:0">Where new work can legally attach: ingress pipelines, closed vs extensible registries, frozen contracts.</p>
+    </a>
+    <a class="card" href={withBase("/invariants")} style="display:block">
+      <h3>Invariant explorer</h3>
+      <p class="muted" style="margin:0">Search all {invariants.count} rules; trace each to code, tests, CI, and drift.</p>
+    </a>
+    <a class="card" href={withBase("/enforcement")} style="display:block">
+      <h3>Enforcement</h3>
+      <p class="muted" style="margin:0">Health counts, true invariants lacking CI, and rules referencing missing tests/scripts.</p>
+    </a>
+    <a class="card" href={withBase("/clusters")} style="display:block">
+      <h3>Clusters</h3>
+      <p class="muted" style="margin:0">Cluster/slice history — rules introduced and strengthened, CI added, follow-ons.</p>
+    </a>
+    <a class="card" href={withBase("/certification")} style="display:block">
+      <h3>Certification</h3>
+      <p class="muted" style="margin:0">Bounty readiness traced upward to derived and true invariants (targets, not laws).</p>
+    </a>
+  </div>
+</Base>

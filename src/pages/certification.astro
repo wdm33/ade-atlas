@@ -1,0 +1,83 @@
+---
+import Base from "../layouts/Base.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import config from "../../certification.config.json";
+import { ruleById, withBase } from "../lib/site-data.ts";
+
+interface Criterion {
+  id: string;
+  title: string;
+  description: string;
+  invariants: string[];
+}
+const criteria = config.criteria as Criterion[];
+
+function readiness(ids: string[]) {
+  let enforced = 0, partial = 0, declared = 0, unknown = 0;
+  for (const id of ids) {
+    const r = ruleById(id);
+    if (!r) unknown++;
+    else if (r.status === "enforced") enforced++;
+    else if (r.status === "partial") partial++;
+    else declared++;
+  }
+  const total = ids.length;
+  const label =
+    unknown > 0 ? "check refs"
+      : declared > 0 ? "partly evidenced"
+      : partial > 0 ? "mostly evidenced"
+      : "evidenced";
+  return { enforced, partial, declared, unknown, total, label };
+}
+const labelClass: Record<string, string> = {
+  "evidenced": "enforced",
+  "mostly evidenced": "enforced",
+  "partly evidenced": "partial",
+  "check refs": "drift",
+};
+---
+
+<Base active="certification" title="Certification Readiness" description="Bounty readiness traced upward to invariants.">
+  <h1>Certification Readiness</h1>
+  <p class="lede">
+    Bounty / certification targets, each traced upward to the derived and true invariants that
+    evidence it.
+  </p>
+  <div class="banner warn">
+    <strong>These are certification targets, not constitutional laws.</strong> They trace upward to
+    derived and true invariants but must never weaken a true invariant for bounty convenience. This
+    view maps each criterion to invariant IDs only — the evidence itself is sourced live from the
+    registry and traceability data, not hand-curated here.
+  </div>
+
+  <div class="grid cols-2" style="margin-top:1rem">
+    {criteria.map((c) => {
+      const r = readiness(c.invariants);
+      return (
+        <div class="card" id={c.id} style="scroll-margin-top:70px">
+          <div class="pill-row" style="justify-content:space-between">
+            <h3 style="margin:0">{c.title}</h3>
+            <span class={`badge ${labelClass[r.label] ?? "declared"}`}>{r.label}</span>
+          </div>
+          <p class="muted" style="font-size:0.88rem">{c.description}</p>
+          <div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--bg-elev2);margin:0.4rem 0 0.7rem">
+            <div style={`width:${(r.enforced / r.total) * 100}%;background:var(--enforced)`} title={`${r.enforced} enforced`}></div>
+            <div style={`width:${(r.partial / r.total) * 100}%;background:var(--partial)`} title={`${r.partial} partial`}></div>
+            <div style={`width:${(r.declared / r.total) * 100}%;background:var(--declared)`} title={`${r.declared} declared`}></div>
+          </div>
+          <div class="muted" style="font-size:0.78rem;margin-bottom:0.5rem">
+            {r.enforced} enforced · {r.partial} partial · {r.declared} declared{r.unknown > 0 ? ` · ${r.unknown} unknown ref` : ""}
+          </div>
+          <div class="tag-list">
+            {c.invariants.map((id) => {
+              const rule = ruleById(id);
+              return rule
+                ? <a class="badge" href={withBase(`/invariants/${id}`)} title={rule.status}>{id}</a>
+                : <span class="badge gap" title="not found in registry">{id}?</span>;
+            })}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</Base>

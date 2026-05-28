@@ -1,0 +1,110 @@
+name: Build & deploy Ade Atlas
+
+# Rebuilds the site from the ade repo's generated docs and deploys to GitHub Pages.
+#
+# Source-of-truth wiring (CI fetch & pin):
+#   - Set repo variable  ADE_REPO   to the ade node repo slug (e.g. "wdm33/ade").
+#   - Set repo variable  ADE_REF    (optional) to pin a ref/branch; default: ade repo default branch.
+#   - If the ade repo is private, set secret  ADE_REPO_TOKEN  (a read-scoped PAT / deploy token).
+# When ADE_REPO is unset, the build falls back to the committed mock docs at the repo root.
+#
+# The ade repo can trigger a rebuild on cluster-close / doc-regen with:
+#   gh api repos/wdm33/ade-atlas/dispatches -f event_type=ade-docs-updated \
+#       -F client_payload.sha=<commit>
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "ade repo ref to pin (overrides ADE_REF)"
+        required: false
+  repository_dispatch:
+    types: [ade-docs-updated]
+  schedule:
+    - cron: "17 6 * * *" # daily safety net in case a dispatch is missed
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ade-atlas
+        uses: actions/checkout@v4
+
+      - name: Resolve ade source ref
+        id: ref
+        run: |
+          REF="${{ github.event.inputs.ref || github.event.client_payload.sha || vars.ADE_REF }}"
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch ade docs (pinned)
+        id: fetch
+        if: vars.ADE_REPO != ''
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.ADE_REPO }}
+          ref: ${{ steps.ref.outputs.ref }}
+          token: ${{ secrets.ADE_REPO_TOKEN || github.token }}
+          path: ade-source
+          fetch-depth: 1
+
+      - name: Stage source docs + pin metadata
+        run: |
+          mkdir -p source-docs
+          if [ -n "${{ vars.ADE_REPO }}" ]; then
+            cp ade-source/docs/ade-CODEMAP.md          source-docs/
+            cp ade-source/docs/ade-SEAMS.md            source-docs/
+            cp ade-source/docs/ade-HEAD_DELTAS.md      source-docs/
+            cp ade-source/docs/ade-TRACEABILITY.md     source-docs/
+            cp ade-source/docs/ade-invariant-registry.toml source-docs/
+            SHA="$(git -C ade-source rev-parse --short HEAD)"
+            DATE="$(git -C ade-source log -1 --format=%cs)"
+            printf '{ "repo_head": "%s", "github_repo": "%s", "generated_at": "%s" }\n' \
+              "$SHA" "${{ vars.ADE_REPO }}" "$DATE" > source-docs/source-meta.json
+            echo "ADE_REPO_DIR=$PWD/ade-source" >> "$GITHUB_ENV"
+          else
+            echo "ADE_REPO unset — falling back to committed mock docs."
+            cp ade-*.md source-docs/
+            cp ade-invariant-registry.toml source-docs/
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Parse docs → site-data (fail the build on hard drift)
+        env:
+          ADE_SOURCE_DIR: ${{ github.workspace }}/source-docs
+          ADE_GITHUB_REPO: ${{ vars.ADE_REPO }}
+        run: npm run build:data:check
+
+      - name: Build site
+        run: npx astro build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

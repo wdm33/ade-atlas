@@ -1,0 +1,120 @@
+---
+import Base from "../layouts/Base.astro";
+import EnforcementCharts from "../components/EnforcementCharts.tsx";
+import Markdown from "../components/Markdown.astro";
+import { invariants, traceability, manifest, ciChecks, traceById, withBase } from "../lib/site-data.ts";
+
+const s = traceability.summary;
+
+// True invariants lacking mechanical CI.
+const trueNoCi = invariants.rules.filter((r) => r.tier === "true" && r.ci_scripts.length === 0);
+// Rules referencing tests/CI not located on disk (drift).
+const driftRules = invariants.rules
+  .map((r) => ({ r, t: traceById(r.id) }))
+  .filter(({ t }) => t && (t.tests_drift.length > 0 || t.ci_drift.length > 0));
+// Enforced/partial rules missing tests or CI cells (gaps).
+const missingTests = invariants.rules.filter((r) => r.status !== "declared" && r.tests.length === 0);
+const missingCi = invariants.rules.filter((r) => r.status !== "declared" && r.ci_scripts.length === 0);
+
+const refGap = (manifest.counts.ci_checks ?? 0) - ciChecks.referenced_count;
+---
+
+<Base active="enforcement" title="Enforcement Dashboard" description="Enforcement health of the project's invariants.">
+  <h1>Enforcement Dashboard</h1>
+  <p class="lede">
+    Enforcement health across all {s.total} rules. Gaps are surfaced, not hidden — declared
+    invariants and registry-named artifacts not on disk are shown explicitly.
+  </p>
+
+  <div class="grid cols-4">
+    <div class="stat"><div class="num">{s.total}</div><div class="label">total rules</div></div>
+    <div class="stat"><div class="num" style="color:var(--enforced)">{s.enforced}</div><div class="label">enforced</div></div>
+    <div class="stat"><div class="num" style="color:var(--partial)">{s.partial}</div><div class="label">partial</div></div>
+    <div class="stat"><div class="num" style="color:var(--declared)">{s.declared}</div><div class="label">declared</div></div>
+  </div>
+
+  <h2>Distribution</h2>
+  <EnforcementCharts
+    client:load
+    byStatus={invariants.by_status}
+    byTier={invariants.by_tier}
+    byFamily={invariants.by_family}
+    total={invariants.count}
+  />
+
+  <h2>Priority gaps</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>True invariants lacking CI <span class="faint" style="font-weight:400;font-size:0.8rem">— {trueNoCi.length}</span></h3>
+      <p class="muted" style="font-size:0.84rem;margin-top:-0.3rem">Constitution-level rules with no mechanical CI gate.</p>
+      {trueNoCi.length === 0 ? <p class="muted">None.</p> : (
+        <ul style="margin:0;padding-left:1.1rem;font-size:0.86rem">
+          {trueNoCi.map((r) => (
+            <li><a class="mono" href={withBase(`/invariants/${r.id}`)}>{r.id}</a> <span class="badge declared" style="font-size:0.62rem">{r.status}</span></li>
+          ))}
+        </ul>
+      )}
+    </div>
+    <div class="card">
+      <h3>References not on disk <span class="faint" style="font-weight:400;font-size:0.8rem">— {driftRules.length}</span></h3>
+      <p class="muted" style="font-size:0.84rem;margin-top:-0.3rem">Rules whose registry-named tests/CI weren't located in TRACEABILITY.</p>
+      {driftRules.length === 0 ? <p class="muted">None.</p> : (
+        <ul style="margin:0;padding-left:1.1rem;font-size:0.86rem">
+          {driftRules.map(({ r, t }) => (
+            <li>
+              <a class="mono" href={withBase(`/invariants/${r.id}`)}>{r.id}</a>
+              <span class="faint" style="font-size:0.78rem"> — {[...t!.tests_drift, ...t!.ci_drift].length} missing</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+    <div class="card">
+      <h3>Live rules missing tests <span class="faint" style="font-weight:400;font-size:0.8rem">— {missingTests.length}</span></h3>
+      {missingTests.length === 0 ? <p class="muted">None.</p> : (
+        <div class="tag-list">{missingTests.map((r) => <a class="badge" href={withBase(`/invariants/${r.id}`)}>{r.id}</a>)}</div>
+      )}
+    </div>
+    <div class="card">
+      <h3>Live rules missing CI <span class="faint" style="font-weight:400;font-size:0.8rem">— {missingCi.length}</span></h3>
+      {missingCi.length === 0 ? <p class="muted">None.</p> : (
+        <div class="tag-list">{missingCi.map((r) => <a class="badge" href={withBase(`/invariants/${r.id}`)}>{r.id}</a>)}</div>
+      )}
+    </div>
+  </div>
+
+  {manifest.drift.findings.length > 0 && (
+    <section>
+      <h2>Drift report <span class="faint" style="font-size:0.8rem;font-weight:400">— {manifest.drift.hard} hard / {manifest.drift.soft} soft</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Severity</th><th>Kind</th><th>Detail</th></tr></thead>
+        <tbody>{manifest.drift.findings.map((f) => (
+          <tr><td><span class={`badge ${f.severity === "hard" ? "drift" : "gap"}`}>{f.severity}</span></td><td class="mono" style="font-size:0.8rem">{f.kind}</td><td style="font-size:0.85rem">{f.detail}</td></tr>
+        ))}</tbody>
+      </table></div>
+    </section>
+  )}
+
+  <h2>CI checks <span class="faint" style="font-size:0.8rem;font-weight:400">— {ciChecks.referenced_count} referenced{refGap > 0 ? ` of ${manifest.counts.ci_checks} declared` : ""}</span></h2>
+  {refGap > 0 && (
+    <div class="banner info">
+      CODEMAP declares {manifest.counts.ci_checks} CI checks; {ciChecks.referenced_count} are
+      referenced by registry rules. The remaining {refGap} are enumerated only from the repo's
+      <code>ci/</code> directory (available in repo-mode builds, not in this mock).
+    </div>
+  )}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Script</th><th>Enforces</th><th>Scope</th></tr></thead>
+    <tbody>{ciChecks.checks.map((c) => (
+      <tr id={c.name} style="scroll-margin-top:70px">
+        <td class="mono" style="font-size:0.78rem">{c.name}</td>
+        <td>
+          <div class="tag-list">
+            {c.enforces.map((id) => <a class="badge fam" style="font-size:0.64rem" href={withBase(`/invariants/${id}`)}>{id}</a>)}
+          </div>
+        </td>
+        <td style="font-size:0.82rem">{c.scope ? <Markdown text={c.scope} /> : <span class="muted">—</span>}</td>
+      </tr>
+    ))}</tbody>
+  </table></div>
+</Base>

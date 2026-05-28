@@ -1,0 +1,36 @@
+---
+import Base from "../../layouts/Base.astro";
+import SearchTable from "../../components/SearchTable.tsx";
+import type { RuleRow } from "../../components/SearchTable.tsx";
+import { invariants, traceById } from "../../lib/site-data.ts";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const rows: RuleRow[] = invariants.rules.map((r) => {
+  const t = traceById(r.id);
+  const drift = !!t && (t.tests_drift.length > 0 || t.ci_drift.length > 0);
+  const gap = !!t && (t.code_gap || t.tests_gap || t.ci_gap);
+  return {
+    id: r.id,
+    family: r.family,
+    tier: r.tier,
+    status: r.status,
+    statement: r.statement,
+    tests: r.tests.length,
+    ci: r.ci_scripts.length,
+    drift,
+    gap,
+    cluster: r.cluster,
+  };
+});
+---
+
+<Base active="invariants" title="Invariant Explorer" description="Searchable registry of all invariant rules with enforcement status.">
+  <h1>Invariant Explorer</h1>
+  <p class="lede">
+    All {invariants.count} registry rules. Search by ID or statement, filter by family / tier /
+    status, isolate drift or enforcement gaps, and export the filtered set. Each row links to its
+    full source → code → tests → CI trace.
+  </p>
+  <SearchTable client:load rows={rows} basePath={base} />
+</Base>
