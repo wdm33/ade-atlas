@@ -2,9 +2,16 @@
 import Base from "../layouts/Base.astro";
 import EnforcementCharts from "../components/EnforcementCharts.tsx";
 import Markdown from "../components/Markdown.astro";
-import { invariants, traceability, manifest, ciChecks, traceById, withBase } from "../lib/site-data.ts";
+import { invariants, manifest, ciChecks, traceById, withBase } from "../lib/site-data.ts";
 
-const s = traceability.summary;
+// Registry-derived (authoritative, format-independent) rather than the parsed
+// TRACEABILITY prose summary.
+const s = {
+  total: invariants.count,
+  enforced: invariants.by_status.enforced ?? 0,
+  partial: invariants.by_status.partial ?? 0,
+  declared: invariants.by_status.declared ?? 0,
+};
 
 // True invariants lacking mechanical CI.
 const trueNoCi = invariants.rules.filter((r) => r.tier === "true" && r.ci_scripts.length === 0);

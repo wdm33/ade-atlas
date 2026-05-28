@@ -1,18 +1,28 @@
 ---
 import Base from "../layouts/Base.astro";
 import EnforcementCharts from "../components/EnforcementCharts.tsx";
-import { manifest, invariants, traceability, codemap, headDeltas, clusters, withBase } from "../lib/site-data.ts";
+import { manifest, invariants, codemap, headDeltas, clusters, withBase } from "../lib/site-data.ts";
 
-const s = traceability.summary;
-const declared = clusters.clusters.filter((c) => c.status === "declared");
+// Enforcement health is registry-derived (authoritative, always present) rather
+// than read from the TRACEABILITY prose summary, whose format varies between
+// doc regenerations. Crates fall back to the module inventory if the CODEMAP
+// counts table can't be parsed, so the dashboard never shows NaN% / blanks.
+const total = invariants.count;
+const enforced = invariants.by_status.enforced ?? 0;
+const partial = invariants.by_status.partial ?? 0;
+const declaredCount = invariants.by_status.declared ?? 0;
+const enforcedPct = total ? Math.round((enforced / total) * 100) : null;
+const crateCount =
+  manifest.counts.crates ??
+  new Set(codemap.modules.filter((m) => m.kind === "crate").map((m) => m.name)).size;
+const declaredClusters = clusters.clusters.filter((c) => c.status === "declared");
 
 const stats = [
-  { num: manifest.counts.crates, label: "crates", href: "/modules" },
+  { num: crateCount, label: "crates", href: "/modules" },
   { num: manifest.counts.canonical_types, label: "canonical types", href: "/modules" },
   { num: invariants.count, label: "invariant rules", href: "/invariants" },
   { num: manifest.counts.ci_checks, label: "CI checks", href: "/enforcement" },
 ];
-const enforcedPct = ((s.enforced / s.total) * 100).toFixed(0);
 ---
 
 <Base active="home" title="Dashboard" description="Authority, invariant, and enforcement map for the replay-first Cardano node.">
@@ -34,9 +44,9 @@ const enforcedPct = ((s.enforced / s.total) * 100).toFixed(0);
 
   <h2>Enforcement health</h2>
   <div class="grid cols-4" style="margin-bottom:1rem">
-    <div class="stat"><div class="num" style="color:var(--enforced)">{s.enforced}</div><div class="label">enforced ({enforcedPct}%)</div></div>
-    <div class="stat"><div class="num" style="color:var(--partial)">{s.partial}</div><div class="label">partial</div></div>
-    <div class="stat"><div class="num" style="color:var(--declared)">{s.declared}</div><div class="label">declared (open gaps)</div></div>
+    <div class="stat"><div class="num" style="color:var(--enforced)">{enforced}</div><div class="label">enforced ({enforcedPct ?? "—"}%)</div></div>
+    <div class="stat"><div class="num" style="color:var(--partial)">{partial}</div><div class="label">partial</div></div>
+    <div class="stat"><div class="num" style="color:var(--declared)">{declaredCount}</div><div class="label">declared (open gaps)</div></div>
     <div class="stat"><div class="num" style="color:#ff7b72">{manifest.drift.soft + manifest.drift.hard}</div><div class="label">drift findings</div></div>
   </div>
   <EnforcementCharts
@@ -60,9 +70,9 @@ const enforcedPct = ((s.enforced / s.total) * 100).toFixed(0);
     </div>
     <div class="card">
       <h3>Open work</h3>
-      {declared.length > 0 ? (
+      {declaredClusters.length > 0 ? (
         <ul style="margin:0;padding-left:1.1rem">
-          {declared.map((c) => (
+          {declaredClusters.map((c) => (
             <li><a href={withBase(`/clusters#${c.id}`)} class="mono">{c.id}</a> — declared follow-on ({c.follow_ons.length} obligation{c.follow_ons.length === 1 ? "" : "s"})</li>
           ))}
         </ul>
@@ -70,7 +80,7 @@ const enforcedPct = ((s.enforced / s.total) * 100).toFixed(0);
         <p class="muted">No declared follow-on clusters.</p>
       )}
       <p class="muted" style="font-size:0.85rem;margin-bottom:0">
-        {s.declared} declared invariants remain open enforcement gaps. See
+        {declaredCount} declared invariants remain open enforcement gaps. See
         <a href={withBase("/enforcement")}>Enforcement</a>.
       </p>
     </div>
