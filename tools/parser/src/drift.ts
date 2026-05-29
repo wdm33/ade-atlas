@@ -67,9 +67,29 @@ export function computeDrift(inp: DriftInputs): DriftFinding[] {
       /* not a git checkout */
     }
     if (gitHead && codemap.repo_head && gitHead !== codemap.repo_head) {
-      // Benign doc-regen lag: the docs were last regenerated at one commit and the
-      // repo has since advanced. Surface it; don't block the projection from shipping.
-      soft("repo-head-skew", `Docs were generated at HEAD ${codemap.repo_head} but the repo is at ${gitHead}.`);
+      // The docs self-stamp the HEAD they were generated against, so the commit
+      // that carries a regenerated doc set — plus any later doc/config/CI commit —
+      // always sits ahead of that stamp. That's not staleness. The docs are only
+      // genuinely behind if *code* changed after the stamp without a re-gen, so
+      // only flag when crates/ actually changed in (stamp..HEAD].
+      let codeCommits: string | null = null;
+      try {
+        codeCommits = execSync(
+          `git log --oneline ${codemap.repo_head}..HEAD -- crates/`,
+          { cwd: repoDir, stdio: ["ignore", "pipe", "ignore"] },
+        )
+          .toString()
+          .trim();
+      } catch {
+        codeCommits = null; // stamp not an ancestor (rebase/misparse) — fall back to flagging
+      }
+      if (codeCommits === null || codeCommits.length > 0) {
+        const n = codeCommits ? codeCommits.split("\n").length : "?";
+        soft(
+          "repo-head-skew",
+          `Docs were generated at HEAD ${codemap.repo_head}; the repo is at ${gitHead} and ${n} code commit(s) have landed since — the docs may predate them.`,
+        );
+      }
     }
 
     for (const r of rules) {
