@@ -56,7 +56,9 @@ jobs:
           ref: ${{ steps.ref.outputs.ref }}
           token: ${{ secrets.ADE_REPO_TOKEN || github.token }}
           path: ade-source
-          fetch-depth: 1
+          # Full history so the drift check can resolve the docs' stamped HEAD
+          # (git log <stamp>..HEAD -- crates/); a shallow clone can't reach it.
+          fetch-depth: 0
 
       - name: Stage source docs + pin metadata
         run: |
