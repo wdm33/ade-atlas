@@ -47,9 +47,17 @@ export default function EnforcementCharts({
   byFamily: Counts;
   total: number;
 }) {
-  const statusOrder = ["enforced", "partial", "declared", "deprecated"].filter((k) => byStatus[k]);
-  const tierOrder = ["true", "derived", "release", "operational"].filter((k) => byTier[k] != null);
-  const famOrder = ["T", "DC", "CN", "RO", "OP"].filter((k) => byFamily[k] != null);
+  // Known order first, then any unfamiliar keys (e.g. a newly-added tier) so
+  // nothing the registry reports is silently dropped.
+  const order = (counts: Counts, known: string[]) => {
+    const present = Object.keys(counts).filter((k) => counts[k] != null);
+    const head = known.filter((k) => present.includes(k));
+    const tail = present.filter((k) => !known.includes(k)).sort();
+    return [...head, ...tail];
+  };
+  const statusOrder = order(byStatus, ["enforced", "partial", "declared", "deprecated"]);
+  const tierOrder = order(byTier, ["true", "derived", "release", "operational"]);
+  const famOrder = order(byFamily, ["T", "DC", "CN", "RO", "OP"]);
   const tierMax = Math.max(...tierOrder.map((k) => byTier[k]), 1);
   const famMax = Math.max(...famOrder.map((k) => byFamily[k]), 1);
 
@@ -58,7 +66,7 @@ export default function EnforcementCharts({
       <div className="card">
         <h3>By status</h3>
         {statusOrder.map((k) => (
-          <Bar key={k} label={k} value={byStatus[k]} total={total} color={(STATUS_COLOR as Record<string, string>)[k]} />
+          <Bar key={k} label={k} value={byStatus[k]} total={total} color={(STATUS_COLOR as Record<string, string>)[k] ?? "#58a6ff"} />
         ))}
       </div>
       <div className="card">

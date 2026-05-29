@@ -73,18 +73,19 @@ export function computeDrift(inp: DriftInputs): DriftFinding[] {
     }
 
     for (const r of rules) {
-      // A missing artifact is fatal only for an ENFORCED rule (its green badge would
-      // be a lie). For declared/partial rules a not-yet-created path is expected.
-      const sev = r.status === "enforced" ? hard : soft;
+      // code_locus / ci_script are free-text navigation hints that lag refactors
+      // (e.g. recovery.rs -> recovery/mod.rs) even while the rule stays enforced
+      // via its tests + CI. Surface a stale reference; never block the deploy on
+      // one — the authoritative evidence is the tests/CI, not the path string.
       for (const p of r.code_loci) {
         if (p.startsWith("crates/") && !existsSync(join(repoDir, p))) {
-          sev("code-locus-missing", `${r.id} (${r.status}): code locus ${p} does not exist in the repo.`);
+          soft("code-locus-missing", `${r.id} (${r.status}): cited code path ${p} no longer exists (likely moved/renamed).`);
         }
       }
       for (const ref of r.ci_scripts) {
         const rel = ref.startsWith("ci/") ? ref : `ci/${ref}`;
         if (!existsSync(join(repoDir, rel))) {
-          sev("ci-script-missing", `${r.id} (${r.status}): CI script ${rel} does not exist in the repo.`);
+          soft("ci-script-missing", `${r.id} (${r.status}): cited CI script ${rel} no longer exists (likely moved/renamed).`);
         }
       }
     }

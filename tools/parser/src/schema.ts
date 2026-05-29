@@ -16,9 +16,13 @@ const Color = z.enum(TCB_COLORS);
 // ----------------------------------------------------------------------------
 export const InvariantRule = z.object({
   id: z.string(),
-  family: z.enum(RULE_FAMILIES),
-  tier: z.enum(RULE_TIERS),
-  status: z.enum(RULE_STATUSES),
+  // tier / status / family are methodology vocabulary that can grow (e.g. N-Y
+  // added tier "constraint"). Kept as open strings so a new value surfaces in
+  // the dashboard instead of failing the build; RULE_* below are the known
+  // lists used only for UI ordering.
+  family: z.string(),
+  tier: z.string(),
+  status: z.string(),
   statement: z.string(),
   source: z.string(),
   cross_ref: z.array(z.string()),
@@ -289,11 +293,8 @@ export const Manifest = z.object({
 });
 export type Manifest = z.infer<typeof Manifest>;
 
-export function familyOf(id: string): z.infer<typeof InvariantRule>["family"] {
-  const prefix = id.split("-")[0];
-  if ((RULE_FAMILIES as readonly string[]).includes(prefix)) {
-    return prefix as InvariantRule["family"];
-  }
-  // Defensive: registry IDs are constrained to the five families.
-  throw new Error(`Unknown rule family for id "${id}"`);
+export function familyOf(id: string): string {
+  // The ID-prefix family scheme; returns the prefix as-is so an unfamiliar
+  // family letter surfaces rather than crashing the parser.
+  return id.split("-")[0];
 }

@@ -14,9 +14,18 @@ export interface RuleRow {
   cluster: string | null;
 }
 
-const FAMILIES = ["T", "DC", "CN", "RO", "OP"];
-const TIERS = ["true", "derived", "release", "operational"];
-const STATUSES = ["enforced", "partial", "declared"];
+const KNOWN_FAMILIES = ["T", "DC", "CN", "RO", "OP"];
+const KNOWN_TIERS = ["true", "derived", "release", "operational"];
+const KNOWN_STATUSES = ["enforced", "partial", "declared", "deprecated"];
+
+// Known order first, then any value the data carries that isn't in the known
+// list (e.g. a newly-added tier), so every facet present is filterable.
+function facetOrder(values: string[], known: string[]): string[] {
+  const present = new Set(values);
+  const head = known.filter((k) => present.has(k));
+  const tail = [...present].filter((k) => !known.includes(k)).sort();
+  return [...head, ...tail];
+}
 
 function Chip({
   active,
@@ -61,6 +70,15 @@ export default function SearchTable({
 
   const fuse = useMemo(
     () => new Fuse(rows, { keys: ["id", "statement"], threshold: 0.34, ignoreLocation: true }),
+    [rows],
+  );
+
+  const facets = useMemo(
+    () => ({
+      families: facetOrder(rows.map((r) => r.family), KNOWN_FAMILIES),
+      tiers: facetOrder(rows.map((r) => r.tier), KNOWN_TIERS),
+      statuses: facetOrder(rows.map((r) => r.status), KNOWN_STATUSES),
+    }),
     [rows],
   );
 
@@ -131,19 +149,19 @@ export default function SearchTable({
       <div style={{ display: "flex", gap: "1.25rem", flexWrap: "wrap", marginBottom: "0.5rem" }}>
         <div className="pill-row">
           <span className="faint" style={{ fontSize: "0.78rem" }}>family</span>
-          {FAMILIES.map((f) => (
+          {facets.families.map((f) => (
             <Chip key={f} active={fam.size === 0 || fam.has(f)} onClick={() => toggle(fam, setFam, f)}>{f}</Chip>
           ))}
         </div>
         <div className="pill-row">
           <span className="faint" style={{ fontSize: "0.78rem" }}>tier</span>
-          {TIERS.map((t) => (
+          {facets.tiers.map((t) => (
             <Chip key={t} active={tier.size === 0 || tier.has(t)} onClick={() => toggle(tier, setTier, t)} cls="tier">{t}</Chip>
           ))}
         </div>
         <div className="pill-row">
           <span className="faint" style={{ fontSize: "0.78rem" }}>status</span>
-          {STATUSES.map((s) => (
+          {facets.statuses.map((s) => (
             <Chip key={s} active={status.size === 0 || status.has(s)} onClick={() => toggle(status, setStatus, s)} cls={s}>{s}</Chip>
           ))}
         </div>
