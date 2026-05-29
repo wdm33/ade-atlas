@@ -23,6 +23,16 @@ const rows: RuleRow[] = invariants.rules.map((r) => {
     cluster: r.cluster,
   };
 });
+
+// Fixed methodology vocabulary (the ID-prefix family scheme). Family is the
+// rule's origin/kind — distinct from its tier.
+const families = [
+  { id: "T", name: "True", gloss: "constitution-level always-true properties" },
+  { id: "DC", name: "Derived", gloss: "invariants derived from the true set" },
+  { id: "CN", name: "Classification / constraint", gloss: "classification-table & attack-surface rules" },
+  { id: "RO", name: "Release obligation", gloss: "release-time discipline" },
+  { id: "OP", name: "Operational", gloss: "deployment / operational practice" },
+];
 ---
 
 <Base active="invariants" title="Invariant Explorer" description="Searchable registry of all invariant rules with enforcement status.">
@@ -32,5 +42,22 @@ const rows: RuleRow[] = invariants.rules.map((r) => {
     status, isolate drift or enforcement gaps, and export the filtered set. Each row links to its
     full source → code → tests → CI trace.
   </p>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="display:flex;flex-wrap:wrap;gap:0.5rem 1.5rem;align-items:baseline">
+      <span class="faint" style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em">Families</span>
+      {families.map((f) => (
+        <span style="display:inline-flex;align-items:baseline;gap:0.4rem">
+          <span class="badge fam">{f.id}</span>
+          <span style="font-size:0.85rem"><strong>{f.name}</strong> <span class="muted">— {f.gloss}</span></span>
+        </span>
+      ))}
+    </div>
+    <p class="faint" style="font-size:0.78rem;margin:0.6rem 0 0">
+      Family is the rule's origin/kind — distinct from its <strong>tier</strong>
+      (true / derived / release / operational). Most align, but <code>CN</code> rules span all tiers.
+    </p>
+  </div>
+
   <SearchTable client:load rows={rows} basePath={base} />
 </Base>
