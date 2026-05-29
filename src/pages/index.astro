@@ -44,10 +44,10 @@ const stats = [
 
   <h2>Enforcement health</h2>
   <div class="grid cols-4" style="margin-bottom:1rem">
-    <a class="stat" href={withBase("/invariants?status=enforced")} style="text-decoration:none;display:block"><div class="num" style="color:var(--enforced)">{enforced}</div><div class="label">enforced ({enforcedPct ?? "—"}%)</div></a>
-    <a class="stat" href={withBase("/invariants?status=partial")} style="text-decoration:none;display:block"><div class="num" style="color:var(--partial)">{partial}</div><div class="label">partial</div></a>
-    <a class="stat" href={withBase("/invariants?status=declared")} style="text-decoration:none;display:block"><div class="num" style="color:var(--declared)">{declaredCount}</div><div class="label">declared (open gaps)</div></a>
-    <a class="stat" href={withBase("/enforcement#drift")} style="text-decoration:none;display:block"><div class="num" style="color:#ff7b72">{manifest.drift.soft + manifest.drift.hard}</div><div class="label">drift findings</div></a>
+    <a class="stat" href={withBase("/invariants/?status=enforced")} style="text-decoration:none;display:block"><div class="num" style="color:var(--enforced)">{enforced}</div><div class="label">enforced ({enforcedPct ?? "—"}%)</div></a>
+    <a class="stat" href={withBase("/invariants/?status=partial")} style="text-decoration:none;display:block"><div class="num" style="color:var(--partial)">{partial}</div><div class="label">partial</div></a>
+    <a class="stat" href={withBase("/invariants/?status=declared")} style="text-decoration:none;display:block"><div class="num" style="color:var(--declared)">{declaredCount}</div><div class="label">declared (open gaps)</div></a>
+    <a class="stat" href={withBase("/enforcement/#drift")} style="text-decoration:none;display:block"><div class="num" style="color:#ff7b72">{manifest.drift.soft + manifest.drift.hard}</div><div class="label">drift findings</div></a>
   </div>
   <EnforcementCharts
     client:load
