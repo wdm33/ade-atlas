@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Fuse from "fuse.js";
 
 export interface RuleRow {
@@ -67,6 +67,23 @@ export default function SearchTable({
   const [status, setStatus] = useState<Set<string>>(new Set());
   const [onlyDrift, setOnlyDrift] = useState(false);
   const [onlyGap, setOnlyGap] = useState(false);
+
+  // Drill-down: initialize filters from URL params (e.g. /invariants?status=enforced).
+  // Applied after mount to avoid an SSR/hydration mismatch.
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    const q0 = p.get("q");
+    if (q0) setQ(q0);
+    const multi = (key: string, setter: (s: Set<string>) => void) => {
+      const v = p.get(key);
+      if (v) setter(new Set(v.split(",").map((x) => x.trim()).filter(Boolean)));
+    };
+    multi("status", setStatus);
+    multi("family", setFam);
+    multi("tier", setTier);
+    if (p.get("drift") === "1") setOnlyDrift(true);
+    if (p.get("gap") === "1") setOnlyGap(true);
+  }, []);
 
   const fuse = useMemo(
     () => new Fuse(rows, { keys: ["id", "statement"], threshold: 0.34, ignoreLocation: true }),
