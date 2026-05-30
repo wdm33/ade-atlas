@@ -12,6 +12,21 @@ interface Criterion {
 }
 const criteria = config.criteria as Criterion[];
 
+// Overall readiness across the UNION of referenced invariants (each counted once,
+// no double-counting when a rule supports multiple criteria).
+const allIds = new Set(criteria.flatMap((c) => c.invariants));
+let oEnforced = 0, oPartial = 0, oDeclared = 0, oUnknown = 0;
+for (const id of allIds) {
+  const r = ruleById(id);
+  if (!r) oUnknown++;
+  else if (r.status === "enforced") oEnforced++;
+  else if (r.status === "partial") oPartial++;
+  else oDeclared++;
+}
+const oTotal = allIds.size;
+const oPct = oTotal ? Math.round((oEnforced / oTotal) * 100) : 0;
+const pctOf = (n: number) => (oTotal ? (n / oTotal) * 100 : 0);
+
 function readiness(ids: string[]) {
   let enforced = 0, partial = 0, declared = 0, unknown = 0;
   for (const id of ids) {
@@ -35,6 +50,7 @@ const labelClass: Record<string, string> = {
   "partly evidenced": "partial",
   "check refs": "drift",
 };
+const fullyEvidenced = criteria.filter((c) => readiness(c.invariants).label === "evidenced").length;
 ---
 
 <Base active="certification" title="Certification Readiness" description="Bounty readiness traced upward to invariants.">
@@ -50,7 +66,26 @@ const labelClass: Record<string, string> = {
     registry and traceability data, not hand-curated here.
   </div>
 
-  <div class="grid cols-2" style="margin-top:1rem">
+  <section style="margin:1.5rem 0 1rem">
+    <div class="pill-row" style="justify-content:space-between;align-items:baseline;margin-bottom:0.5rem">
+      <h2 style="margin:0;border:none;padding:0">Overall readiness</h2>
+      <span class="muted" style="font-size:0.85rem">
+        <strong style="color:var(--fg);font-size:1rem">{oPct}%</strong> of referenced invariants enforced
+      </span>
+    </div>
+    <div style="display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--bg-elev2);border:1px solid var(--border)">
+      <div style={`width:${pctOf(oEnforced)}%;background:var(--enforced)`} title={`${oEnforced} enforced`}></div>
+      <div style={`width:${pctOf(oPartial)}%;background:var(--partial)`} title={`${oPartial} partial`}></div>
+      <div style={`width:${pctOf(oDeclared)}%;background:var(--declared)`} title={`${oDeclared} declared`}></div>
+      {oUnknown > 0 && <div style={`width:${pctOf(oUnknown)}%;background:#f85149`} title={`${oUnknown} unknown ref`}></div>}
+    </div>
+    <div class="muted" style="font-size:0.82rem;margin-top:0.45rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.4rem 1.5rem">
+      <span>{oEnforced} enforced · {oPartial} partial · {oDeclared} declared{oUnknown > 0 ? ` · ${oUnknown} unknown ref` : ""} (of {oTotal} unique invariants)</span>
+      <span>{fullyEvidenced} of {criteria.length} criteria fully evidenced</span>
+    </div>
+  </section>
+
+  <div class="grid cols-2">
     {criteria.map((c) => {
       const r = readiness(c.invariants);
       return (
