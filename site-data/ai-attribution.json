@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1.0",
+  "generated_at": "2026-05-28",
+  "repo_head": "22eef90",
+  "attribution": {
+    "enabled": false,
+    "commits_total": 0,
+    "commits_attributed": 0,
+    "lines_total": 0,
+    "lines_ai": 0,
+    "ai_pct": 0,
+    "target_pct": 90,
+    "by_model": [],
+    "methodology": "AI attribution disabled: no repo checkout (mock mode)"
+  }
+}

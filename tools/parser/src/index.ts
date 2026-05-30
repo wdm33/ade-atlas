@@ -10,6 +10,7 @@ import { parseHeadDeltas } from "./head-deltas.ts";
 import { parseSeams } from "./seams.ts";
 import { deriveClusters, deriveCiChecks, deriveTests, deriveRepoIndex } from "./derive.ts";
 import { computeDrift } from "./drift.ts";
+import { computeAiAttribution, emptyAttribution } from "./ai-attribution.ts";
 import {
   SCHEMA_VERSION,
   PARSER_VERSION,
@@ -22,6 +23,7 @@ import {
   CiChecksFile,
   TestsFile,
   RepoIndexFile,
+  AiAttributionFile,
   Manifest,
 } from "./schema.ts";
 
@@ -79,6 +81,13 @@ function main(): void {
   const findings = computeDrift({ rules, trace, codemap, head, repoDir });
   const hardCount = findings.filter((f) => f.severity === "hard").length;
   const softCount = findings.filter((f) => f.severity === "soft").length;
+
+  // AI authorship is derived from git history; only meaningful when a checkout
+  // is available. In mock mode the artifact carries enabled:false so the site
+  // can hide the section gracefully.
+  const attribution = repoDir
+    ? computeAiAttribution(repoDir)
+    : emptyAttribution("no repo checkout (mock mode)");
 
   // Assemble + validate (zod throws on malformed shapes).
   const invariants = InvariantsFile.parse({
@@ -162,6 +171,13 @@ function main(): void {
     files: repoFiles,
   });
 
+  const aiAttributionFile = AiAttributionFile.parse({
+    schema_version: SCHEMA_VERSION,
+    generated_at,
+    repo_head,
+    attribution,
+  });
+
   const manifest = Manifest.parse({
     schema_version: SCHEMA_VERSION,
     parser_version: PARSER_VERSION,
@@ -191,6 +207,7 @@ function main(): void {
   writeJson(outDir, "ci_checks.json", ciChecksFile);
   writeJson(outDir, "tests.json", testsFile);
   writeJson(outDir, "repo_index.json", repoIndexFile);
+  writeJson(outDir, "ai-attribution.json", aiAttributionFile);
 
   // Report.
   console.log(`ade-atlas parser ${PARSER_VERSION} (schema ${SCHEMA_VERSION})`);
@@ -199,6 +216,11 @@ function main(): void {
     `  rules=${rules.length}  modules=${codemap.modules.length}  ci_checks(ref)=${referenced_count}/${codemap.counts.ci_checks ?? "?"}  tests=${tests.length}  clusters=${clusters.length}  code_paths=${repoFiles.length}`,
   );
   console.log(`  drift: ${hardCount} hard, ${softCount} soft`);
+  if (attribution.enabled) {
+    console.log(
+      `  ai authorship: ${attribution.ai_pct.toFixed(1)}% (${attribution.commits_attributed}/${attribution.commits_total} commits, ${attribution.by_model.length} model(s))`,
+    );
+  }
   if (findings.length > 0) {
     const shown = findings.slice(0, 12);
     for (const f of shown) console.log(`    [${f.severity}] ${f.kind}: ${f.detail}`);

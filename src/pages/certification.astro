@@ -2,7 +2,12 @@
 import Base from "../layouts/Base.astro";
 import StatusBadge from "../components/StatusBadge.astro";
 import config from "../../certification.config.json";
-import { ruleById, withBase } from "../lib/site-data.ts";
+import { ruleById, aiAttribution, withBase } from "../lib/site-data.ts";
+
+const ai = aiAttribution.attribution;
+const aiBarPct = Math.min(ai.ai_pct, 100);
+const targetMet = ai.ai_pct >= ai.target_pct;
+const fmt = (n: number) => n.toLocaleString("en-US");
 
 interface Criterion {
   id: string;
@@ -84,6 +89,54 @@ const fullyEvidenced = criteria.filter((c) => readiness(c.invariants).label === 
       <span>{fullyEvidenced} of {criteria.length} criteria fully evidenced</span>
     </div>
   </section>
+
+  {ai.enabled && (
+    <section style="margin:1.5rem 0 1rem">
+      <div class="pill-row" style="justify-content:space-between;align-items:baseline;margin-bottom:0.5rem">
+        <h2 style="margin:0;border:none;padding:0">AI authorship</h2>
+        <span class="muted" style="font-size:0.85rem">
+          <strong style={`color:${targetMet ? "var(--enforced)" : "var(--partial)"};font-size:1rem`}>{ai.ai_pct.toFixed(1)}%</strong>
+          {" "}of lines AI-authored · target {ai.target_pct}%{targetMet ? " ✓ met" : ` (${(ai.target_pct - ai.ai_pct).toFixed(1)} pts short)`}
+        </span>
+      </div>
+      <div style="position:relative;height:14px;border-radius:7px;overflow:hidden;background:var(--bg-elev2);border:1px solid var(--border)">
+        <div style={`width:${aiBarPct}%;height:100%;background:var(--enforced)`} title={`${ai.ai_pct.toFixed(2)}% AI-authored`}></div>
+        <div
+          title={`target ${ai.target_pct}%`}
+          style={`position:absolute;left:${ai.target_pct}%;top:-3px;bottom:-3px;width:2px;background:rgba(230,237,243,0.7);box-shadow:0 0 0 1px rgba(13,17,23,0.6)`}
+        ></div>
+      </div>
+      <div class="muted" style="font-size:0.82rem;margin-top:0.45rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.4rem 1.5rem">
+        <span>{ai.commits_attributed.toLocaleString()} of {ai.commits_total.toLocaleString()} commits carry an AI Co-Authored-By trailer</span>
+        <span>{fmt(ai.lines_ai)} / {fmt(ai.lines_total)} lines added</span>
+      </div>
+
+      <h3 style="margin-top:1rem;margin-bottom:0.4rem">By model</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th style="text-align:right">Lines added</th>
+              <th style="text-align:right">% of lines</th>
+              <th style="text-align:right">Commits</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ai.by_model.map((m) => (
+              <tr>
+                <td class="mono">{m.model}</td>
+                <td style="text-align:right" class="mono">{fmt(m.lines)}</td>
+                <td style="text-align:right" class="mono">{m.pct.toFixed(1)}%</td>
+                <td style="text-align:right" class="mono">{m.commits.toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="faint" style="font-size:0.78rem;margin-top:0.5rem;line-height:1.5">{ai.methodology}</p>
+    </section>
+  )}
 
   <div class="grid cols-2">
     {criteria.map((c) => {

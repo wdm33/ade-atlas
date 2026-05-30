@@ -264,6 +264,34 @@ export const RepoIndexFile = z.object({
   files: z.array(RepoFile),
 });
 
+export const ModelShare = z.object({
+  model: z.string(),
+  lines: z.number(),
+  commits: z.number(),
+  pct: z.number(),
+});
+
+export const AiAttribution = z.object({
+  enabled: z.boolean(),
+  commits_total: z.number(),
+  commits_attributed: z.number(),
+  lines_total: z.number(),
+  lines_ai: z.number(),
+  ai_pct: z.number(),
+  target_pct: z.number(),
+  by_model: z.array(ModelShare),
+  methodology: z.string(),
+});
+export type AiAttribution = z.infer<typeof AiAttribution>;
+
+export const AiAttributionFile = z.object({
+  schema_version: z.string(),
+  generated_at: z.string(),
+  repo_head: z.string(),
+  attribution: AiAttribution,
+});
+export type AiAttributionFile = z.infer<typeof AiAttributionFile>;
+
 export const DriftFinding = z.object({
   severity: z.enum(["hard", "soft"]),
   kind: z.string(),

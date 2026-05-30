@@ -8,6 +8,7 @@ import clustersJson from "../../site-data/clusters.json";
 import ciChecksJson from "../../site-data/ci_checks.json";
 import testsJson from "../../site-data/tests.json";
 import repoIndexJson from "../../site-data/repo_index.json";
+import aiAttributionJson from "../../site-data/ai-attribution.json";
 
 import type {
   Manifest,
@@ -20,6 +21,7 @@ import type {
   CiChecksFile,
   TestsFile,
   RepoIndexFile,
+  AiAttributionFile,
   InvariantRule,
   TraceabilityRule,
   CodemapModule,
@@ -39,6 +41,7 @@ export const clusters = clustersJson as ClustersFile;
 export const ciChecks = ciChecksJson as CiChecksFile;
 export const tests = testsJson as TestsFile;
 export const repoIndex = repoIndexJson as RepoIndexFile;
+export const aiAttribution = aiAttributionJson as AiAttributionFile;
 
 export type { InvariantRule, TraceabilityRule, CodemapModule, CiCheck, TestEntry, RepoFile, TcbColor };
 
