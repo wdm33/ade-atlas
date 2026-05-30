@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro/
 source-docs/
+public/site-data/
 *.log
 .DS_Store
 .env

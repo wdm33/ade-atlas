@@ -8,7 +8,7 @@
     "build:data": "tsx tools/parser/src/index.ts",
     "build:data:check": "tsx tools/parser/src/index.ts --strict",
     "dev": "astro dev",
-    "build": "npm run build:data && astro build",
+    "build": "npm run build:data && mkdir -p public/site-data && cp -f site-data/*.json public/site-data/ && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --import tsx --test tools/parser/test/*.test.ts"

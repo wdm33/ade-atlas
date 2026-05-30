@@ -1,16 +1,18 @@
 name: Build & deploy Ade Atlas
 
-# Rebuilds the site from the ade repo's generated docs and deploys to GitHub Pages.
+# Polls the ade repo every 10 minutes (and on pushes to ade-atlas / manual
+# dispatch), parses its grounding docs + registry into site-data, builds the
+# Astro site, and deploys to GitHub Pages.
 #
-# Source-of-truth wiring (CI fetch & pin):
+# Source-of-truth wiring:
 #   - Set repo variable  ADE_REPO   to the ade node repo slug (e.g. "wdm33/ade").
-#   - Set repo variable  ADE_REF    (optional) to pin a ref/branch; default: ade repo default branch.
-#   - If the ade repo is private, set secret  ADE_REPO_TOKEN  (a read-scoped PAT / deploy token).
+#   - Set repo variable  ADE_REF    (optional) to pin a ref/branch; default: ade default branch.
+#   - If the ade repo is private, set secret  ADE_REPO_TOKEN  (a read-scoped PAT).
 # When ADE_REPO is unset, the build falls back to the committed mock docs at the repo root.
 #
-# The ade repo can trigger a rebuild on cluster-close / doc-regen with:
-#   gh api repos/wdm33/ade-atlas/dispatches -f event_type=ade-docs-updated \
-#       -F client_payload.sha=<commit>
+# Scheduled runs short-circuit when ade's main SHA matches the SHA already
+# deployed (read from the live manifest.json), so ~144 cron runs/day cost
+# ~2 seconds each unless ade actually moved. Push / workflow_dispatch always build.
 
 on:
   push:
@@ -20,10 +22,8 @@ on:
       ref:
         description: "ade repo ref to pin (overrides ADE_REF)"
         required: false
-  repository_dispatch:
-    types: [ade-docs-updated]
   schedule:
-    - cron: "17 6 * * *" # daily safety net in case a dispatch is missed
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: read
@@ -35,7 +35,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.cmp.outputs.should_build }}
+      ade_sha: ${{ steps.cmp.outputs.ade_sha }}
+      deployed_sha: ${{ steps.cmp.outputs.deployed_sha }}
+    steps:
+      - id: cmp
+        env:
+          ADE_REPO: ${{ vars.ADE_REPO }}
+          ADE_REF: ${{ github.event.inputs.ref || vars.ADE_REF }}
+          GH_TOKEN: ${{ secrets.ADE_REPO_TOKEN || github.token }}
+        run: |
+          if [ -z "$ADE_REPO" ]; then
+            echo "ADE_REPO unset (mock fallback) — building."
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          REF="${ADE_REF:-main}"
+          ADE_SHA="$(gh api "repos/${ADE_REPO}/commits/${REF}" -q '.sha[0:7]')"
+          DEPLOYED_SHA="$(curl -fsSL https://wdm33.github.io/ade-atlas/site-data/manifest.json 2>/dev/null | jq -r '.repo_head // empty')"
+          echo "ade_sha=$ADE_SHA"             >> "$GITHUB_OUTPUT"
+          echo "deployed_sha=$DEPLOYED_SHA"   >> "$GITHUB_OUTPUT"
+          echo "ade@$ADE_SHA  deployed@$DEPLOYED_SHA"
+          if [ -n "$ADE_SHA" ] && [ "$ADE_SHA" = "$DEPLOYED_SHA" ]; then
+            echo "No change since the deployed build — skipping."
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Change detected — building."
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: check
+    # Schedule runs only build when ade moved; pushes / manual dispatch always build.
+    if: needs.check.outputs.should_build == 'true' || github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout ade-atlas
@@ -44,11 +79,10 @@ jobs:
       - name: Resolve ade source ref
         id: ref
         run: |
-          REF="${{ github.event.inputs.ref || github.event.client_payload.sha || vars.ADE_REF }}"
+          REF="${{ github.event.inputs.ref || vars.ADE_REF }}"
           echo "ref=$REF" >> "$GITHUB_OUTPUT"
 
       - name: Fetch ade docs (pinned)
-        id: fetch
         if: vars.ADE_REPO != ''
         uses: actions/checkout@v4
         with:
@@ -93,6 +127,11 @@ jobs:
           ADE_GITHUB_REPO: ${{ vars.ADE_REPO }}
         run: npm run build:data:check
 
+      - name: Expose site-data as static assets (powers the short-circuit)
+        run: |
+          mkdir -p public/site-data
+          cp -f site-data/*.json public/site-data/
+
       - name: Build site
         run: npx astro build
 
@@ -103,6 +142,7 @@ jobs:
 
   deploy:
     needs: build
+    if: needs.build.result == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
