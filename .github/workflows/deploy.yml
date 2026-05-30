@@ -103,7 +103,10 @@ jobs:
             cp ade-source/docs/ade-HEAD_DELTAS.md      source-docs/
             cp ade-source/docs/ade-TRACEABILITY.md     source-docs/
             cp ade-source/docs/ade-invariant-registry.toml source-docs/
-            SHA="$(git -C ade-source rev-parse --short HEAD)"
+            # Fixed 7-char slice to match the check job's gh api .sha[0:7]; `git
+            # rev-parse --short` can extend past 7 to avoid ambiguity and would
+            # silently defeat the short-circuit's SHA equality compare.
+            SHA="$(git -C ade-source rev-parse HEAD | cut -c1-7)"
             DATE="$(git -C ade-source log -1 --format=%cs)"
             printf '{ "repo_head": "%s", "github_repo": "%s", "generated_at": "%s" }\n' \
               "$SHA" "${{ vars.ADE_REPO }}" "$DATE" > source-docs/source-meta.json
