@@ -4,9 +4,9 @@
   "criteria": [
     {
       "id": "sync-to-tip",
-      "title": "Sync to tip",
-      "description": "Follow a chain from genesis to the current tip with byte-identical, replay-equivalent state.",
-      "invariants": ["T-DET-01", "T-ENC-03", "T-REC-02", "T-CONS-01", "CN-CONS-01", "DC-CONS-18"]
+      "title": "Sync to tip from verified anchor",
+      "description": "Import a verified Mithril snapshot or replay from genesis, then follow forward to the current tip with byte-identical, replay-equivalent state.",
+      "invariants": ["T-DET-01", "T-ENC-03", "T-REC-02", "T-CONS-01", "CN-CONS-01", "DC-CONS-18", "CN-MITHRIL-01", "DC-MITHRIL-01", "CN-ANCHOR-01", "DC-ANCHOR-01", "RO-MITHRIL-IMPORT-01"]
     },
     {
       "id": "block-production",
