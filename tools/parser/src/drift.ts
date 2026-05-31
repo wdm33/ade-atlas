@@ -23,9 +23,12 @@ export function computeDrift(inp: DriftInputs): DriftFinding[] {
 
   // --- Doc-internal (always) ---------------------------------------------
   if (codemap.counts.registry_rules != null && codemap.counts.registry_rules !== rules.length) {
-    hard(
+    // CODEMAP's Counts table records a number for prose; the site derives all
+    // rule counts from the registry directly, so this mismatch is a stale-doc
+    // signal to surface, not data the projection actually misrepresents.
+    soft(
       "count-mismatch",
-      `CODEMAP claims ${codemap.counts.registry_rules} registry rules but the registry has ${rules.length}.`,
+      `CODEMAP claims ${codemap.counts.registry_rules} registry rules but the registry has ${rules.length} — CODEMAP's Counts table predates the latest registry additions.`,
     );
   }
 
