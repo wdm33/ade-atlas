@@ -22,6 +22,10 @@ on:
       ref:
         description: "ade repo ref to pin (overrides ADE_REF)"
         required: false
+  repository_dispatch:
+    # Event-driven trigger from the ade repo's notify-atlas.yml — instant
+    # rebuilds when grounding docs change. The cron stays as a fallback.
+    types: [ade-docs-updated]
   schedule:
     - cron: "*/10 * * * *"
 
@@ -45,7 +49,7 @@ jobs:
       - id: cmp
         env:
           ADE_REPO: ${{ vars.ADE_REPO }}
-          ADE_REF: ${{ github.event.inputs.ref || vars.ADE_REF }}
+          ADE_REF: ${{ github.event.inputs.ref || github.event.client_payload.sha || vars.ADE_REF }}
           GH_TOKEN: ${{ secrets.ADE_REPO_TOKEN || github.token }}
         run: |
           if [ -z "$ADE_REPO" ]; then
@@ -79,7 +83,7 @@ jobs:
       - name: Resolve ade source ref
         id: ref
         run: |
-          REF="${{ github.event.inputs.ref || vars.ADE_REF }}"
+          REF="${{ github.event.inputs.ref || github.event.client_payload.sha || vars.ADE_REF }}"
           echo "ref=$REF" >> "$GITHUB_OUTPUT"
 
       - name: Fetch ade docs (pinned)
