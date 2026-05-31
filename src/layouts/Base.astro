@@ -54,6 +54,7 @@ const nav = [
         <span>Read-only projection of the ade repo · regenerated, not authoritative.</span>
         <span>HEAD <code>{manifest.repo_head}</code></span>
         <span>docs {manifest.docs_generated_at}</span>
+        <span>built {manifest.built_at.replace("T", " ").replace(/:\d{2}(\.\d+)?Z?$/, " UTC")}</span>
         <span>mode <code>{manifest.mode}</code></span>
         <span>
           drift {manifest.drift.hard} hard / {manifest.drift.soft} soft

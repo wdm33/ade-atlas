@@ -299,14 +299,30 @@ export const DriftFinding = z.object({
 });
 export type DriftFinding = z.infer<typeof DriftFinding>;
 
+export const LiveRepo = z.object({
+  tip_sha: z.string(),
+  tip_date: z.string(),
+  doc_stamp_sha: z.string(),
+  commits_since_doc_stamp: z.number().nullable(),
+  code_commits_since_doc_stamp: z.number().nullable(),
+});
+export type LiveRepo = z.infer<typeof LiveRepo>;
+
 export const Manifest = z.object({
   schema_version: z.string(),
   parser_version: z.string(),
   repo_head: z.string(),
   docs_generated_at: z.string(),
+  // ISO datetime of when this build of site-data was produced (intentionally
+  // non-deterministic in repo mode; a stable stub in mock mode so the committed
+  // fixture doesn't churn on every regenerate).
+  built_at: z.string(),
   mode: z.enum(["mock", "repo"]),
   github_repo: z.string().nullable(),
   source_docs: z.record(z.string(), z.string()),
+  // Repo-mode-only view of the ade clone: lets the dashboard show how far the
+  // grounding docs lag behind the repo tip without parsing the drift findings.
+  live_repo: LiveRepo.nullable(),
   counts: z.object({
     crates: z.number().nullable(),
     canonical_types: z.number().nullable(),

@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 
 import { resolveSources } from "./sources.ts";
 import { parseRegistry } from "./toml-registry.ts";
@@ -88,6 +89,59 @@ function main(): void {
   const attribution = repoDir
     ? computeAiAttribution(repoDir)
     : emptyAttribution("no repo checkout (mock mode)");
+
+  // Live repo view: how far the docs lag behind the actual tip, so the
+  // dashboard can flag "your docs are stale" vs "the site is stale."
+  let live_repo: import("./schema.ts").LiveRepo | null = null;
+  if (repoDir) {
+    try {
+      const tipSha = execSync("git rev-parse HEAD", { cwd: repoDir, stdio: ["ignore", "pipe", "ignore"] })
+        .toString()
+        .trim()
+        .slice(0, 7);
+      const tipDate = execSync("git log -1 --format=%cI HEAD", { cwd: repoDir, stdio: ["ignore", "pipe", "ignore"] })
+        .toString()
+        .trim();
+      // Prefer the HEAD_DELTAS stamp (it's what the dashboard card shows); fall
+      // back to CODEMAP if missing.
+      const docStamp = (head.head || codemap.repo_head || "").slice(0, 7);
+      let totalCommits: number | null = null;
+      let codeCommits: number | null = null;
+      if (docStamp && docStamp === tipSha) {
+        totalCommits = 0;
+        codeCommits = 0;
+      } else if (docStamp) {
+        try {
+          const t = execSync(`git log --oneline --no-merges ${docStamp}..HEAD`, {
+            cwd: repoDir,
+            stdio: ["ignore", "pipe", "ignore"],
+          }).toString().trim();
+          totalCommits = t ? t.split("\n").length : 0;
+          const c = execSync(`git log --oneline --no-merges ${docStamp}..HEAD -- crates/`, {
+            cwd: repoDir,
+            stdio: ["ignore", "pipe", "ignore"],
+          }).toString().trim();
+          codeCommits = c ? c.split("\n").length : 0;
+        } catch {
+          /* doc-stamp not an ancestor — leave counts null */
+        }
+      }
+      live_repo = {
+        tip_sha: tipSha,
+        tip_date: tipDate,
+        doc_stamp_sha: docStamp,
+        commits_since_doc_stamp: totalCommits,
+        code_commits_since_doc_stamp: codeCommits,
+      };
+    } catch {
+      /* no git */
+    }
+  }
+
+  // Build timestamp: real wall-clock in repo mode (for "data as of" on the
+  // dashboard); a stable stub in mock mode so the committed fixture doesn't
+  // churn on every regenerate.
+  const built_at = src.mode === "repo" ? new Date().toISOString() : `${generated_at}T00:00:00Z`;
 
   // Assemble + validate (zod throws on malformed shapes).
   const invariants = InvariantsFile.parse({
@@ -183,9 +237,11 @@ function main(): void {
     parser_version: PARSER_VERSION,
     repo_head,
     docs_generated_at: generated_at,
+    built_at,
     mode: src.mode,
     github_repo,
     source_docs: src.paths,
+    live_repo,
     counts: {
       crates: codemap.counts.crates,
       canonical_types: codemap.counts.canonical_types,

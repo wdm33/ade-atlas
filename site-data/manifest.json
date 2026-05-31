@@ -3,6 +3,7 @@
   "parser_version": "0.1.0",
   "repo_head": "22eef90",
   "docs_generated_at": "2026-05-28",
+  "built_at": "2026-05-28T00:00:00Z",
   "mode": "mock",
   "github_repo": null,
   "source_docs": {
@@ -12,6 +13,7 @@
     "traceability": "/home/ts/Code/rust/ade-atlas/ade-TRACEABILITY.md",
     "registry": "/home/ts/Code/rust/ade-atlas/ade-invariant-registry.toml"
   },
+  "live_repo": null,
   "counts": {
     "crates": 11,
     "canonical_types": 444,
