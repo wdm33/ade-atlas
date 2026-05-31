@@ -17,6 +17,12 @@ const crateCount =
   new Set(codemap.modules.filter((m) => m.kind === "crate").map((m) => m.name)).size;
 const declaredClusters = clusters.clusters.filter((c) => c.status === "declared");
 
+// Trim seconds: "2026-05-30 06:25:21 +0700" -> "2026-05-30 06:25 +0700".
+const stamp = (s: string | null) =>
+  s ? s.replace(/(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}):\d{2}/, "$1").trim() : null;
+const baselineStamp = stamp(headDeltas.baseline_date);
+const headStamp = stamp(headDeltas.head_date);
+
 const stats = [
   { num: crateCount, label: "crates", href: "/modules" },
   { num: manifest.counts.canonical_types, label: "canonical types", href: "/modules" },
@@ -61,8 +67,8 @@ const stats = [
     <div class="card">
       <h3>Latest changes <a href={withBase("/deltas")} style="font-size:0.8rem;font-weight:400">view deltas →</a></h3>
       <dl class="kv">
-        <dt>baseline</dt><dd class="mono">{headDeltas.baseline}</dd>
-        <dt>HEAD</dt><dd class="mono">{headDeltas.head}</dd>
+        <dt>baseline</dt><dd class="mono">{headDeltas.baseline}{baselineStamp && <span class="faint" style="font-weight:400;margin-left:0.55rem;font-size:0.78rem">{baselineStamp}</span>}</dd>
+        <dt>HEAD</dt><dd class="mono">{headDeltas.head}{headStamp && <span class="faint" style="font-weight:400;margin-left:0.55rem;font-size:0.78rem">{headStamp}</span>}</dd>
         <dt>commits</dt><dd>{headDeltas.commit_count} · +{headDeltas.lines_added} / -{headDeltas.lines_removed}</dd>
         <dt>rules</dt><dd>{headDeltas.rules_at_baseline} → {headDeltas.rules_at_head} (+{(headDeltas.rules_at_head ?? 0) - (headDeltas.rules_at_baseline ?? 0)})</dd>
         <dt>new rules</dt><dd>{headDeltas.new_rules.map((r) => r.id).join(", ")}</dd>
