@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import ForceGraph3D from "react-force-graph-3d";
 
 interface RuleNode {
@@ -37,20 +37,60 @@ export default function InvariantSkeleton({
   basePath: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const fgRef = useRef<any>(null);
   const [size, setSize] = useState({ width: 960, height: 640 });
+
+  // Measure BEFORE first paint so the canvas isn't created at a stale size
+  // (a 0-wide canvas can leave the scene visually frozen / off-center).
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
+    const w = Math.floor(containerRef.current.clientWidth);
+    const h = Math.min(Math.max(Math.round(w * 0.62), 480), 800);
+    setSize({ width: w, height: h });
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current) return;
     const ro = new ResizeObserver((entries) => {
       for (const e of entries) {
         const w = Math.floor(e.contentRect.width);
-        // Cap height in the 480–800px range, ~62% of width.
         const h = Math.min(Math.max(Math.round(w * 0.62), 480), 800);
         setSize({ width: w, height: h });
       }
     });
     ro.observe(containerRef.current);
     return () => ro.disconnect();
+  }, []);
+
+  // Gentle camera auto-rotate on first load so the scene reads as 3D
+  // immediately; stops on first user interaction.
+  useEffect(() => {
+    if (!fgRef.current) return;
+    let stopped = false;
+    const tryHook = () => {
+      const fg = fgRef.current;
+      if (!fg) return;
+      const controls = fg.controls?.();
+      if (!controls) {
+        // Controls may not be ready on the first tick; retry next frame.
+        if (!stopped) requestAnimationFrame(tryHook);
+        return;
+      }
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.6;
+      const stop = () => {
+        controls.autoRotate = false;
+        stopped = true;
+      };
+      controls.addEventListener?.("start", stop);
+      // Also stop after a generous window so the scene settles even if the
+      // user never touches it.
+      setTimeout(stop, 14000);
+    };
+    tryHook();
+    return () => {
+      stopped = true;
+    };
   }, []);
 
   const degree = useMemo(() => {
@@ -87,11 +127,18 @@ export default function InvariantSkeleton({
       }}
     >
       <ForceGraph3D
+        ref={fgRef}
         graphData={graphData}
         width={size.width}
         height={size.height}
         backgroundColor="#0a0e14"
         showNavInfo={false}
+        controlType="orbit"
+        enableNavigationControls={true}
+        enablePointerInteraction={true}
+        warmupTicks={20}
+        cooldownTicks={Infinity}
+        cooldownTime={20000}
         nodeId="id"
         nodeLabel={(n: any) => {
           const d = degree.get(n.id) ?? 0;
