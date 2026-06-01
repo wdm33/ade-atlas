@@ -39,6 +39,27 @@ export default function InvariantSkeleton({
   const containerRef = useRef<HTMLDivElement>(null);
   const fgRef = useRef<any>(null);
   const [size, setSize] = useState({ width: 960, height: 640 });
+  const ALL_TIERS = Object.keys(TIER_COLOR);
+  const [activeTiers, setActiveTiers] = useState<Set<string>>(() => new Set(ALL_TIERS));
+
+  const nodeMap = useMemo(() => new Map(rules.map((r) => [r.id, r])), [rules]);
+
+  const toggleTier = (t: string) => {
+    setActiveTiers((prev) => {
+      const next = new Set(prev);
+      if (next.has(t)) {
+        next.delete(t);
+        // If the user just turned the last one off, reset to all on so the
+        // graph never goes empty.
+        if (next.size === 0) return new Set(ALL_TIERS);
+      } else {
+        next.add(t);
+      }
+      return next;
+    });
+  };
+  const resetTiers = () => setActiveTiers(new Set(ALL_TIERS));
+  const allOn = activeTiers.size === ALL_TIERS.length;
 
   // Measure BEFORE first paint so the canvas isn't created at a stale size
   // (a 0-wide canvas can leave the scene visually frozen / off-center).
@@ -139,6 +160,14 @@ export default function InvariantSkeleton({
         warmupTicks={20}
         cooldownTicks={Infinity}
         cooldownTime={20000}
+        nodeVisibility={(n: any) => activeTiers.has(n.tier)}
+        linkVisibility={(l: any) => {
+          const sId = typeof l.source === "object" ? l.source.id : l.source;
+          const tId = typeof l.target === "object" ? l.target.id : l.target;
+          const s = nodeMap.get(sId);
+          const t = nodeMap.get(tId);
+          return !!s && !!t && activeTiers.has(s.tier) && activeTiers.has(t.tier);
+        }}
         nodeId="id"
         nodeLabel={(n: any) => {
           const d = degree.get(n.id) ?? 0;
@@ -179,15 +208,59 @@ export default function InvariantSkeleton({
           background: "var(--bg-elev)",
         }}
       >
-        <span className="faint">tier:</span>
-        {Object.entries(TIER_COLOR).map(([t, c]) => (
-          <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-            <span style={{ width: 9, height: 9, borderRadius: 5, background: c, display: "inline-block" }}></span>
-            {t}
-          </span>
-        ))}
+        <button
+          onClick={resetTiers}
+          title={allOn ? "all tiers visible" : "click to show all tiers"}
+          style={{
+            background: "none",
+            border: "none",
+            padding: 0,
+            color: "inherit",
+            cursor: allOn ? "default" : "pointer",
+            opacity: allOn ? 0.7 : 1,
+            font: "inherit",
+          }}
+          className="faint"
+        >
+          tier:
+        </button>
+        {Object.entries(TIER_COLOR).map(([t, c]) => {
+          const on = activeTiers.has(t);
+          return (
+            <button
+              key={t}
+              onClick={() => toggleTier(t)}
+              title={on ? `hide ${t} rules` : `show ${t} rules`}
+              style={{
+                background: "none",
+                border: "none",
+                padding: "0.05rem 0",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.3rem",
+                font: "inherit",
+                color: "inherit",
+                opacity: on ? 1 : 0.35,
+                textDecoration: on ? "none" : "line-through",
+              }}
+            >
+              <span
+                style={{
+                  width: 9,
+                  height: 9,
+                  borderRadius: 5,
+                  background: c,
+                  display: "inline-block",
+                  boxShadow: on ? "none" : "inset 0 0 0 1px rgba(255,255,255,0.2)",
+                }}
+              ></span>
+              {t}
+            </button>
+          );
+        })}
         <span className="faint">
-          · size = degree · drag to rotate · scroll to zoom · right-drag to pan · click a node to open the rule
+          · click a tier to toggle · size = degree · drag to rotate · scroll to zoom · right-drag to pan · click a node to open the rule
         </span>
       </div>
     </div>
