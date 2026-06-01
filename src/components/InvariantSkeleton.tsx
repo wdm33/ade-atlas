@@ -139,40 +139,41 @@ export default function InvariantSkeleton({
     if (!hoveredId) return;
     let raf = 0;
     const projector = new Vector3();
+    // The library mutates the node objects we passed in (graphData.nodes)
+    // with .x / .y / .z each tick, so the closure array is the live source.
+    const nodesById = new Map<string, any>();
+    for (const n of graphData.nodes) nodesById.set(n.id, n);
     const tick = () => {
       const fg = fgRef.current;
       const container = containerRef.current;
-      if (fg && container) {
-        const camera = fg.camera?.();
-        const data = fg.graphData?.();
-        if (camera && data) {
-          const w = container.clientWidth;
-          const h = container.clientHeight;
-          // Lazy index of node positions by id (only on the IDs we need).
-          const nodesById = new Map<string, any>();
-          for (const n of data.nodes) nodesById.set(n.id, n);
-          for (const id of neighborIds) {
-            const node = nodesById.get(id);
-            const el = labelRefs.current[id];
-            if (!el || !node || node.x == null) continue;
-            projector.set(node.x, node.y, node.z ?? 0).project(camera);
-            // Hide if behind the camera or off-screen.
-            if (projector.z >= 1) {
-              el.style.opacity = "0";
-              continue;
-            }
-            const sx = (projector.x * 0.5 + 0.5) * w;
-            const sy = (-projector.y * 0.5 + 0.5) * h;
-            el.style.transform = `translate(-50%, -120%) translate(${sx}px, ${sy}px)`;
-            el.style.opacity = "1";
+      const camera = fg?.camera?.();
+      if (camera && container) {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        for (const id of neighborIds) {
+          const node = nodesById.get(id);
+          const el = labelRefs.current[id];
+          if (!el) continue;
+          if (!node || node.x == null) {
+            el.style.opacity = "0";
+            continue;
           }
+          projector.set(node.x, node.y, node.z ?? 0).project(camera);
+          if (projector.z >= 1) {
+            el.style.opacity = "0";
+            continue;
+          }
+          const sx = (projector.x * 0.5 + 0.5) * w;
+          const sy = (-projector.y * 0.5 + 0.5) * h;
+          el.style.transform = `translate(-50%, -120%) translate(${sx}px, ${sy}px)`;
+          el.style.opacity = "1";
         }
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [hoveredId, neighborIds]);
+  }, [hoveredId, neighborIds, graphData]);
 
   // Gentle camera auto-rotate on first load so the scene reads as 3D
   // immediately; stops on first user interaction.
