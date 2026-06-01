@@ -40,7 +40,11 @@ const avgRefs = (skeletonEdges.length / invariants.count).toFixed(2);
     <div class="stat"><div class="num" style="color:var(--fg-muted)">{isolated}</div><div class="label">isolated (no refs)</div></div>
   </div>
 
-  <InvariantSkeleton client:load rules={skeletonRules} edges={skeletonEdges} basePath={base} />
+  <InvariantSkeleton client:only="react" rules={skeletonRules} edges={skeletonEdges} basePath={base}>
+    <div slot="fallback" style="height:640px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:8px;background:#0a0e14;color:var(--fg-muted)">
+      Loading 3D force layout…
+    </div>
+  </InvariantSkeleton>
 
   <h2>Top hubs <span class="faint" style="font-size:0.8rem;font-weight:400">— most-referenced rules (the vertebrae)</span></h2>
   <div class="table-wrap">
