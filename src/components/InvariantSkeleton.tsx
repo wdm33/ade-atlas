@@ -194,10 +194,19 @@ export default function InvariantSkeleton({
   // Outgoing-only neighbors — what the hovered rule *references*. Labels for
   // incoming refs would balloon the list (hubs get 30+) and cause overlap; the
   // tooltip's `↙ referenced by` line still surfaces them comprehensively.
+  // Filtered by activeTiers so labels never float over nodes the user has
+  // hidden via the tier toggles.
   const neighborIds = useMemo(() => {
     if (!hoveredId) return [] as string[];
-    return [...(outAdj.get(hoveredId) ?? [])];
-  }, [hoveredId, outAdj]);
+    const all = outAdj.get(hoveredId);
+    if (!all) return [];
+    const out: string[] = [];
+    for (const id of all) {
+      const r = nodeMap.get(id);
+      if (r && activeTiers.has(r.tier)) out.push(id);
+    }
+    return out;
+  }, [hoveredId, outAdj, nodeMap, activeTiers]);
 
   useEffect(() => {
     if (!hoveredId) return;
