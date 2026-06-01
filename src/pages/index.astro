@@ -1,7 +1,28 @@
 ---
 import Base from "../layouts/Base.astro";
 import EnforcementCharts from "../components/EnforcementCharts.tsx";
+import InvariantSkeleton from "../components/InvariantSkeleton.tsx";
 import { manifest, invariants, codemap, headDeltas, clusters, withBase } from "../lib/site-data.ts";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+// Skeleton view: slimmed nodes (smaller props payload than the full registry)
+// and edges filtered to refs that actually resolve, so the graph has no
+// dangling endpoints.
+const skeletonRules = invariants.rules.map((r) => ({
+  id: r.id,
+  tier: r.tier,
+  family: r.family,
+  status: r.status,
+  statement: r.statement,
+}));
+const validIds = new Set(invariants.rules.map((r) => r.id));
+const skeletonEdges = invariants.rules.flatMap((r) =>
+  r.cross_ref.filter((t) => validIds.has(t)).map((t) => ({ from: r.id, to: t })),
+);
+const inDeg = new Map<string, number>();
+for (const e of skeletonEdges) inDeg.set(e.to, (inDeg.get(e.to) ?? 0) + 1);
+const topHubs = [...inDeg.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3);
 
 // Enforcement health is registry-derived (authoritative, always present) rather
 // than read from the TRACEABILITY prose summary, whose format varies between
@@ -124,6 +145,19 @@ const stats = [
       </p>
     </div>
   </div>
+
+  <h2>Invariant skeleton</h2>
+  <p class="muted" style="font-size:0.9rem;margin-top:-0.35rem;max-width:78ch">
+    {invariants.count} rules, {skeletonEdges.length} cross-references. Hubs by inbound degree —
+    {topHubs.map(([id, n], i) => (
+      <>
+        {i > 0 ? ", " : ""}<a class="mono" href={withBase(`/invariants/${id}`)}>{id}</a>
+        <span class="faint"> ({n})</span>
+      </>
+    ))}
+    {topHubs.length > 0 ? " — are the load-bearing vertebrae the rest of the registry anchors to." : ""}
+  </p>
+  <InvariantSkeleton client:visible rules={skeletonRules} edges={skeletonEdges} basePath={base} />
 
   <h2>Explore</h2>
   <div class="grid cols-3">
