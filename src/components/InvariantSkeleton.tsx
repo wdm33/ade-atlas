@@ -200,6 +200,11 @@ export default function InvariantSkeleton({
     // with .x / .y / .z each tick, so the closure array is the live source.
     const nodesById = new Map<string, any>();
     for (const n of graphData.nodes) nodesById.set(n.id, n);
+    interface Placed {
+      sx: number;
+      sy: number;
+      el: HTMLDivElement;
+    }
     const tick = () => {
       const fg = fgRef.current;
       const container = containerRef.current;
@@ -207,6 +212,9 @@ export default function InvariantSkeleton({
       if (camera && container) {
         const w = container.clientWidth;
         const h = container.clientHeight;
+        const placed: Placed[] = [];
+        // First pass: project every visible neighbor's screen position. Hide
+        // labels for neighbors behind the camera or missing positions.
         for (const id of neighborIds) {
           const node = nodesById.get(id);
           const el = labelRefs.current[id];
@@ -220,10 +228,30 @@ export default function InvariantSkeleton({
             el.style.opacity = "0";
             continue;
           }
-          const sx = (projector.x * 0.5 + 0.5) * w;
-          const sy = (-projector.y * 0.5 + 0.5) * h;
-          el.style.transform = `translate(-50%, -120%) translate(${sx}px, ${sy}px)`;
-          el.style.opacity = "1";
+          placed.push({
+            sx: (projector.x * 0.5 + 0.5) * w,
+            sy: (-projector.y * 0.5 + 0.5) * h,
+            el,
+          });
+        }
+        // Second pass: anti-overlap. Sort by Y and push any label too close to
+        // a previously-placed one downward, so neighbors in tight 3D clusters
+        // stay readable instead of stacking on the same pixel.
+        placed.sort((a, b) => a.sy - b.sy);
+        const MIN_DX = 80;
+        const MIN_DY = 22;
+        for (let i = 0; i < placed.length; i++) {
+          for (let j = 0; j < i; j++) {
+            const prev = placed[j];
+            const cur = placed[i];
+            if (Math.abs(cur.sx - prev.sx) < MIN_DX && cur.sy - prev.sy < MIN_DY) {
+              cur.sy = prev.sy + MIN_DY;
+            }
+          }
+        }
+        for (const p of placed) {
+          p.el.style.transform = `translate(-50%, -120%) translate(${p.sx}px, ${p.sy}px)`;
+          p.el.style.opacity = "1";
         }
       }
       raf = requestAnimationFrame(tick);
