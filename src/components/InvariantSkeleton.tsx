@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import ForceGraph3D from "react-force-graph-3d";
+import SpriteText from "three-spritetext";
 
 interface RuleNode {
   id: string;
@@ -44,6 +45,19 @@ export default function InvariantSkeleton({
   // 30 ≈ the d3-force default; range drives both charge and link distance for a
   // visibly stronger tight↔spread effect than charge alone.
   const [spread, setSpread] = useState(30);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  // Bidirectional adjacency for the "show neighbor names on hover" labels.
+  const adjacency = useMemo(() => {
+    const m = new Map<string, Set<string>>();
+    for (const e of edges) {
+      if (!m.has(e.from)) m.set(e.from, new Set());
+      if (!m.has(e.to)) m.set(e.to, new Set());
+      m.get(e.from)!.add(e.to);
+      m.get(e.to)!.add(e.from);
+    }
+    return m;
+  }, [edges]);
 
   const nodeMap = useMemo(() => new Map(rules.map((r) => [r.id, r])), [rules]);
 
@@ -111,6 +125,12 @@ export default function InvariantSkeleton({
       cancelled = true;
     };
   }, [spread]);
+
+  // When the hover changes, force the graph to re-evaluate nodeThreeObject so
+  // neighbor labels appear/disappear without waiting for a data change.
+  useEffect(() => {
+    fgRef.current?.refresh?.();
+  }, [hoveredId]);
 
   // Gentle camera auto-rotate on first load so the scene reads as 3D
   // immediately; stops on first user interaction.
@@ -226,6 +246,29 @@ export default function InvariantSkeleton({
         }}
         onNodeHover={(n: any) => {
           if (containerRef.current) containerRef.current.style.cursor = n ? "pointer" : "default";
+          setHoveredId(n ? n.id : null);
+        }}
+        nodeThreeObjectExtend={true}
+        nodeThreeObject={(n: any) => {
+          // Float the rule's ID next to every neighbor of the hovered node.
+          // No label on the hovered node itself (its full tooltip already shows
+          // the ID) or on non-neighbors. Returning undefined when there is no
+          // label keeps the default sphere as-is (nodeThreeObjectExtend=true).
+          if (!hoveredId || n.id === hoveredId) return undefined;
+          const ns = adjacency.get(hoveredId);
+          if (!ns || !ns.has(n.id)) return undefined;
+          const t = new SpriteText(n.id);
+          t.color = "#e6edf3";
+          t.backgroundColor = "rgba(13,17,23,0.78)";
+          t.borderColor = "#3b4452";
+          t.borderWidth = 0.4;
+          t.borderRadius = 2;
+          t.padding = 1.6;
+          t.textHeight = 3.4;
+          // Lift the label above the sphere so it doesn't overlap.
+          const r = Math.cbrt(n.val ?? 1) * 4;
+          t.position.set(0, r + 4, 0);
+          return t;
         }}
       />
 
