@@ -126,54 +126,7 @@ export default function InvariantSkeleton({
     };
   }, [spread]);
 
-  // Neighbor name labels as HTML overlays, projected from the 3D scene each
-  // animation frame. Rendering as DOM (instead of three.js sprites) keeps
-  // them always-on-top with constant screen size, like the main tooltip.
   const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const neighborIds = useMemo(() => {
-    if (!hoveredId) return [] as string[];
-    return [...(adjacency.get(hoveredId) ?? [])];
-  }, [hoveredId, adjacency]);
-
-  useEffect(() => {
-    if (!hoveredId) return;
-    let raf = 0;
-    const projector = new Vector3();
-    // The library mutates the node objects we passed in (graphData.nodes)
-    // with .x / .y / .z each tick, so the closure array is the live source.
-    const nodesById = new Map<string, any>();
-    for (const n of graphData.nodes) nodesById.set(n.id, n);
-    const tick = () => {
-      const fg = fgRef.current;
-      const container = containerRef.current;
-      const camera = fg?.camera?.();
-      if (camera && container) {
-        const w = container.clientWidth;
-        const h = container.clientHeight;
-        for (const id of neighborIds) {
-          const node = nodesById.get(id);
-          const el = labelRefs.current[id];
-          if (!el) continue;
-          if (!node || node.x == null) {
-            el.style.opacity = "0";
-            continue;
-          }
-          projector.set(node.x, node.y, node.z ?? 0).project(camera);
-          if (projector.z >= 1) {
-            el.style.opacity = "0";
-            continue;
-          }
-          const sx = (projector.x * 0.5 + 0.5) * w;
-          const sy = (-projector.y * 0.5 + 0.5) * h;
-          el.style.transform = `translate(-50%, -120%) translate(${sx}px, ${sy}px)`;
-          el.style.opacity = "1";
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [hoveredId, neighborIds, graphData]);
 
   // Gentle camera auto-rotate on first load so the scene reads as 3D
   // immediately; stops on first user interaction.
@@ -230,6 +183,54 @@ export default function InvariantSkeleton({
     const links = edges.map((e) => ({ source: e.from, target: e.to }));
     return { nodes, links };
   }, [rules, edges, degree]);
+
+  // Neighbor name labels as HTML overlays, projected from the 3D scene each
+  // animation frame. Declared AFTER graphData so the dep array can reference
+  // it without a temporal-dead-zone ReferenceError on first render.
+  const neighborIds = useMemo(() => {
+    if (!hoveredId) return [] as string[];
+    return [...(adjacency.get(hoveredId) ?? [])];
+  }, [hoveredId, adjacency]);
+
+  useEffect(() => {
+    if (!hoveredId) return;
+    let raf = 0;
+    const projector = new Vector3();
+    // The library mutates the node objects we passed in (graphData.nodes)
+    // with .x / .y / .z each tick, so the closure array is the live source.
+    const nodesById = new Map<string, any>();
+    for (const n of graphData.nodes) nodesById.set(n.id, n);
+    const tick = () => {
+      const fg = fgRef.current;
+      const container = containerRef.current;
+      const camera = fg?.camera?.();
+      if (camera && container) {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        for (const id of neighborIds) {
+          const node = nodesById.get(id);
+          const el = labelRefs.current[id];
+          if (!el) continue;
+          if (!node || node.x == null) {
+            el.style.opacity = "0";
+            continue;
+          }
+          projector.set(node.x, node.y, node.z ?? 0).project(camera);
+          if (projector.z >= 1) {
+            el.style.opacity = "0";
+            continue;
+          }
+          const sx = (projector.x * 0.5 + 0.5) * w;
+          const sy = (-projector.y * 0.5 + 0.5) * h;
+          el.style.transform = `translate(-50%, -120%) translate(${sx}px, ${sy}px)`;
+          el.style.opacity = "1";
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [hoveredId, neighborIds, graphData]);
 
   return (
     <div
