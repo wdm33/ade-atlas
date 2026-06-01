@@ -1,0 +1,73 @@
+---
+import Base from "../layouts/Base.astro";
+import InvariantSkeleton from "../components/InvariantSkeleton.tsx";
+import { invariants, ruleById, withBase } from "../lib/site-data.ts";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const skeletonRules = invariants.rules.map((r) => ({
+  id: r.id,
+  tier: r.tier,
+  family: r.family,
+  status: r.status,
+  statement: r.statement,
+}));
+const validIds = new Set(invariants.rules.map((r) => r.id));
+const skeletonEdges = invariants.rules.flatMap((r) =>
+  r.cross_ref.filter((t) => validIds.has(t)).map((t) => ({ from: r.id, to: t })),
+);
+
+// Stats + top hubs.
+const inDeg = new Map<string, number>();
+for (const e of skeletonEdges) inDeg.set(e.to, (inDeg.get(e.to) ?? 0) + 1);
+const isolated = invariants.rules.filter((r) => r.cross_ref.length === 0 && !inDeg.has(r.id)).length;
+const topHubs = [...inDeg.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
+const avgRefs = (skeletonEdges.length / invariants.count).toFixed(2);
+---
+
+<Base active="skeleton" title="Invariant Skeleton" description="The registry's cross-reference graph — spine, vertebrae, and limbs.">
+  <h1>Invariant Skeleton</h1>
+  <p class="lede">
+    The cross-reference graph of all {invariants.count} registry rules. Color = tier,
+    size = total degree, edges = <code>cross_ref</code>. The most-referenced rules are the
+    load-bearing vertebrae the rest of the registry anchors to.
+  </p>
+
+  <div class="grid cols-4" style="margin-bottom:1rem">
+    <div class="stat"><div class="num">{invariants.count}</div><div class="label">rules</div></div>
+    <div class="stat"><div class="num">{skeletonEdges.length}</div><div class="label">cross-references</div></div>
+    <div class="stat"><div class="num">{avgRefs}</div><div class="label">avg refs / rule</div></div>
+    <div class="stat"><div class="num" style="color:var(--fg-muted)">{isolated}</div><div class="label">isolated (no refs)</div></div>
+  </div>
+
+  <InvariantSkeleton client:load rules={skeletonRules} edges={skeletonEdges} basePath={base} />
+
+  <h2>Top hubs <span class="faint" style="font-size:0.8rem;font-weight:400">— most-referenced rules (the vertebrae)</span></h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Rule</th>
+          <th style="text-align:right">Inbound</th>
+          <th>Tier</th>
+          <th>Status</th>
+          <th>Statement</th>
+        </tr>
+      </thead>
+      <tbody>
+        {topHubs.map(([id, n]) => {
+          const r = ruleById(id);
+          return (
+            <tr>
+              <td class="mono"><a href={withBase(`/invariants/${id}`)}>{id}</a></td>
+              <td style="text-align:right" class="mono">{n}</td>
+              <td>{r ? <span class="badge tier">{r.tier}</span> : <span class="faint">—</span>}</td>
+              <td>{r ? <span class={`badge ${r.status}`}>{r.status}</span> : <span class="faint">—</span>}</td>
+              <td style="max-width:50ch">{r ? (r.statement.length > 140 ? r.statement.slice(0, 140) + "…" : r.statement) : ""}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+</Base>
