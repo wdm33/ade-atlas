@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-import SpriteText from "three-spritetext";
+import { Vector3 } from "three";
 
 interface RuleNode {
   id: string;
@@ -126,11 +126,53 @@ export default function InvariantSkeleton({
     };
   }, [spread]);
 
-  // When the hover changes, force the graph to re-evaluate nodeThreeObject so
-  // neighbor labels appear/disappear without waiting for a data change.
+  // Neighbor name labels as HTML overlays, projected from the 3D scene each
+  // animation frame. Rendering as DOM (instead of three.js sprites) keeps
+  // them always-on-top with constant screen size, like the main tooltip.
+  const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const neighborIds = useMemo(() => {
+    if (!hoveredId) return [] as string[];
+    return [...(adjacency.get(hoveredId) ?? [])];
+  }, [hoveredId, adjacency]);
+
   useEffect(() => {
-    fgRef.current?.refresh?.();
-  }, [hoveredId]);
+    if (!hoveredId) return;
+    let raf = 0;
+    const projector = new Vector3();
+    const tick = () => {
+      const fg = fgRef.current;
+      const container = containerRef.current;
+      if (fg && container) {
+        const camera = fg.camera?.();
+        const data = fg.graphData?.();
+        if (camera && data) {
+          const w = container.clientWidth;
+          const h = container.clientHeight;
+          // Lazy index of node positions by id (only on the IDs we need).
+          const nodesById = new Map<string, any>();
+          for (const n of data.nodes) nodesById.set(n.id, n);
+          for (const id of neighborIds) {
+            const node = nodesById.get(id);
+            const el = labelRefs.current[id];
+            if (!el || !node || node.x == null) continue;
+            projector.set(node.x, node.y, node.z ?? 0).project(camera);
+            // Hide if behind the camera or off-screen.
+            if (projector.z >= 1) {
+              el.style.opacity = "0";
+              continue;
+            }
+            const sx = (projector.x * 0.5 + 0.5) * w;
+            const sy = (-projector.y * 0.5 + 0.5) * h;
+            el.style.transform = `translate(-50%, -120%) translate(${sx}px, ${sy}px)`;
+            el.style.opacity = "1";
+          }
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [hoveredId, neighborIds]);
 
   // Gentle camera auto-rotate on first load so the scene reads as 3D
   // immediately; stops on first user interaction.
@@ -248,29 +290,52 @@ export default function InvariantSkeleton({
           if (containerRef.current) containerRef.current.style.cursor = n ? "pointer" : "default";
           setHoveredId(n ? n.id : null);
         }}
-        nodeThreeObjectExtend={true}
-        nodeThreeObject={(n: any) => {
-          // Float the rule's ID next to every neighbor of the hovered node.
-          // No label on the hovered node itself (its full tooltip already shows
-          // the ID) or on non-neighbors. Returning undefined when there is no
-          // label keeps the default sphere as-is (nodeThreeObjectExtend=true).
-          if (!hoveredId || n.id === hoveredId) return undefined;
-          const ns = adjacency.get(hoveredId);
-          if (!ns || !ns.has(n.id)) return undefined;
-          const t = new SpriteText(n.id);
-          t.color = "#e6edf3";
-          t.backgroundColor = "rgba(13,17,23,0.78)";
-          t.borderColor = "#3b4452";
-          t.borderWidth = 0.4;
-          t.borderRadius = 2;
-          t.padding = 1.6;
-          t.textHeight = 3.4;
-          // Lift the label above the sphere so it doesn't overlap.
-          const r = Math.cbrt(n.val ?? 1) * 4;
-          t.position.set(0, r + 4, 0);
-          return t;
-        }}
       />
+
+      {/* Neighbor name labels as an HTML overlay over the canvas, projected
+          from 3D positions each frame. Always on top, constant screen size. */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          // Stop just above the legend bar so labels don't overlap controls.
+          bottom: 44,
+          pointerEvents: "none",
+          overflow: "hidden",
+          zIndex: 5,
+        }}
+      >
+        {neighborIds.map((id) => (
+          <div
+            key={id}
+            ref={(el) => {
+              labelRefs.current[id] = el;
+            }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              padding: "2px 7px",
+              fontFamily: "var(--mono)",
+              fontSize: "0.74rem",
+              color: "#e6edf3",
+              background: "rgba(13,17,23,0.92)",
+              border: "1px solid var(--accent-dim, #1f6feb)",
+              borderRadius: 4,
+              boxShadow: "0 2px 6px rgba(0,0,0,0.45)",
+              whiteSpace: "nowrap",
+              opacity: 0,
+              transform: "translate(-50%, -120%) translate(-9999px, -9999px)",
+              willChange: "transform, opacity",
+              transition: "opacity 60ms linear",
+            }}
+          >
+            {id}
+          </div>
+        ))}
+      </div>
 
       <div
         className="pill-row"
