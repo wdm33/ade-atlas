@@ -41,6 +41,9 @@ export default function InvariantSkeleton({
   const [size, setSize] = useState({ width: 960, height: 640 });
   const ALL_TIERS = Object.keys(TIER_COLOR);
   const [activeTiers, setActiveTiers] = useState<Set<string>>(() => new Set(ALL_TIERS));
+  // 30 ≈ the d3-force default; range drives both charge and link distance for a
+  // visibly stronger tight↔spread effect than charge alone.
+  const [spread, setSpread] = useState(30);
 
   const nodeMap = useMemo(() => new Map(rules.map((r) => [r.id, r])), [rules]);
 
@@ -82,6 +85,32 @@ export default function InvariantSkeleton({
     ro.observe(containerRef.current);
     return () => ro.disconnect();
   }, []);
+
+  // Apply the spread slider to charge + link distance. Reheats the sim each
+  // change so the new layout settles into place visibly.
+  useEffect(() => {
+    let cancelled = false;
+    const apply = () => {
+      const fg = fgRef.current;
+      if (!fg) {
+        if (!cancelled) requestAnimationFrame(apply);
+        return;
+      }
+      const charge = fg.d3Force?.("charge");
+      const link = fg.d3Force?.("link");
+      if (!charge || !link) {
+        if (!cancelled) requestAnimationFrame(apply);
+        return;
+      }
+      charge.strength(-spread);
+      link.distance(15 + spread * 0.4); // 19 (tight) … 95 (wide)
+      fg.d3ReheatSimulation?.();
+    };
+    apply();
+    return () => {
+      cancelled = true;
+    };
+  }, [spread]);
 
   // Gentle camera auto-rotate on first load so the scene reads as 3D
   // immediately; stops on first user interaction.
@@ -127,9 +156,12 @@ export default function InvariantSkeleton({
   // val (rendered size) and a fixed color so the simulation doesn't recompute
   // them per tick.
   const graphData = useMemo(() => {
+    // val drives sphere volume; the renderer takes the cube root for radius.
+    // Linear-in-degree gives a ~4× radius spread across the registry, so hubs
+    // are obviously larger than leaves instead of all looking the same.
     const nodes = rules.map((r) => ({
       ...r,
-      val: 1 + Math.sqrt(degree.get(r.id) ?? 0) * 2.5,
+      val: 1 + (degree.get(r.id) ?? 0) * 2.4,
       color: TIER_COLOR[r.tier] ?? "#8b949e",
     }));
     const links = edges.map((e) => ({ source: e.from, target: e.to }));
@@ -259,6 +291,22 @@ export default function InvariantSkeleton({
             </button>
           );
         })}
+        <span style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", marginLeft: "0.5rem" }}>
+          <span className="faint">spread:</span>
+          <span className="faint" style={{ fontSize: "0.72rem" }}>tight</span>
+          <input
+            type="range"
+            min={10}
+            max={200}
+            step={5}
+            value={spread}
+            onChange={(e) => setSpread(Number(e.target.value))}
+            aria-label="Layout spread"
+            title="Adjust node repulsion + edge length"
+            style={{ width: 110, accentColor: "var(--accent)" }}
+          />
+          <span className="faint" style={{ fontSize: "0.72rem" }}>spread</span>
+        </span>
         <span className="faint">
           · click a tier to toggle · size = degree · drag to rotate · scroll to zoom · right-drag to pan · click a node to open the rule
         </span>
