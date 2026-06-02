@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-import { Vector3 } from "three";
 
 interface RuleNode {
   id: string;
@@ -45,8 +44,6 @@ export default function InvariantSkeleton({
   // 30 ≈ the d3-force default; range drives both charge and link distance for a
   // visibly stronger tight↔spread effect than charge alone.
   const [spread, setSpread] = useState(30);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Directional adjacency: outAdj is what this rule references (its own
   // cross_ref list); inAdj is what references it. Kept separate so the tooltip
@@ -191,83 +188,6 @@ export default function InvariantSkeleton({
     return { nodes, links };
   }, [rules, edges, degree]);
 
-  // Outgoing-only neighbors — what the hovered rule *references*. Labels for
-  // incoming refs would balloon the list (hubs get 30+) and cause overlap; the
-  // tooltip's `↙ referenced by` line still surfaces them comprehensively.
-  // Filtered by activeTiers so labels never float over nodes the user has
-  // hidden via the tier toggles.
-  const neighborIds = useMemo(() => {
-    if (!hoveredId) return [] as string[];
-    const all = outAdj.get(hoveredId);
-    if (!all) return [];
-    const out: string[] = [];
-    for (const id of all) {
-      const r = nodeMap.get(id);
-      if (r && activeTiers.has(r.tier)) out.push(id);
-    }
-    return out;
-  }, [hoveredId, outAdj, nodeMap, activeTiers]);
-
-  useEffect(() => {
-    if (!hoveredId) return;
-    let raf = 0;
-    const projector = new Vector3();
-    const nodesById = new Map<string, any>();
-    for (const n of graphData.nodes) nodesById.set(n.id, n);
-    interface Placed {
-      sx: number;
-      sy: number;
-      el: HTMLDivElement;
-    }
-    const tick = () => {
-      const fg = fgRef.current;
-      const container = containerRef.current;
-      const camera = fg?.camera?.();
-      if (camera && container) {
-        const w = container.clientWidth;
-        const h = container.clientHeight;
-        const placed: Placed[] = [];
-        for (const id of neighborIds) {
-          const node = nodesById.get(id);
-          const el = labelRefs.current[id];
-          if (!el) continue;
-          if (!node || node.x == null) {
-            el.style.opacity = "0";
-            continue;
-          }
-          projector.set(node.x, node.y, node.z ?? 0).project(camera);
-          if (projector.z >= 1) {
-            el.style.opacity = "0";
-            continue;
-          }
-          placed.push({
-            sx: (projector.x * 0.5 + 0.5) * w,
-            sy: (-projector.y * 0.5 + 0.5) * h,
-            el,
-          });
-        }
-        // Anti-overlap: shift downward when too close to an already-placed label.
-        placed.sort((a, b) => a.sy - b.sy);
-        for (let i = 0; i < placed.length; i++) {
-          for (let j = 0; j < i; j++) {
-            const prev = placed[j];
-            const cur = placed[i];
-            if (Math.abs(cur.sx - prev.sx) < 80 && cur.sy - prev.sy < 22) {
-              cur.sy = prev.sy + 22;
-            }
-          }
-        }
-        for (const p of placed) {
-          p.el.style.transform = `translate(-50%, -120%) translate(${p.sx}px, ${p.sy}px)`;
-          p.el.style.opacity = "1";
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [hoveredId, neighborIds, graphData]);
-
   return (
     <div
       ref={containerRef}
@@ -336,53 +256,8 @@ export default function InvariantSkeleton({
         }}
         onNodeHover={(n: any) => {
           if (containerRef.current) containerRef.current.style.cursor = n ? "pointer" : "default";
-          setHoveredId(n ? n.id : null);
         }}
       />
-
-      {/* In-scene labels for outgoing-only neighbors. HTML overlay, projected
-          from 3D positions each frame; always on top, constant screen size. */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          bottom: 44,
-          pointerEvents: "none",
-          overflow: "hidden",
-          zIndex: 5,
-        }}
-      >
-        {neighborIds.map((id) => (
-          <div
-            key={id}
-            ref={(el) => {
-              labelRefs.current[id] = el;
-            }}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              padding: "2px 7px",
-              fontFamily: "var(--mono)",
-              fontSize: "0.74rem",
-              color: "#e6edf3",
-              background: "rgba(13,17,23,0.92)",
-              border: "1px solid var(--accent-dim, #1f6feb)",
-              borderRadius: 4,
-              boxShadow: "0 2px 6px rgba(0,0,0,0.45)",
-              whiteSpace: "nowrap",
-              opacity: 0,
-              transform: "translate(-50%, -120%) translate(-9999px, -9999px)",
-              willChange: "transform, opacity",
-              transition: "opacity 60ms linear",
-            }}
-          >
-            {id}
-          </div>
-        ))}
-      </div>
 
       <div
         className="pill-row"
