@@ -76,27 +76,24 @@ export default function InvariantSkeleton({
     return () => ro.disconnect();
   }, []);
 
-  // Drive the d3-force charge + link distance from the spread slider; reheat
-  // the sim so the new equilibrium settles visibly. Retries via rAF until the
-  // lib is ready (forces aren't available on the first tick).
+  // Drive the d3-force charge + link distance from the spread slider. Skip
+  // the initial mount entirely (lib defaults are fine for the first render);
+  // only act once the user has actually moved the slider. No d3ReheatSimulation
+  // — restarting the sim from the spread effect was blanking the scene; the
+  // sim picks up the new force values on its next tick anyway.
+  const spreadFirstRun = useRef(true);
   useEffect(() => {
-    let cancelled = false;
-    const apply = () => {
-      const fg = fgRef.current;
-      const charge = fg?.d3Force?.("charge");
-      const link = fg?.d3Force?.("link");
-      if (!charge || !link) {
-        if (!cancelled) requestAnimationFrame(apply);
-        return;
-      }
+    if (spreadFirstRun.current) {
+      spreadFirstRun.current = false;
+      return;
+    }
+    const fg = fgRef.current;
+    const charge = fg?.d3Force?.("charge");
+    const link = fg?.d3Force?.("link");
+    if (charge && link) {
       charge.strength(-spread);
       link.distance(15 + spread * 0.4); // 19 (tight) … 95 (wide)
-      fg.d3ReheatSimulation?.();
-    };
-    apply();
-    return () => {
-      cancelled = true;
-    };
+    }
   }, [spread]);
 
   const outAdj = useMemo(() => {
