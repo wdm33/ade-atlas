@@ -40,6 +40,26 @@ export default function InvariantSkeleton({
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const height = 640;
 
+  // Tier filter — click a chip to hide that tier; click "tier:" to reset.
+  // If the user turns the last one off we silently reset to all on so the
+  // graph can never go empty (which would look like a regression).
+  const ALL_TIERS = Object.keys(TIER_COLOR);
+  const [activeTiers, setActiveTiers] = useState<Set<string>>(() => new Set(ALL_TIERS));
+  const toggleTier = (t: string) => {
+    setActiveTiers((prev) => {
+      const next = new Set(prev);
+      if (next.has(t)) {
+        next.delete(t);
+        if (next.size === 0) return new Set(ALL_TIERS);
+      } else {
+        next.add(t);
+      }
+      return next;
+    });
+  };
+  const resetTiers = () => setActiveTiers(new Set(ALL_TIERS));
+  const allOn = activeTiers.size === ALL_TIERS.length;
+
   // Match container width on mount + whenever it resizes.
   useLayoutEffect(() => {
     if (!containerRef.current) return;
@@ -71,6 +91,8 @@ export default function InvariantSkeleton({
     }
     return m;
   }, [edges]);
+
+  const nodeMap = useMemo(() => new Map(rules.map((r) => [r.id, r])), [rules]);
 
   const degree = useMemo(() => {
     const d = new Map<string, number>();
@@ -122,6 +144,14 @@ export default function InvariantSkeleton({
           backgroundColor="#0a0e14"
           showNavInfo={false}
           nodeId="id"
+          nodeVisibility={(n: any) => activeTiers.has(n.tier)}
+          linkVisibility={(l: any) => {
+            const sId = typeof l.source === "object" ? l.source.id : l.source;
+            const tId = typeof l.target === "object" ? l.target.id : l.target;
+            const s = nodeMap.get(sId);
+            const t = nodeMap.get(tId);
+            return !!s && !!t && activeTiers.has(s.tier) && activeTiers.has(t.tier);
+          }}
           nodeLabel={(n: any) => {
             const stmt = n.statement.length > 160 ? n.statement.slice(0, 160) + "…" : n.statement;
             const out = [...(outAdj.get(n.id) ?? [])].sort();
@@ -175,16 +205,64 @@ export default function InvariantSkeleton({
           fontSize: "0.78rem",
           color: "var(--fg-muted)",
           background: "var(--bg-elev)",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.5rem 0.9rem",
+          alignItems: "center",
         }}
       >
-        tier:&nbsp;
-        {Object.entries(TIER_COLOR).map(([t, c]) => (
-          <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", marginRight: "0.9rem" }}>
-            <span style={{ width: 9, height: 9, borderRadius: 5, background: c, display: "inline-block" }}></span>
-            {t}
-          </span>
-        ))}
-        <span className="faint">· size = degree · drag to rotate · scroll to zoom · click a node to open the rule</span>
+        <button
+          onClick={resetTiers}
+          title={allOn ? "all tiers visible" : "click to show all tiers"}
+          className="faint"
+          style={{
+            background: "none",
+            border: "none",
+            padding: 0,
+            color: "inherit",
+            font: "inherit",
+            cursor: allOn ? "default" : "pointer",
+            opacity: allOn ? 0.7 : 1,
+          }}
+        >
+          tier:
+        </button>
+        {Object.entries(TIER_COLOR).map(([t, c]) => {
+          const on = activeTiers.has(t);
+          return (
+            <button
+              key={t}
+              onClick={() => toggleTier(t)}
+              title={on ? `hide ${t} rules` : `show ${t} rules`}
+              style={{
+                background: "none",
+                border: "none",
+                padding: "0.05rem 0",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.3rem",
+                font: "inherit",
+                color: "inherit",
+                opacity: on ? 1 : 0.35,
+                textDecoration: on ? "none" : "line-through",
+              }}
+            >
+              <span
+                style={{
+                  width: 9,
+                  height: 9,
+                  borderRadius: 5,
+                  background: c,
+                  display: "inline-block",
+                  boxShadow: on ? "none" : "inset 0 0 0 1px rgba(255,255,255,0.2)",
+                }}
+              ></span>
+              {t}
+            </button>
+          );
+        })}
+        <span className="faint">· click a tier to toggle · size = degree · drag to rotate · scroll to zoom · click a node to open</span>
       </div>
     </div>
   );
