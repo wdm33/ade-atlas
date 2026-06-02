@@ -44,6 +44,7 @@ export default function InvariantSkeleton({
   // 30 ≈ the d3-force default; range drives both charge and link distance for a
   // visibly stronger tight↔spread effect than charge alone.
   const [spread, setSpread] = useState(30);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   // Directional adjacency: outAdj is what this rule references (its own
   // cross_ref list); inAdj is what references it. Kept separate so the tooltip
@@ -66,6 +67,23 @@ export default function InvariantSkeleton({
   }, [edges]);
 
   const nodeMap = useMemo(() => new Map(rules.map((r) => [r.id, r])), [rules]);
+
+  // Connected = the hovered node + every cross_ref'd rule (either direction).
+  // Used to dim everything else when hovering, so the local subgraph pops
+  // without an HTML overlay.
+  const connectedSet = useMemo(() => {
+    if (!hoveredId) return null;
+    const s = new Set<string>([hoveredId]);
+    for (const id of outAdj.get(hoveredId) ?? []) s.add(id);
+    for (const id of inAdj.get(hoveredId) ?? []) s.add(id);
+    return s;
+  }, [hoveredId, outAdj, inAdj]);
+
+  // The lib caches per-node materials, so the callbacks don't repaint on
+  // hover-state change unless we explicitly refresh() to re-evaluate them.
+  useEffect(() => {
+    fgRef.current?.refresh?.();
+  }, [hoveredId]);
 
   const toggleTier = (t: string) => {
     setActiveTiers((prev) => {
@@ -241,10 +259,21 @@ export default function InvariantSkeleton({
           `;
         }}
         nodeVal={(n: any) => n.val}
-        nodeColor={(n: any) => n.color}
+        nodeColor={(n: any) => {
+          if (!connectedSet) return n.color;
+          if (n.id === hoveredId) return "#ffffff";
+          if (connectedSet.has(n.id)) return n.color;
+          return "#1c2330"; // dim non-connected
+        }}
         nodeOpacity={0.95}
         nodeResolution={12}
-        linkColor={() => "rgba(150,170,200,0.18)"}
+        linkColor={(l: any) => {
+          if (!hoveredId) return "rgba(150,170,200,0.18)";
+          const sId = typeof l.source === "object" ? l.source.id : l.source;
+          const tId = typeof l.target === "object" ? l.target.id : l.target;
+          if (sId === hoveredId || tId === hoveredId) return "#58a6ff";
+          return "rgba(80,90,110,0.06)";
+        }}
         linkOpacity={0.4}
         linkWidth={0.6}
         linkDirectionalArrowLength={2.5}
@@ -256,6 +285,7 @@ export default function InvariantSkeleton({
         }}
         onNodeHover={(n: any) => {
           if (containerRef.current) containerRef.current.style.cursor = n ? "pointer" : "default";
+          setHoveredId(n ? n.id : null);
         }}
       />
 
