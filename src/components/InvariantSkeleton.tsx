@@ -21,11 +21,9 @@ const TIER_COLOR: Record<string, string> = {
   operational: "#8b949e",
 };
 
-const STATUS_GLOW: Record<string, string> = {
-  enforced: "#3fb950",
-  partial: "#d29922",
-  declared: "#8b949e",
-};
+// Stripped back to the smallest set of props known to work — no experimental
+// controlType / enableNavigationControls / cooldownTicks=Infinity / refresh()
+// dances. Just data + sizing + click/hover + a simple per-node dim on hover.
 
 export default function InvariantSkeleton({
   rules,
@@ -38,17 +36,25 @@ export default function InvariantSkeleton({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const fgRef = useRef<any>(null);
-  const [size, setSize] = useState({ width: 960, height: 640 });
-  const ALL_TIERS = Object.keys(TIER_COLOR);
-  const [activeTiers, setActiveTiers] = useState<Set<string>>(() => new Set(ALL_TIERS));
-  // 30 ≈ the d3-force default; range drives both charge and link distance for a
-  // visibly stronger tight↔spread effect than charge alone.
-  const [spread, setSpread] = useState(30);
+  const [width, setWidth] = useState(960);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const height = 640;
 
-  // Directional adjacency: outAdj is what this rule references (its own
-  // cross_ref list); inAdj is what references it. Kept separate so the tooltip
-  // and in-scene labels can tell users *which* direction each connection runs.
+  // Match container width on mount + whenever it resizes.
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
+    setWidth(Math.floor(containerRef.current.clientWidth));
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const e of entries) setWidth(Math.floor(e.contentRect.width));
+    });
+    ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
   const outAdj = useMemo(() => {
     const m = new Map<string, Set<string>>();
     for (const e of edges) {
@@ -66,121 +72,6 @@ export default function InvariantSkeleton({
     return m;
   }, [edges]);
 
-  const nodeMap = useMemo(() => new Map(rules.map((r) => [r.id, r])), [rules]);
-
-  // Connected = the hovered node + every cross_ref'd rule (either direction).
-  // Used to dim everything else when hovering, so the local subgraph pops
-  // without an HTML overlay.
-  const connectedSet = useMemo(() => {
-    if (!hoveredId) return null;
-    const s = new Set<string>([hoveredId]);
-    for (const id of outAdj.get(hoveredId) ?? []) s.add(id);
-    for (const id of inAdj.get(hoveredId) ?? []) s.add(id);
-    return s;
-  }, [hoveredId, outAdj, inAdj]);
-
-  // The lib caches per-node materials, so the callbacks don't repaint on
-  // hover-state change unless we explicitly refresh() to re-evaluate them.
-  useEffect(() => {
-    fgRef.current?.refresh?.();
-  }, [hoveredId]);
-
-  const toggleTier = (t: string) => {
-    setActiveTiers((prev) => {
-      const next = new Set(prev);
-      if (next.has(t)) {
-        next.delete(t);
-        // If the user just turned the last one off, reset to all on so the
-        // graph never goes empty.
-        if (next.size === 0) return new Set(ALL_TIERS);
-      } else {
-        next.add(t);
-      }
-      return next;
-    });
-  };
-  const resetTiers = () => setActiveTiers(new Set(ALL_TIERS));
-  const allOn = activeTiers.size === ALL_TIERS.length;
-
-  // Measure BEFORE first paint so the canvas isn't created at a stale size
-  // (a 0-wide canvas can leave the scene visually frozen / off-center).
-  useLayoutEffect(() => {
-    if (!containerRef.current) return;
-    const w = Math.floor(containerRef.current.clientWidth);
-    const h = Math.min(Math.max(Math.round(w * 0.62), 480), 800);
-    setSize({ width: w, height: h });
-  }, []);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const e of entries) {
-        const w = Math.floor(e.contentRect.width);
-        const h = Math.min(Math.max(Math.round(w * 0.62), 480), 800);
-        setSize({ width: w, height: h });
-      }
-    });
-    ro.observe(containerRef.current);
-    return () => ro.disconnect();
-  }, []);
-
-  // Apply the spread slider to charge + link distance. Reheats the sim each
-  // change so the new layout settles into place visibly.
-  useEffect(() => {
-    let cancelled = false;
-    const apply = () => {
-      const fg = fgRef.current;
-      if (!fg) {
-        if (!cancelled) requestAnimationFrame(apply);
-        return;
-      }
-      const charge = fg.d3Force?.("charge");
-      const link = fg.d3Force?.("link");
-      if (!charge || !link) {
-        if (!cancelled) requestAnimationFrame(apply);
-        return;
-      }
-      charge.strength(-spread);
-      link.distance(15 + spread * 0.4); // 19 (tight) … 95 (wide)
-      fg.d3ReheatSimulation?.();
-    };
-    apply();
-    return () => {
-      cancelled = true;
-    };
-  }, [spread]);
-
-  // Gentle camera auto-rotate on first load so the scene reads as 3D
-  // immediately; stops on first user interaction.
-  useEffect(() => {
-    if (!fgRef.current) return;
-    let stopped = false;
-    const tryHook = () => {
-      const fg = fgRef.current;
-      if (!fg) return;
-      const controls = fg.controls?.();
-      if (!controls) {
-        // Controls may not be ready on the first tick; retry next frame.
-        if (!stopped) requestAnimationFrame(tryHook);
-        return;
-      }
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.6;
-      const stop = () => {
-        controls.autoRotate = false;
-        stopped = true;
-      };
-      controls.addEventListener?.("start", stop);
-      // Also stop after a generous window so the scene settles even if the
-      // user never touches it.
-      setTimeout(stop, 14000);
-    };
-    tryHook();
-    return () => {
-      stopped = true;
-    };
-  }, []);
-
   const degree = useMemo(() => {
     const d = new Map<string, number>();
     for (const e of edges) {
@@ -190,13 +81,7 @@ export default function InvariantSkeleton({
     return d;
   }, [edges]);
 
-  // ForceGraph wants {id,...} nodes and {source,target} links. Pre-compute the
-  // val (rendered size) and a fixed color so the simulation doesn't recompute
-  // them per tick.
   const graphData = useMemo(() => {
-    // val drives sphere volume; the renderer takes the cube root for radius.
-    // Linear-in-degree gives a ~4× radius spread across the registry, so hubs
-    // are obviously larger than leaves instead of all looking the same.
     const nodes = rules.map((r) => ({
       ...r,
       val: 1 + (degree.get(r.id) ?? 0) * 2.4,
@@ -205,6 +90,14 @@ export default function InvariantSkeleton({
     const links = edges.map((e) => ({ source: e.from, target: e.to }));
     return { nodes, links };
   }, [rules, edges, degree]);
+
+  const connectedSet = useMemo(() => {
+    if (!hoveredId) return null;
+    const s = new Set<string>([hoveredId]);
+    for (const id of outAdj.get(hoveredId) ?? []) s.add(id);
+    for (const id of inAdj.get(hoveredId) ?? []) s.add(id);
+    return s;
+  }, [hoveredId, outAdj, inAdj]);
 
   return (
     <div
@@ -217,159 +110,81 @@ export default function InvariantSkeleton({
         position: "relative",
       }}
     >
-      <ForceGraph3D
-        ref={fgRef}
-        graphData={graphData}
-        width={size.width}
-        height={size.height}
-        backgroundColor="#0a0e14"
-        showNavInfo={false}
-        controlType="orbit"
-        enableNavigationControls={true}
-        enablePointerInteraction={true}
-        warmupTicks={20}
-        cooldownTicks={Infinity}
-        cooldownTime={20000}
-        nodeVisibility={(n: any) => activeTiers.has(n.tier)}
-        linkVisibility={(l: any) => {
-          const sId = typeof l.source === "object" ? l.source.id : l.source;
-          const tId = typeof l.target === "object" ? l.target.id : l.target;
-          const s = nodeMap.get(sId);
-          const t = nodeMap.get(tId);
-          return !!s && !!t && activeTiers.has(s.tier) && activeTiers.has(t.tier);
-        }}
-        nodeId="id"
-        nodeLabel={(n: any) => {
-          const stmt = n.statement.length > 160 ? n.statement.slice(0, 160) + "…" : n.statement;
-          const out = [...(outAdj.get(n.id) ?? [])].sort();
-          const inc = [...(inAdj.get(n.id) ?? [])].sort();
-          const dir = (label: string, ids: string[]) => ids.length === 0 ? "" : `
-            <div style="margin-bottom:0.25em">
-              <span style="color:#9aa6b2">${label} (${ids.length}): </span>
-              <span style="font-family:ui-monospace,monospace;color:#c9d6e3">${ids.join(", ")}</span>
-            </div>`;
-          const dirHtml = (out.length > 0 || inc.length > 0)
-            ? `<div style="margin-top:0.5em;padding-top:0.4em;border-top:1px solid #2a313c;font-size:0.78em;line-height:1.5;max-width:34rem">${dir("↗ references", out)}${dir("↙ referenced by", inc)}</div>`
-            : "";
-          return `
-            <div style="font-family:ui-monospace,monospace;font-weight:600">${n.id}</div>
-            <div style="color:#9aa6b2;font-size:0.78em;margin:0.15em 0">${n.tier} · ${n.status} · ${out.length} out · ${inc.length} in</div>
-            <div style="max-width:32rem">${stmt}</div>
-            ${dirHtml}
-          `;
-        }}
-        nodeVal={(n: any) => n.val}
-        nodeColor={(n: any) => {
-          if (!connectedSet) return n.color;
-          if (n.id === hoveredId) return "#ffffff";
-          if (connectedSet.has(n.id)) return n.color;
-          return "#1c2330"; // dim non-connected
-        }}
-        nodeOpacity={0.95}
-        nodeResolution={12}
-        linkColor={(l: any) => {
-          if (!hoveredId) return "rgba(150,170,200,0.18)";
-          const sId = typeof l.source === "object" ? l.source.id : l.source;
-          const tId = typeof l.target === "object" ? l.target.id : l.target;
-          if (sId === hoveredId || tId === hoveredId) return "#58a6ff";
-          return "rgba(80,90,110,0.06)";
-        }}
-        linkOpacity={0.4}
-        linkWidth={0.6}
-        linkDirectionalArrowLength={2.5}
-        linkDirectionalArrowRelPos={1}
-        linkDirectionalArrowColor={() => "rgba(180,200,230,0.5)"}
-        enableNodeDrag={true}
-        onNodeClick={(n: any) => {
-          window.location.href = `${basePath}/invariants/${n.id}`;
-        }}
-        onNodeHover={(n: any) => {
-          if (containerRef.current) containerRef.current.style.cursor = n ? "pointer" : "default";
-          setHoveredId(n ? n.id : null);
-        }}
-      />
+      {/* Explicit-height wrapper so the lib's container can't grow past the
+          canvas. Some force-graph wrapper styles default to flex which lets
+          it expand vertically if the parent has no height bound. */}
+      <div style={{ width: "100%", height: `${height}px` }}>
+        <ForceGraph3D
+          ref={fgRef}
+          graphData={graphData}
+          width={width}
+          height={height}
+          backgroundColor="#0a0e14"
+          showNavInfo={false}
+          nodeId="id"
+          nodeLabel={(n: any) => {
+            const stmt = n.statement.length > 160 ? n.statement.slice(0, 160) + "…" : n.statement;
+            const out = [...(outAdj.get(n.id) ?? [])].sort();
+            const inc = [...(inAdj.get(n.id) ?? [])].sort();
+            const dir = (label: string, ids: string[]) => ids.length === 0 ? "" : `
+              <div style="margin-bottom:0.25em">
+                <span style="color:#9aa6b2">${label} (${ids.length}): </span>
+                <span style="font-family:ui-monospace,monospace;color:#c9d6e3">${ids.join(", ")}</span>
+              </div>`;
+            const dirHtml = (out.length > 0 || inc.length > 0)
+              ? `<div style="margin-top:0.5em;padding-top:0.4em;border-top:1px solid #2a313c;font-size:0.78em;line-height:1.5;max-width:34rem">${dir("↗ references", out)}${dir("↙ referenced by", inc)}</div>`
+              : "";
+            return `
+              <div style="font-family:ui-monospace,monospace;font-weight:600">${n.id}</div>
+              <div style="color:#9aa6b2;font-size:0.78em;margin:0.15em 0">${n.tier} · ${n.status} · ${out.length} out · ${inc.length} in</div>
+              <div style="max-width:32rem">${stmt}</div>
+              ${dirHtml}
+            `;
+          }}
+          nodeVal={(n: any) => n.val}
+          nodeColor={(n: any) => {
+            if (!connectedSet) return n.color;
+            if (n.id === hoveredId) return "#ffffff";
+            if (connectedSet.has(n.id)) return n.color;
+            return "#1c2330";
+          }}
+          linkColor={(l: any) => {
+            if (!hoveredId) return "rgba(150,170,200,0.18)";
+            const sId = typeof l.source === "object" ? l.source.id : l.source;
+            const tId = typeof l.target === "object" ? l.target.id : l.target;
+            if (sId === hoveredId || tId === hoveredId) return "#58a6ff";
+            return "rgba(80,90,110,0.06)";
+          }}
+          linkWidth={0.6}
+          linkDirectionalArrowLength={2.5}
+          linkDirectionalArrowRelPos={1}
+          onNodeClick={(n: any) => {
+            window.location.href = `${basePath}/invariants/${n.id}`;
+          }}
+          onNodeHover={(n: any) => {
+            if (containerRef.current) containerRef.current.style.cursor = n ? "pointer" : "default";
+            setHoveredId(n ? n.id : null);
+          }}
+        />
+      </div>
 
       <div
-        className="pill-row"
         style={{
           padding: "0.5rem 0.8rem",
           borderTop: "1px solid var(--border)",
           fontSize: "0.78rem",
-          flexWrap: "wrap",
-          gap: "0.5rem 1rem",
+          color: "var(--fg-muted)",
           background: "var(--bg-elev)",
         }}
       >
-        <button
-          onClick={resetTiers}
-          title={allOn ? "all tiers visible" : "click to show all tiers"}
-          style={{
-            background: "none",
-            border: "none",
-            padding: 0,
-            color: "inherit",
-            cursor: allOn ? "default" : "pointer",
-            opacity: allOn ? 0.7 : 1,
-            font: "inherit",
-          }}
-          className="faint"
-        >
-          tier:
-        </button>
-        {Object.entries(TIER_COLOR).map(([t, c]) => {
-          const on = activeTiers.has(t);
-          return (
-            <button
-              key={t}
-              onClick={() => toggleTier(t)}
-              title={on ? `hide ${t} rules` : `show ${t} rules`}
-              style={{
-                background: "none",
-                border: "none",
-                padding: "0.05rem 0",
-                cursor: "pointer",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.3rem",
-                font: "inherit",
-                color: "inherit",
-                opacity: on ? 1 : 0.35,
-                textDecoration: on ? "none" : "line-through",
-              }}
-            >
-              <span
-                style={{
-                  width: 9,
-                  height: 9,
-                  borderRadius: 5,
-                  background: c,
-                  display: "inline-block",
-                  boxShadow: on ? "none" : "inset 0 0 0 1px rgba(255,255,255,0.2)",
-                }}
-              ></span>
-              {t}
-            </button>
-          );
-        })}
-        <span style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", marginLeft: "0.5rem" }}>
-          <span className="faint">spread:</span>
-          <span className="faint" style={{ fontSize: "0.72rem" }}>tight</span>
-          <input
-            type="range"
-            min={10}
-            max={200}
-            step={5}
-            value={spread}
-            onChange={(e) => setSpread(Number(e.target.value))}
-            aria-label="Layout spread"
-            title="Adjust node repulsion + edge length"
-            style={{ width: 110, accentColor: "var(--accent)" }}
-          />
-          <span className="faint" style={{ fontSize: "0.72rem" }}>spread</span>
-        </span>
-        <span className="faint">
-          · click a tier to toggle · size = degree · drag to rotate · scroll to zoom · right-drag to pan · click a node to open the rule
-        </span>
+        tier:&nbsp;
+        {Object.entries(TIER_COLOR).map(([t, c]) => (
+          <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", marginRight: "0.9rem" }}>
+            <span style={{ width: 9, height: 9, borderRadius: 5, background: c, display: "inline-block" }}></span>
+            {t}
+          </span>
+        ))}
+        <span className="faint">· size = degree · drag to rotate · scroll to zoom · click a node to open the rule</span>
       </div>
     </div>
   );
