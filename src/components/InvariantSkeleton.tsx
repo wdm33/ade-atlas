@@ -183,6 +183,7 @@ export default function InvariantSkeleton({
           height={height}
           backgroundColor="#0a0e14"
           showNavInfo={false}
+          controlType="orbit"
           nodeId="id"
           nodeVisibility={(n: any) => activeTiers.has(n.tier)}
           linkVisibility={(l: any) => {
