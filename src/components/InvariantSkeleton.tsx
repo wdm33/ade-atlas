@@ -38,7 +38,6 @@ export default function InvariantSkeleton({
   const fgRef = useRef<any>(null);
   const [width, setWidth] = useState(960);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [spread, setSpread] = useState(30); // d3-force charge default
   const height = 640;
 
   // Tier filter — click a chip to hide that tier; click "tier:" to reset.
@@ -75,26 +74,6 @@ export default function InvariantSkeleton({
     ro.observe(containerRef.current);
     return () => ro.disconnect();
   }, []);
-
-  // Drive the d3-force charge + link distance from the spread slider. Skip
-  // the initial mount entirely (lib defaults are fine for the first render);
-  // only act once the user has actually moved the slider. No d3ReheatSimulation
-  // — restarting the sim from the spread effect was blanking the scene; the
-  // sim picks up the new force values on its next tick anyway.
-  const spreadFirstRun = useRef(true);
-  useEffect(() => {
-    if (spreadFirstRun.current) {
-      spreadFirstRun.current = false;
-      return;
-    }
-    const fg = fgRef.current;
-    const charge = fg?.d3Force?.("charge");
-    const link = fg?.d3Force?.("link");
-    if (charge && link) {
-      charge.strength(-spread);
-      link.distance(15 + spread * 0.4); // 19 (tight) … 95 (wide)
-    }
-  }, [spread]);
 
   const outAdj = useMemo(() => {
     const m = new Map<string, Set<string>>();
@@ -283,23 +262,6 @@ export default function InvariantSkeleton({
             </button>
           );
         })}
-        <span style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", marginLeft: "0.4rem" }}>
-          <span className="faint">spread:</span>
-          <span className="faint" style={{ fontSize: "0.72rem" }}>tight</span>
-          <input
-            type="range"
-            min={10}
-            max={200}
-            step={5}
-            value={spread}
-            onChange={(e) => setSpread(Number(e.target.value))}
-            aria-label="Layout spread"
-            title="Adjust node repulsion + edge length"
-            className="spread-slider"
-            style={{ width: 130, accentColor: "#58a6ff" }}
-          />
-          <span className="faint" style={{ fontSize: "0.72rem" }}>spread</span>
-        </span>
         <span className="faint">· click a tier to toggle · size = degree · drag to rotate · scroll to zoom · click a node to open</span>
       </div>
     </div>
