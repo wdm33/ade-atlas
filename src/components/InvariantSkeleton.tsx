@@ -298,7 +298,8 @@ export default function InvariantSkeleton({
             onChange={(e) => setSpread(Number(e.target.value))}
             aria-label="Layout spread"
             title="Adjust node repulsion + edge length"
-            style={{ width: 110, accentColor: "var(--accent)" }}
+            className="spread-slider"
+            style={{ width: 130, accentColor: "#58a6ff" }}
           />
           <span className="faint" style={{ fontSize: "0.72rem" }}>spread</span>
         </span>

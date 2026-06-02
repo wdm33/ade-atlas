@@ -161,3 +161,46 @@ tbody tr:hover { background: var(--bg-elev); }
 }
 .banner.warn { border-color: #4d3c12; background: #221b08; }
 .banner.info { border-color: #1b3a5e; background: #0b1d33; }
+
+/* Spread slider on the /skeleton page — native range inputs render with an
+   effectively-invisible track on dark themes. Force a visible track + thumb. */
+input.spread-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: rgba(150, 170, 200, 0.25);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+input.spread-slider::-webkit-slider-runnable-track {
+  height: 5px;
+  background: rgba(150, 170, 200, 0.25);
+  border-radius: 3px;
+}
+input.spread-slider::-moz-range-track {
+  height: 5px;
+  background: rgba(150, 170, 200, 0.25);
+  border-radius: 3px;
+}
+input.spread-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1px solid #0d1117;
+  margin-top: -5px; /* center on the 5px track */
+  cursor: pointer;
+}
+input.spread-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1px solid #0d1117;
+  cursor: pointer;
+}
+input.spread-slider:focus { outline: none; }
+input.spread-slider:focus::-webkit-slider-thumb { box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.35); }
