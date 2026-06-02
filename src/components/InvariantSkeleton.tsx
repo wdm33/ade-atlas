@@ -75,14 +75,44 @@ export default function InvariantSkeleton({
     return () => ro.disconnect();
   }, []);
 
-  // Pull the camera further back than the lib's default so the graph reads
-  // as the whole skeleton at first glance, not a close-up of one cluster.
-  // cameraPosition just moves the camera — no sim/force interaction.
+  // Once the lib is ready: set the initial camera back so you see the whole
+  // skeleton, then turn on auto-rotate. When the user touches the scene
+  // (OrbitControls 'start' event), pause rotation and queue a resume 1 minute
+  // later — the timer resets on every fresh interaction.
   useEffect(() => {
-    const t = setTimeout(() => {
-      fgRef.current?.cameraPosition?.({ z: 3000 });
-    }, 150);
-    return () => clearTimeout(t);
+    let stopped = false;
+    let resumeTimer: ReturnType<typeof setTimeout> | null = null;
+    let controlsRef: any = null;
+    let onStart: (() => void) | null = null;
+
+    const setup = () => {
+      if (stopped) return;
+      const fg = fgRef.current;
+      const controls = fg?.controls?.();
+      if (!fg || !controls) {
+        requestAnimationFrame(setup);
+        return;
+      }
+      fg.cameraPosition?.({ z: 3000 });
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.6;
+      controlsRef = controls;
+      onStart = () => {
+        controls.autoRotate = false;
+        if (resumeTimer) clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => {
+          if (!stopped) controls.autoRotate = true;
+        }, 60_000);
+      };
+      controls.addEventListener?.("start", onStart);
+    };
+    setup();
+
+    return () => {
+      stopped = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      if (controlsRef && onStart) controlsRef.removeEventListener?.("start", onStart);
+    };
   }, []);
 
   const outAdj = useMemo(() => {
