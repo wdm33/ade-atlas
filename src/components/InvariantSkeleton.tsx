@@ -80,7 +80,7 @@ export default function InvariantSkeleton({
   // cameraPosition just moves the camera — no sim/force interaction.
   useEffect(() => {
     const t = setTimeout(() => {
-      fgRef.current?.cameraPosition?.({ z: 1600 });
+      fgRef.current?.cameraPosition?.({ z: 3200 });
     }, 150);
     return () => clearTimeout(t);
   }, []);
