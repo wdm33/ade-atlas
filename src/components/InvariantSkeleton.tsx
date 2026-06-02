@@ -75,6 +75,16 @@ export default function InvariantSkeleton({
     return () => ro.disconnect();
   }, []);
 
+  // Pull the camera further back than the lib's default so the graph reads
+  // as the whole skeleton at first glance, not a close-up of one cluster.
+  // cameraPosition just moves the camera — no sim/force interaction.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      fgRef.current?.cameraPosition?.({ z: 800 });
+    }, 150);
+    return () => clearTimeout(t);
+  }, []);
+
   const outAdj = useMemo(() => {
     const m = new Map<string, Set<string>>();
     for (const e of edges) {
