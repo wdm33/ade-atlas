@@ -1,0 +1,6 @@
+{
+  "name": "Ade Constitutional Node",
+  "ticker": "ADE1",
+  "homepage": "https://wdm33.github.io/ade-atlas/",
+  "description": "Replay-first alternative Cardano node project. Preprod pool for proving Cardano-compatible block production."
+}
