@@ -2,7 +2,7 @@
 import Base from "../layouts/Base.astro";
 import EnforcementCharts from "../components/EnforcementCharts.tsx";
 import Markdown from "../components/Markdown.astro";
-import { invariants, manifest, ciChecks, traceById, withBase } from "../lib/site-data.ts";
+import { invariants, manifest, ciChecks, ruleById, traceById, withBase } from "../lib/site-data.ts";
 
 // Registry-derived (authoritative, format-independent) rather than the parsed
 // TRACEABILITY prose summary.
@@ -79,13 +79,13 @@ const refGap = (manifest.counts.ci_checks ?? 0) - ciChecks.referenced_count;
     <div class="card">
       <h3>Live rules missing tests <span class="faint" style="font-weight:400;font-size:0.8rem">— {missingTests.length}</span></h3>
       {missingTests.length === 0 ? <p class="muted">None.</p> : (
-        <div class="tag-list">{missingTests.map((r) => <a class="badge" href={withBase(`/invariants/${r.id}`)}>{r.id}</a>)}</div>
+        <div class="tag-list">{missingTests.map((r) => <a class={`badge ${r.status}`} href={withBase(`/invariants/${r.id}`)} title={`${r.status} · ${r.tier}`}>{r.id}</a>)}</div>
       )}
     </div>
     <div class="card">
       <h3>Live rules missing CI <span class="faint" style="font-weight:400;font-size:0.8rem">— {missingCi.length}</span></h3>
       {missingCi.length === 0 ? <p class="muted">None.</p> : (
-        <div class="tag-list">{missingCi.map((r) => <a class="badge" href={withBase(`/invariants/${r.id}`)}>{r.id}</a>)}</div>
+        <div class="tag-list">{missingCi.map((r) => <a class={`badge ${r.status}`} href={withBase(`/invariants/${r.id}`)} title={`${r.status} · ${r.tier}`}>{r.id}</a>)}</div>
       )}
     </div>
   </div>
@@ -117,7 +117,12 @@ const refGap = (manifest.counts.ci_checks ?? 0) - ciChecks.referenced_count;
         <td class="mono" style="font-size:0.78rem">{c.name}</td>
         <td>
           <div class="tag-list">
-            {c.enforces.map((id) => <a class="badge fam" style="font-size:0.64rem" href={withBase(`/invariants/${id}`)}>{id}</a>)}
+            {c.enforces.map((id) => {
+              const ref = ruleById(id);
+              return ref
+                ? <a class={`badge ${ref.status}`} style="font-size:0.64rem" href={withBase(`/invariants/${id}`)} title={`${ref.status} · ${ref.tier}`}>{id}</a>
+                : <span class="badge gap" style="font-size:0.64rem">{id}</span>;
+            })}
           </div>
         </td>
         <td style="font-size:0.82rem">{c.scope ? <Markdown text={c.scope} /> : <span class="muted">—</span>}</td>

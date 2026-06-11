@@ -160,7 +160,7 @@ const fullyEvidenced = criteria.filter((c) => readiness(c.invariants).label === 
             {c.invariants.map((id) => {
               const rule = ruleById(id);
               return rule
-                ? <a class="badge" href={withBase(`/invariants/${id}`)} title={rule.status}>{id}</a>
+                ? <a class={`badge ${rule.status}`} href={withBase(`/invariants/${id}`)} title={`${rule.status} · ${rule.tier}`}>{id}</a>
                 : <span class="badge gap" title="not found in registry">{id}?</span>;
             })}
           </div>

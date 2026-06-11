@@ -7,10 +7,11 @@ const ordered = [...clusters.clusters].sort((a, b) => {
   if (a.status !== b.status) return a.status === "declared" ? -1 : 1;
   return b.id.localeCompare(a.id);
 });
-const ruleChip = (id: string) =>
-  ruleById(id)
-    ? `<a class="badge" href="${withBase(`/invariants/${id}`)}">${id}</a>`
-    : `<span class="badge gap">${id}</span>`;
+const ruleChip = (id: string) => {
+  const r = ruleById(id);
+  if (!r) return `<span class="badge gap">${id}</span>`;
+  return `<a class="badge ${r.status}" href="${withBase(`/invariants/${id}`)}" title="${r.status} · ${r.tier}">${id}</a>`;
+};
 ---
 
 <Base active="clusters" title="Clusters" description="Cluster and slice history.">

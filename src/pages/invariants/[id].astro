@@ -94,11 +94,12 @@ const driftCi = new Set(t?.ci_drift ?? []);
     <section>
       <h2>Cross-references</h2>
       <div class="tag-list">
-        {r.cross_ref.map((x) => (
-          ruleById(x)
-            ? <a class="badge" href={withBase(`/invariants/${x}`)}>{x}</a>
-            : <span class="badge gap" title="unresolved reference">{x}</span>
-        ))}
+        {r.cross_ref.map((x) => {
+          const ref = ruleById(x);
+          return ref
+            ? <a class={`badge ${ref.status}`} href={withBase(`/invariants/${x}`)} title={`${ref.status} · ${ref.tier}`}>{x}</a>
+            : <span class="badge gap" title="unresolved reference">{x}</span>;
+        })}
       </div>
     </section>
   )}
