@@ -1,19 +1,42 @@
-import { toTree, sections, tables, nodeText } from "./markdown.ts";
+import { toTree, sections, tables, unwrapInline } from "./markdown.ts";
 import type { TraceabilityRule } from "./schema.ts";
 
-// Heading text is backtick-stripped by nodeText: "T-DET-01: statement..."
-const RULE_ID_RE = /^([A-Z]+-[A-Z0-9-]+)\b/;
-const DRIFT_RE = /`([^`]+)`\s*\*\*\[not (?:found )?on disk\s*[—-]\s*drift\]\*\*/g;
+// A real rule id ends in a numeric segment (T-DET-01, CN-KES-HEADER-02). The
+// nested-format family-group headings (### T-BOUND, ### CN-ADMIT) carry the ID
+// stem WITHOUT a numeric suffix, so this regex is what separates rules from the
+// group headers they sit under.
+const RULE_ID_RE = /^([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-\d+[a-z]*)\b/;
 
-function gap(cell: string, needle: string): boolean {
-  return cell.includes(needle);
+// Status lives in the heading in the nested format: "#### `T-X-01` — _enforced_"
+// (also _partial_ / _declared_ / _enforced_scaffolding_). Read it off the raw
+// heading, not nodeText — the double emphasis in `_enforced_scaffolding_` does
+// not survive markdown-to-text flattening.
+const HEADING_STATUS_RE = /—\s*_([a-z_]+?)_\s*$/;
+
+// Two "test not present at HEAD" notations across doc generations:
+//   old flat: `name` **[not found on disk — drift]**
+//   nested:   `name` †           (dagger, enumerated under Cross-reference checks)
+const BRACKET_DRIFT_RE = /`([^`]+)`\s*\*\*\[not (?:found )?on disk\s*[—-]\s*drift\]\*\*/g;
+const DAGGER_DRIFT_RE = /`([^`]+)`\s*†/g;
+
+// A load-bearing cell with no enforcement evidence. Covers both generations'
+// phrasings; a bare em-dash / empty cell also counts.
+const NO_EVIDENCE_RE =
+  /not yet enforced|no enforcing code|no tests? (?:named|listed)|no ci script|—\s*gap|gap\)/i;
+
+function isGap(cell: string): boolean {
+  const s = unwrapInline(cell).trim();
+  if (s === "" || s === "—" || s === "-") return true;
+  return NO_EVIDENCE_RE.test(cell);
 }
 
 function extractDrift(cell: string): string[] {
   const out: string[] = [];
-  let m: RegExpExecArray | null;
-  DRIFT_RE.lastIndex = 0;
-  while ((m = DRIFT_RE.exec(cell)) !== null) out.push(m[1]);
+  for (const re of [BRACKET_DRIFT_RE, DAGGER_DRIFT_RE]) {
+    re.lastIndex = 0;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(cell)) !== null) out.push(m[1]);
+  }
   return out;
 }
 
@@ -37,7 +60,7 @@ function parseMetaLine(body: string): {
   status: string | null;
   strengthened: string[];
 } {
-  // e.g. "_tier: true · status: enforced · strengthened: PHASE4-N-B, PHASE4-B1_"
+  // Old flat format only: "_tier: true · status: enforced · strengthened: A, B_"
   const line = body.split("\n").find((l) => /_tier:/.test(l)) ?? "";
   const clean = line.replace(/^_+|_+$/g, "");
   const tier = /tier:\s*([a-z]+)/.exec(clean)?.[1] ?? null;
@@ -64,32 +87,45 @@ export interface TraceabilityParsed {
 }
 
 function parseSummary(source: string): TraceabilityParsed["summary"] {
-  const num = (re: RegExp): number => {
-    const m = re.exec(source);
-    return m ? Number(m[1]) : 0;
-  };
-  const totalRow = /Total rules\s*\|\s*\*\*(\d+)\*\*/.exec(source);
-  // The status counts appear as table rows: "| `enforced` | 159 |"
+  // Status counts appear as table rows in both generations, backticked in the
+  // flat doc ("| `enforced` | 159 |") and plain in the nested doc
+  // ("| enforced | 297 |"). \b guards against matching enforced_scaffolding.
   const statusCount = (name: string): number =>
-    Number(new RegExp("`" + name + "`\\s*\\|\\s*(\\d+)").exec(source)?.[1] ?? 0);
+    Number(new RegExp("`?\\b" + name + "\\b`?\\s*\\|\\s*(\\d+)").exec(source)?.[1] ?? 0);
 
+  const total = Number(
+    /Total rules\s*\|\s*\*\*(\d+)\*\*/.exec(source)?.[1] ?? // flat
+      /\*\*Total\*\*\s*\|\s*\*\*?(\d+)/.exec(source)?.[1] ?? // nested inventory table
+      0,
+  );
+
+  // Tiers exist only in the flat doc's "By tier:" line; the nested doc carries
+  // no tier data (the site sources tier from the registry instead).
   const byTier: Record<string, number> = {};
   const tierLine = /By tier:\s*([^\n]+)/.exec(source)?.[1] ?? "";
   for (const m of tierLine.matchAll(/(true|derived|release|operational)\s*(\d+)/g)) {
     byTier[m[1]] = Number(m[2]);
   }
+
+  // Families: flat doc has a "By family: T 12 DC 134 …" line; nested doc has a
+  // per-family table whose first numeric column is the rule count.
   const byFamily: Record<string, number> = {};
-  const famLine = /By family:\s*([^\n]+)/.exec(source)?.[1] ?? "";
-  for (const m of famLine.matchAll(/\b(T|DC|CN|RO|OP)\s+(\d+)/g)) {
-    byFamily[m[1]] = Number(m[2]);
+  const famLine = /By family:\s*([^\n]+)/.exec(source)?.[1];
+  if (famLine) {
+    for (const m of famLine.matchAll(/\b(T|DC|CN|RO|OP)\s+(\d+)/g)) byFamily[m[1]] = Number(m[2]);
+  } else {
+    for (const m of source.matchAll(/^\|\s*(T|CN|DC|OP|RO)\s*\|\s*(\d+)\s*\|/gm)) {
+      byFamily[m[1]] = Number(m[2]);
+    }
   }
 
   return {
-    total: totalRow ? Number(totalRow[1]) : 0,
+    total,
     enforced: statusCount("enforced"),
     partial: statusCount("partial"),
     declared: statusCount("declared"),
-    deprecated: statusCount("deprecated") || num(/deprecated`?\s*\|\s*\*\*?(\d+)/),
+    deprecated:
+      statusCount("deprecated") || Number(/deprecated`?\s*\|\s*\*\*?(\d+)/.exec(source)?.[1] ?? 0),
     by_tier: byTier,
     by_family: byFamily,
   };
@@ -97,16 +133,39 @@ function parseSummary(source: string): TraceabilityParsed["summary"] {
 
 export function parseTraceability(source: string): TraceabilityParsed {
   const tree = toTree(source);
-  const ruleSections = sections(tree, source, 3);
-  const rules: TraceabilityRule[] = [];
 
+  // Nested format (current): rules are level-4 headings under level-3 family
+  // groups. Flat format (legacy fixtures): rules are the level-3 headings.
+  // Detect by whether any level-4 heading parses as a real rule id.
+  const level4 = sections(tree, source, 4).filter((s) => RULE_ID_RE.test(s.title));
+  const nested = level4.length > 0;
+  const ruleSections = nested ? level4 : sections(tree, source, 3);
+
+  const rules: TraceabilityRule[] = [];
   for (const sec of ruleSections) {
     const m = RULE_ID_RE.exec(sec.title);
-    if (!m) continue; // not a rule section (e.g. a prose subsection)
+    if (!m) continue; // not a rule section (prose subsection, family group, …)
     const id = m[1];
-    const statement = sec.title.replace(RULE_ID_RE, "").replace(/^:\s*/, "").trim();
-    const meta = parseMetaLine(sec.body);
     const a = aspectMap(sec.body);
+
+    let tier: string | null;
+    let status: string | null;
+    let strengthened: string[];
+    let statement: string;
+    if (nested) {
+      // Status is in the heading; the Requirement cell is the rule statement;
+      // tier is not carried by this doc (registry is the tier source).
+      status = HEADING_STATUS_RE.exec(sec.rawHeading)?.[1] ?? null;
+      tier = null;
+      strengthened = [];
+      statement = unwrapInline(a["requirement"] ?? "");
+    } else {
+      const meta = parseMetaLine(sec.body);
+      tier = meta.tier;
+      status = meta.status;
+      strengthened = meta.strengthened;
+      statement = sec.title.replace(RULE_ID_RE, "").replace(/^:\s*/, "").trim();
+    }
 
     const codeCell = a["code"] ?? "";
     const testsCell = a["tests"] ?? "";
@@ -115,18 +174,18 @@ export function parseTraceability(source: string): TraceabilityParsed {
     rules.push({
       id,
       statement,
-      tier: meta.tier,
-      status: meta.status,
-      strengthened: meta.strengthened,
+      tier,
+      status,
+      strengthened,
       source: a["source"] ?? "",
       requirement: a["requirement"] ?? "",
       code: codeCell,
-      code_gap: gap(codeCell, "no enforcing code") || gap(codeCell, "— gap"),
+      code_gap: isGap(codeCell),
       tests_text: testsCell,
-      tests_gap: gap(testsCell, "no tests named") || gap(testsCell, "— gap"),
+      tests_gap: isGap(testsCell),
       tests_drift: extractDrift(testsCell),
       ci_text: ciCell,
-      ci_gap: gap(ciCell, "no CI script") || gap(ciCell, "— gap"),
+      ci_gap: isGap(ciCell),
       ci_drift: extractDrift(ciCell),
     });
   }

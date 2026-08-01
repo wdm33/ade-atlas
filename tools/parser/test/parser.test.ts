@@ -31,6 +31,25 @@ test("registry: ci_script scalar and ci_scripts array both normalize", () => {
   assert.equal(r.tests.length, 4);
 });
 
+test("registry: packed ci scripts split on ';', ',', and whitespace", () => {
+  const reg = parseRegistry(`
+[[rules]]
+id = "T-90"
+ci_scripts = ["ci/a.sh; ci/b.sh"]
+
+[[rules]]
+id = "T-91"
+ci_script = "ci/c.sh ci/d.sh"
+
+[[rules]]
+id = "T-92"
+ci_script = "ci/e.sh, ci/f.sh"
+`);
+  assert.deepEqual(reg.find((r) => r.id === "T-90")!.ci_scripts, ["ci/a.sh", "ci/b.sh"]);
+  assert.deepEqual(reg.find((r) => r.id === "T-91")!.ci_scripts, ["ci/c.sh", "ci/d.sh"]);
+  assert.deepEqual(reg.find((r) => r.id === "T-92")!.ci_scripts, ["ci/e.sh", "ci/f.sh"]);
+});
+
 test("registry: code_locus extraction yields path tokens, drops prose", () => {
   const loci = extractCodeLoci(
     "crates/ade_codec/src/cbor/envelope.rs (encode_block_envelope, NEW); process notes",
@@ -67,6 +86,130 @@ test("traceability: every registry rule has a traceability entry", () => {
   const traceIds = new Set(trace.rules.map((r) => r.id));
   const missing = registry.filter((r) => !traceIds.has(r.id));
   assert.equal(missing.length, 0, `missing: ${missing.map((m) => m.id).join(",")}`);
+});
+
+// The regenerated TRACEABILITY nests rules at level 4 (`#### `ID` — _status_`)
+// under level-3 family-group headings, moves the statement into the Requirement
+// cell, and flags stale test-fns with a dagger instead of a "[not on disk]"
+// bracket. This fixture pins that layout so the parser can't silently regress to
+// only understanding the old flat format.
+const NESTED_FIXTURE = `# Normative Rule Traceability — Fixture
+
+## Rule inventory (mechanical, at HEAD)
+
+| Status | Count |
+|--------|------:|
+| enforced | 2 |
+| declared | 1 |
+| enforced_scaffolding | 1 |
+| **Total** | **4** |
+
+| Family | Rules | enforced | partial | declared | enf-scaffold |
+|--------|------:|---------:|--------:|---------:|-------------:|
+| T | 3 | 1 | 0 | 1 | 1 |
+| DC | 1 | 1 | 0 | 0 | 0 |
+| **All** | **4** | **2** | **0** | **1** | **1** |
+
+## T — True Invariants
+
+### T-BOUND
+
+#### \`T-BOUND-01\` — _declared_
+
+| Aspect | Location |
+|--------|----------|
+| **Source** | Constitution §2 |
+| **Requirement** | Shell converts nondeterminism to deterministic inputs before core |
+| **Code** | — _(declared — not yet enforced)_ |
+| **Tests** | — _(declared — not yet enforced)_ |
+| **CI** | — _(declared — not yet enforced)_ |
+
+#### \`T-CORE-01\` — _enforced_
+
+| Aspect | Location |
+|--------|----------|
+| **Source** | Constitution §2 |
+| **Requirement** | Authoritative logic is pure and replayable |
+| **Code** | crates/ade_ledger/src/rules.rs |
+| **Tests** | \`apply_block_deterministic\`; \`renamed_by_reshape\` † |
+| **CI** | \`ci/ci_check_forbidden_patterns.sh\` |
+
+### T-EVIDENCE
+
+#### \`T-EVIDENCE-03a\` — _enforced_scaffolding_
+
+| Aspect | Location |
+|--------|----------|
+| **Source** | Constitution §5 |
+| **Requirement** | Evidence scaffolding is wired even before proofs land |
+| **Code** | crates/ade_core/src/evidence.rs |
+| **Tests** | _(no tests listed — gap)_ |
+| **CI** | \`ci/ci_check_evidence.sh\` |
+
+## DC — Derived Consensus
+
+### DC-CRYPTO
+
+#### \`DC-CRYPTO-01\` — _enforced_
+
+| Aspect | Location |
+|--------|----------|
+| **Source** | Praos spec |
+| **Requirement** | Crypto verification matches the reference node |
+| **Code** | crates/ade_crypto/src/lib.rs |
+| **Tests** | \`verify_vrf_cert\` |
+| **CI** | \`ci/ci_check_crypto.sh\` |
+`;
+
+test("traceability(nested): level-4 rules parsed, family-group headings are not rules", () => {
+  const p = parseTraceability(NESTED_FIXTURE);
+  assert.deepEqual(
+    p.rules.map((r) => r.id),
+    ["DC-CRYPTO-01", "T-BOUND-01", "T-CORE-01", "T-EVIDENCE-03a"],
+  );
+  // The `### T-BOUND` / `### T-EVIDENCE` / `### DC-CRYPTO` group headers must not
+  // leak in as bare-stem "rules".
+  assert.equal(
+    p.rules.some((r) => /^[A-Z]+-[A-Z]+$/.test(r.id)),
+    false,
+  );
+});
+
+test("traceability(nested): status from heading, statement from Requirement, scaffolding + letter suffix", () => {
+  const p = parseTraceability(NESTED_FIXTURE);
+  const core = p.rules.find((r) => r.id === "T-CORE-01")!;
+  assert.equal(core.status, "enforced");
+  assert.equal(core.statement, "Authoritative logic is pure and replayable");
+  assert.equal(core.tier, null); // nested doc carries no tier; registry is the source
+
+  const scaffold = p.rules.find((r) => r.id === "T-EVIDENCE-03a")!;
+  assert.equal(scaffold.status, "enforced_scaffolding");
+});
+
+test("traceability(nested): dagger marks test drift; gaps still detected", () => {
+  const p = parseTraceability(NESTED_FIXTURE);
+  const core = p.rules.find((r) => r.id === "T-CORE-01")!;
+  assert.deepEqual(core.tests_drift, ["renamed_by_reshape"]); // only the daggered one
+  assert.equal(core.tests_gap, false);
+  assert.equal(core.code_gap, false);
+
+  const declared = p.rules.find((r) => r.id === "T-BOUND-01")!;
+  assert.equal(declared.code_gap, true);
+  assert.equal(declared.tests_gap, true);
+  assert.equal(declared.ci_gap, true);
+
+  const scaffold = p.rules.find((r) => r.id === "T-EVIDENCE-03a")!;
+  assert.equal(scaffold.tests_gap, true); // "no tests listed — gap"
+  assert.equal(scaffold.ci_gap, false); // has a real CI script
+});
+
+test("traceability(nested): summary read from inventory tables", () => {
+  const p = parseTraceability(NESTED_FIXTURE);
+  assert.equal(p.summary.total, 4);
+  assert.equal(p.summary.enforced, 2);
+  assert.equal(p.summary.declared, 1);
+  assert.equal(p.summary.by_family.T, 3);
+  assert.equal(p.summary.by_family.DC, 1);
 });
 
 test("codemap: counts come from the Counts table", () => {

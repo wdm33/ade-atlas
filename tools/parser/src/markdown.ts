@@ -29,6 +29,8 @@ export function rawSlice(source: string, node: Node): string {
 export interface Section {
   title: string;
   depth: number;
+  /** Raw source of the heading line itself, markup intact (e.g. "#### `T-X-01` — _enforced_scaffolding_"). */
+  rawHeading: string;
   /** Raw markdown body between this heading and the next heading of depth <= this. */
   body: string;
 }
@@ -61,7 +63,12 @@ export function sections(tree: Root, source: string, depth: number): Section[] {
         break;
       }
     }
-    out.push({ title: h.title, depth: h.depth, body: source.slice(h.lineEnd, end).trim() });
+    out.push({
+      title: h.title,
+      depth: h.depth,
+      rawHeading: source.slice(h.start, h.lineEnd),
+      body: source.slice(h.lineEnd, end).trim(),
+    });
   }
   return out;
 }

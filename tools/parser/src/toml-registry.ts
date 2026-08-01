@@ -18,6 +18,21 @@ function asStringOrNull(v: unknown): string | null {
   return null;
 }
 
+/**
+ * Normalize CI-script references. Registry entries sometimes pack several
+ * scripts into one string separated by ',', ';', or whitespace
+ * (e.g. "ci/a.sh; ci/b.sh"); split them into individual path tokens so that
+ * per-script existence checks and references resolve one script at a time
+ * instead of stat-ing the whole joined string as a single (missing) path. The
+ * path-safe filter drops any non-path noise a future descriptor might add.
+ */
+function splitScripts(xs: string[]): string[] {
+  return xs
+    .flatMap((s) => s.split(/[;,\s]+/))
+    .map((s) => s.trim())
+    .filter((s) => /^[A-Za-z0-9_./-]+$/.test(s));
+}
+
 /** Extract path-like code loci from a free-text code_locus field. */
 export function extractCodeLoci(raw: string): string[] {
   const out: string[] = [];
@@ -46,8 +61,9 @@ export function parseRegistry(toml: string): InvariantRule[] {
     if (!id) throw new Error("Registry rule missing id");
 
     const codeLocusRaw = typeof e.code_locus === "string" ? e.code_locus : "";
-    // ci_script (scalar, comma-joined) and ci_scripts (array) both occur.
-    const ciScripts = [...asArray(e.ci_script), ...asArray(e.ci_scripts)];
+    // ci_script (scalar) and ci_scripts (array) both occur, and either can pack
+    // multiple scripts into one string — split into individual paths.
+    const ciScripts = splitScripts([...asArray(e.ci_script), ...asArray(e.ci_scripts)]);
 
     return {
       id,
